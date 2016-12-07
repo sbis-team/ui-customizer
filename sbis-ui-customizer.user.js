@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.0.0.rc41
+// @name          SBIS UI-Customizer v1.0.0.rc42
 // @namespace     SBIS
-// @version       1.0.0.rc41
-// @date          2016-12-07T22:34:15
-// @build         41
+// @version       1.0.0.rc42
+// @date          2016-12-07T22:48:11
+// @build         42
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -116,8 +116,8 @@
       });
    }
 })(unsafeWindow, {
-   "version": "1.0.0.rc41",
-   "date": "07.12.2016 22:34:15",
+   "version": "1.0.0.rc42",
+   "date": "07.12.2016 22:48:11",
    "notes": {
       "added": [
          "Плагин успешно переехал на <a href=\"https://github.com/sbis-team/ui-customizer\" target=\"_blank\">GitHub</a>.<br>Это первый публичный релиз, теперь плагин доступен из дома без VPN, и сотрудникам у которых нет доступа на корпоративный GitLab"
