@@ -1,2 +1,11 @@
-# ui-customizer
-SBIS UI-Customizer
+## Обновление v1.0.0.rc1
+
+Сборка от: 08.12.2016 17:10:31
+
+#### Новые возможности
+
+* Плагин успешно переехал на <a href="https://github.com/sbis-team/ui-customizer" target="_blank">GitHub</a>.<br>Это первый публичный релиз, теперь плагин доступен из дома без VPN, и сотрудникам у которых нет доступа на корпоративный GitLab
+
+-
+
+Copyright (c) SBIS Team
