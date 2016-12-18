@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.0.rc14
+// @name          SBIS UI-Customizer v1.1.0.rc15
 // @namespace     SBIS
-// @version       1.1.0.rc14
-// @date          16.12.2016 18:37:03
+// @version       1.1.0.rc15
+// @date          18.12.2016 19:09:57
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,13 +109,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.0.rc14",
-"date": "16.12.2016 18:37:03",
+"version": "1.1.0.rc15",
+"date": "18.12.2016 19:09:57",
 "notes": {
 "added": [
 "Новая опция 'Главная страница > Новости > Скрыть вложения под спойлер'"
 ],
-"changed": [],
+"changed": [
+"Доработка отъехавших стилей под новую версию инсайда"
+],
 "fixed": [
 "Сброс настроек в секции, в которую добавляются парамеры, при обновлении на новую версию скрипта"
 ],
@@ -548,71 +550,90 @@ return {
 }
 }
 )(), {'css':{'HomePageModify-HideAttachments.css':`
-.np-News__collage:before {
+.sn-NewsPage__oneNews-contentCollage:before {
 content: 'Показать вложения...';
 color: #8991A9;
 font-size: 12px;
 }
-.np-News__collage {
+.sn-NewsPage__oneNews-contentCollage {
 margin-top: 0px;
 display: inline-block;
 }
-.np-News__collage .collage {
+.sn-NewsPage__oneNews-contentCollage .collage {
 display: none;
 }
-.np-News__collage:hover {
+.sn-NewsPage__oneNews-contentCollage:hover {
 display: block;
 z-index: 1;
 position: relative;
 }
-.np-News__collage:hover .collage {
+.sn-NewsPage__oneNews-contentCollage:hover .collage {
 display: block;
 background: white;
 border: 1px solid #f4f4f4;
 }
 `,'HomePageModify-HideAuthor.css':`
-div.main-page-News .np-News__itemAll .np-News__header_leftPart,
-div.main-page-News .np-News__itemAll .np-News__header_rightPart .np-News__itemAuthor,
-div.main-page-News .np-News__itemAll .np-News__header_rightPart .np-News__itemPosition,
-div.main-page-News .np-News__itemAll .np-News__header_rightPart .np-News__itemAuthorOrPosition {
+.sn-NewsPage__oneNews-headerPhoto,
+.sn-NewsPage__oneNews-headerName,
+.sn-NewsPage__oneNews-headerPosition,
+.sn-NewsPage__oneNews-headerDestination,
+.sn-NewsPage__oneNews-header .activity__ActivityMarker,
+.sn-NewsPage__repostHeader .sn-NewsPage__oneNews-headerDate,
+.sn-NewsPage__oneNews-itemAll .sn-NewsPage__oneNews-repostComment,
+.sn-NewsPage__oneNews-itemAll .sn-RepostIcon {
 display: none !important;
 }
-div.main-page-News .np-News__itemAll .np-News__header {
-min-height: 0 !important;
+.sn-NewsPage__oneNews-headerTop,
+.sn-NewsPage__oneNews-contentButtons div {
+z-index: 1;
 }
-div.main-page-News .np-News__itemAll .np-News__header .np-News__header_rightPart,
-div.main-page-News .np-News__itemAll .np-News__body,
-div.main-page-News .np-News__itemAll .np-News__footer {
-margin-left: 0 !important;
+.sn-NewsPage__oneNews-header,
+.sn-NewsPage__oneNews-headerTop {
+height: auto !important;
+}
+.sn-NewsPage__oneNews-contentButtons div {
+padding-top: 0px !important;
+}
+.sn-NewsPage__oneNews-headerDate {
+max-width: none !important;
+line-height: inherit !important;
+margin-top: 0 !important;
 }
 `,'HomePageModify-HideFooterBtn.css':`
-div.main-page-News .np-News__itemAll .np-News__footer {
+.sn-NewsPage__oneNews-footer {
 display: none !important;
 }
-div.main-page-News .np-News__itemAll {
-padding: 12px !important;
+.sn-NewsPage__oneNews-itemAll {
+padding: 3px 12px 3px 12px !important;
 }
 `,'HomePageModify-HideTapeEvents.css':`
 table.events_tape_wrapper td.events_tape_td {
 display: none !important;
 }
 `,'HomePageModify-SlimBorder.css':`
-div.main-page-News .np-News__itemAll {
+.sn-NewsPage__oneNews-itemAll {
 margin-top: 1px !important;
+border-radius: 1px !important;
 }
-div.np-View__twoColumns .np-News__item:not([style*="left: 0px"]) .np-News__itemAll {
+.sn-NewsPage__oneNews-contentArticle {
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.np-View__twoColumns .np-News__item[style*="left: 0px"] .sn-NewsPage__oneNews-itemAll {
+margin-right: 1px !important;
+border-radius: 0 1px 1px 0 !important;
+}
+.np-View__twoColumns .np-News__item:not([style*="left: 0px"]) .sn-NewsPage__oneNews-itemAll {
 margin-left: 1px !important;
 }
-div.np-View__twoColumns .np-News__item[style*="left: 0px"] .np-News__itemAll {
-margin-right: 1px !important;
-}
-div.np-View__twoColumns .np-News__item .np-News__itemAll {
-margin-top: 1px !important;
-}
 `,'HomePageModify-SmallImg.css':`
-img.sn-News__logoNewsImg {
+img.sn-NewsPage__oneNews-contentLogo {
 width: 64px !important;
 height: 64px !important;
+}
+div.sn-NewsPage__oneNews-withLogo .sn-NewsPage__oneNews-contentText {
+margin-left: 70px !important;
 }
 `,'HomePageModify-StretchPage.css':`
 #sideRight,
@@ -1585,8 +1606,8 @@ UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
 const selectors = {
 'Owl': 'div[data-component="SBIS3.Engine.HowEasy"]',
 'AsJust': \`
-#componentCommandsPannelArea div.mainPage_verticalLine,
-#componentCommandsPannelArea i[sbisname="ExpandOurOrg"],
+.componentCommandsPannelArea div.mainPage_verticalLine,
+.componentCommandsPannelArea i[sbisname="ExpandOurOrg"],
 table.events_tape_wrapper .middle__OurOrgHowEasy
 \`,
 'SideRight': '#sideRight, div.news-SpecialNews[sbisname="SpecialNewsRight"]'
