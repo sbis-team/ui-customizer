@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.0.rc15
+// @name          SBIS UI-Customizer v1.1.0.rc16
 // @namespace     SBIS
-// @version       1.1.0.rc15
-// @date          18.12.2016 19:09:57
+// @version       1.1.0.rc16
+// @date          19.12.2016 09:14:22
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,8 +109,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.0.rc15",
-"date": "18.12.2016 19:09:57",
+"version": "1.1.0.rc16",
+"date": "19.12.2016 09:14:22",
 "notes": {
 "added": [
 "Новая опция 'Главная страница > Новости > Скрыть вложения под спойлер'"
@@ -280,14 +280,20 @@ return {
 "title": "Новости",
 "view": "block",
 "options": {
+"HideAuthor": {
+"title": "Скрыть автора из списка",
+"view": "option",
+"type": "boolean",
+"value": false
+},
 "SmallImg": {
 "title": "Уменьшить фото новости",
 "view": "option",
 "type": "boolean",
 "value": false
 },
-"HideAuthor": {
-"title": "Скрыть автора из списка",
+"HideAttachments": {
+"title": "Скрыть вложения под спойлер",
 "view": "option",
 "type": "boolean",
 "value": false
@@ -300,12 +306,6 @@ return {
 },
 "SlimBorder": {
 "title": "Тонкие границы новости",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"HideAttachments": {
-"title": "Скрыть вложения под спойлер",
 "view": "option",
 "type": "boolean",
 "value": false
@@ -549,7 +549,17 @@ return {
 }
 }
 }
-)(), {'css':{'HomePageModify-HideAttachments.css':`
+)(), {'css':{'HomePageModify-FixHeight.css':`
+.sn-NewsPage__oneNews-contentArticle {
+height: 20px;
+}
+.sn-NewsPage__oneNews-contentLogoBrif {
+min-height: 96px !important;
+max-height: 96px !important;
+margin-bottom: 8px !important;
+overflow: hidden;
+}
+`,'HomePageModify-HideAttachments.css':`
 .sn-NewsPage__oneNews-contentCollage:before {
 content: 'Показать вложения...';
 color: #8991A9;
@@ -1071,6 +1081,7 @@ createElement: createElement,
 createComponent: createComponent,
 removeByQuery: removeByQuery,
 generateCSS: {
+custom: generateCSS_custom,
 displayNone: generateCSS_displayNone,
 inlineBlock: generateCSS_inlineBlock
 },
@@ -1276,6 +1287,9 @@ var elms = document.querySelectorAll(query);
 for (let i = 0; i < elms.length; i++) {
 elms[i].remove();
 }
+}
+function generateCSS_custom(selector, rule, value) {
+return \`\${selector} { \${rule}: \${value}; }\`;
 }
 function generateCSS_displayNone(selector) {
 return \`\${selector} { display: none !important; }\`;
@@ -1553,7 +1567,7 @@ elm.wsControl.close();
 }
 });
 `,'HomePageModify.js':`
-UICustomizerDefine('HomePageModify', ['Engine'], function(Engine) {
+UICustomizerDefine('HomePageModify', ['Engine'], function (Engine) {
 "use strict";
 return {
 applySettings: applySettings
@@ -1567,6 +1581,18 @@ if (group.options[name].value) {
 css += Engine.getCSS('HomePageModify-' + name);
 }
 }
+}
+let other = settings.options.Other.options;
+if (other.StretchPage.value || other.HideTapeEvents.value) {
+css += Engine.generateCSS.custom(
+'.np-View__twoColumns .sn-NewsPage__oneNews-contentLogo+.sn-NewsPage__oneNews-contentText',
+'max-width',
+'none !important'
+);
+}
+let news = settings.options.News.options;
+if (news.HideAuthor.value && news.HideFooterBtn.value) {
+css += Engine.getCSS('HomePageModify-FixHeight');
 }
 if (css) {
 Engine.appendCSS('HomePageModify', css);
