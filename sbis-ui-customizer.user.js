@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.0
+// @name          SBIS UI-Customizer v1.1.1
 // @namespace     SBIS
-// @version       1.1.0
-// @date          19.12.2016 09:22:03
+// @version       1.1.1
+// @date          24.12.2016 10:41:35
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,17 +109,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.0",
-"date": "19.12.2016 09:22:03",
+"version": "1.1.1",
+"date": "24.12.2016 10:41:35",
 "notes": {
-"added": [
-"Новая опция 'Главная страница > Новости > Скрыть вложения под спойлер'"
-],
-"changed": [
-"Доработка отъехавших стилей под новую версию инсайда"
-],
+"added": [],
+"changed": [],
 "fixed": [
-"Сброс настроек в секции, в которую добавляются парамеры, при обновлении на новую версию скрипта"
+"Убрал пустое пространство при использовании опции 'Главная страница > Новости > Уменьшить фото новости'"
 ],
 "issues": []
 }
@@ -642,8 +638,8 @@ img.sn-NewsPage__oneNews-contentLogo {
 width: 64px !important;
 height: 64px !important;
 }
-div.sn-NewsPage__oneNews-withLogo .sn-NewsPage__oneNews-contentText {
-margin-left: 70px !important;
+div.sn-NewsPage__oneNews-withLogo {
+margin-left: 74px !important;
 }
 `,'HomePageModify-StretchPage.css':`
 #sideRight,
