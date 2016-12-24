@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.1.rc1
+// @name          SBIS UI-Customizer v1.1.1.rc2
 // @namespace     SBIS
-// @version       1.1.1.rc1
-// @date          24.12.2016 10:35:42
+// @version       1.1.1.rc2
+// @date          24.12.2016 10:37:04
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,8 +109,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.1.rc1",
-"date": "24.12.2016 10:35:42",
+"version": "1.1.1.rc2",
+"date": "24.12.2016 10:37:04",
 "notes": {
 "added": [],
 "changed": [],
@@ -639,7 +639,7 @@ width: 64px !important;
 height: 64px !important;
 }
 div.sn-NewsPage__oneNews-withLogo {
-margin-left: 72px !important;
+margin-left: 74px !important;
 }
 `,'HomePageModify-StretchPage.css':`
 #sideRight,
