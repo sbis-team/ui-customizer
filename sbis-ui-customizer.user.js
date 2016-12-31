@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.1.rc2
+// @name          SBIS UI-Customizer v1.1.2.rc1
 // @namespace     SBIS
-// @version       1.1.1.rc2
-// @date          24.12.2016 10:37:04
+// @version       1.1.2.rc1
+// @date          31.12.2016 20:51:32
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,14 +109,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.1.rc2",
-"date": "24.12.2016 10:37:04",
+"version": "1.1.2.rc1",
+"date": "31.12.2016 20:51:32",
 "notes": {
 "added": [],
-"changed": [],
-"fixed": [
-"Убрал пустое пространство при использовании опции 'Главная страница > Новости > Уменьшить фото новости'"
+"changed": [
+"Тестирование нового скрипта сборки"
 ],
+"fixed": [],
 "issues": []
 }
 }, /* jshint -W033 */
