@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.2.rc3
+// @name          SBIS UI-Customizer v[object Object]
 // @namespace     SBIS
-// @version       1.1.2.rc3
-// @date          31.12.2016 22:18:15
+// @version       [object Object]
+// @date          31.12.2016 22:58:02
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,8 +109,12 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.2.rc3",
-"date": "31.12.2016 22:18:15",
+"version": {
+"major": 1,
+"minor": 1,
+"patch": 2
+},
+"date": "31.12.2016 22:58:02",
 "notes": {
 "added": [],
 "changed": [
