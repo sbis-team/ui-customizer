@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.5
+// @name          SBIS UI-Customizer v1.1.6
 // @namespace     SBIS
-// @version       1.1.5
-// @date          01.01.2017 01:06:27
+// @version       1.1.6
+// @date          30.01.2017 08:39:09
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,14 +109,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.5",
-"date": "01.01.2017 01:06:27",
+"version": "1.1.6",
+"date": "30.01.2017 08:39:09",
 "notes": {
 "added": [],
-"changed": [
-"Тестирование нового скрипта сборки"
+"changed": [],
+"fixed": [
+"Не работала опция скрытия ленты уведомлений на главной странице"
 ],
-"fixed": [],
 "issues": []
 }
 }, /* jshint -W033 */
@@ -613,7 +613,7 @@ display: none !important;
 padding: 3px 12px 3px 12px !important;
 }
 `,'HomePageModify-HideTapeEvents.css':`
-table.events_tape_wrapper td.events_tape_td {
+.mp-NotificationCenter {
 display: none !important;
 }
 `,'HomePageModify-SlimBorder.css':`
