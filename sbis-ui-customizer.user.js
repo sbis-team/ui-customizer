@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.7.rc1
+// @name          SBIS UI-Customizer v1.1.8.rc1
 // @namespace     SBIS
-// @version       1.1.7.rc1
-// @date          30.01.2017 12:09:28
+// @version       1.1.8.rc1
+// @date          31.01.2017 09:55:15
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -109,13 +109,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.7.rc1",
-"date": "30.01.2017 12:09:28",
+"version": "1.1.8.rc1",
+"date": "31.01.2017 09:55:15",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Исправлены проблем с опциями модификации ленты новостей на главной странице"
+"Исправлено отображение звездочки в списке избранных при модификации новости"
 ],
 "issues": []
 }
@@ -617,6 +617,16 @@ height: auto !important;
 }
 .sn-NewsPage .controls-ItemsToolbar {
 top: 8px !important;
+}
+.sn-NewsPage .sn-DraftIcon,
+.sn-NewsPage .sn-FavoriteIcon,
+.sn-NewsPage .sn-PinIcon {
+top: -4px !important;
+right: 88px !important;
+}
+.np-View__twoColumns .np-News__item[style*="left: 0px"] .sn-DraftIcon,
+.np-View__twoColumns .np-News__item[style*="left: 0px"] .sn-FavoriteIcon {
+right: 85px !important;
 }
 .sn-NewsPage__oneNews-headerRead {
 top: 0 !important;
@@ -1621,6 +1631,13 @@ if (group.options[name].value) {
 css += Engine.getCSS('HomePageModify-' + name);
 }
 }
+}
+if (news.HideAuthor.value && news.SlimBorder.value) {
+css += Engine.generateCSS.custom(
+'.sn-NewsPage .sn-DraftIcon, .sn-NewsPage .sn-FavoriteIcon, .sn-NewsPage .sn-PinIcon',
+'top',
+'0px !important'
+);
 }
 let other = settings.options.Other.options;
 if (other.StretchPage.value || other.HideTapeEvents.value) {
