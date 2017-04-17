@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.1.9
+// @name          SBIS UI-Customizer v1.2.0
 // @namespace     SBIS
-// @version       1.1.9
-// @date          22.02.2017 08:55:23
+// @version       1.2.0
+// @date          17.04.2017 14:23:13
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
-// @icon          data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAASFBMVEUAAAAzMzMyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIzMzMxMTExMTExMTEyMjIyMjIyMjIxMTEzMzM1NTU0NDQyMjILZXhtAAAAF3RSTlMAgIh73tmNbxuddvjv7eIfE6IjvrwmJxF/neAAAABwSURBVBjTZY9ZDoAgEEMLjCAuCG7c/6aC1YTofDQvL5kmBeyogTOE40HkPgPGWkMsaUqqcg8One4GCnPj1GOZKYjTgpWCWF/EURB/pcioYtsUkRmD9yE2wnnAu49IrYiSkrQvUPv+lv7H6br5EFmJF6QjBzKAskwHAAAAAElFTkSuQmCC
-// @icon64        data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAbFBMVEUAAAAyMjIsLCwyMjIyMjIyMjIyMjIyMjIyMjIyMjIzMzMyMjIzMzMyMjI1NTUzMzMxMTEzMzMxMTEyMjIyMjIxMTEyMjIzMzMyMjIxMTEvLy8AAAAzMzMxMTErKysyMjIyMjIyMjI0NDQzMzNV1+DKAAAAI3RSTlMA+AfjFc/frI5wWDUwkwnMyW3TsZiIPDlQ6BsBLBoF84pMHXeJqhAAAAGcSURBVFjD3ZeNboIwFIVpBRQBAcX/Cdv6/u+4XrpxYeOmOyEhbjfG0s/jSSmlJw1c6aps27LSwah0EilVJL+gt8h0FT2G9H3v6P7mo5r+7xyaAd33VHtoZfqqWJowTTy0tL11GB5sU7I0Ylp4aGt7YRA8bNOyVDka2kZ5qLHVtwD9bwYr+nikotZwyQay9r4Zws1dMJC1jjEVDETtha5Unmqd5oquL7LBdkLbrGhWMifIuo6WDHT388tYS6aKmKPkuxUMprVrvm2qnN4VwWBaG9vvM8OT7caSAQ06/a6lcWiGOxqlZGCmtGauwQq4hUktTUzOsPZM4g+tezTZF0v9j5G1hrRucVyzT3alUTWCgaB1S7k+73an2lC9SUtZ0r6aUR2ll0nWHsdMMBC0czcUhrFSsd+AtU+4Kz+rASUAaoCkBZIAiAGQFkgCCFogARADIC2ABEAMgK0W2MBnGyx6C0BaAAmAGABpASQAYACkBZAAi28onAB/fFdewEA4SIG0sL0DH/twmgwPngAVjrMAFQ/fONVJoRQf/wH6AaEt37xRS8ZKAAAAAElFTkSuQmCC
+// @icon          data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA1ElEQVR42s3TOQvCQBAF4HjggWcnaCF4K1YiaQTvwhiiphBBsBAsLcT/X/gW3sIoum6ZgQ8yJDM77G4cJ2qxgrTIO6QjB3NTgw1kRN4jHXlYmxqcoS7yEelowfZXsRptCguofpmgCQGEnCIli2uwFPkN4qJBEk7i/QEasoH64AJZTqDHVE3HfPZZNIAra95CbdAdhpBgscvVJhADD3amTfQ4RYWFOh5Q5iK+7TEG3PWQ5291jHtOoOMIXZEX/k3whOLHReqLvMRFrK9ym+RVnkXr73sBExASEE+L5FQAAAAASUVORK5CYII=
+// @icon64        data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADzElEQVR42u1aW0hUQRje9ZpaZhJZUZB2o0QiiiK1ICKkGyWVUBQYFPRglvmgkfTQxaCLmZRBhZQFBZb1kiBFQVEkQeBDdLGCHorQLlDQvez74Vs4CLs7szvretz54OPsOeefmX++88+cf+asx2NhYWFhYWFhoY/h4G0eQ8VOcEcY5TPpw9BoCDAB7OUxVJwjQ8Uk+jDOCmAFsAJYAawAVgD3CdAKXo1lAZ6BT90qQDJYAyaFUccFMlSk0IfE/uz4GLAC3MZzOW4HR/XjHCA+lIOlPK+gDyMj2XF50rXgT4ZdG69f5/kP3k+KoADyxI+Cv9hmK6+38fwbeAAcYrrzqVx0/AMbOfacyGVHxIk7tDctQAbYQR9OgDl97k8Dm+nDA9BrUoCLfMJFQeyK+XSaDQsgnbkB/gaXB7FdzfaNCbCIqm5RtC+nfaFBAYpZZ5nmJG1kcrwGvgTjFO0TwDfgJYMC3ARfgPEafreDl8PtvITRF7Bes5yM0Q8KYagiQCIn3oOaPpwFe8IVIJ2hV6lZroLl0g0IMJ51bdb0YRfLpYYjQDIr2a1ZrpLlMgwIMJZ1bdX0odqEAB6O52bNMk0MPxNDQOaer+BJTR/Og29NTIKnOZ5TFO3TwI8UQWWcnlGwawG7WbcKhoGfwVMmBMhj8lGraH8M/ANODzKxzQJHg1ngTL49/GEew7lB0YcG5gyTTeUC+x1zQVyAUN0TZM6QJ7iXEdXLpKWEv7tZ3t+YraddTQAf5DW5j3bVJjNBafA4K34MrnM4Ksf14CPeP+xn7Evq+pzR1MLOJ5KS6Fxh+Sdgtp/ONTlS3bUMdV+avIG+yf1DplNhH1bQQWmkk9eqeC6dWxWgbB0nxvkBbBaCn8AuP28QL8V+xTY7eL3L4cPKSC+HxYkF4GLHhDNbIVOUFVqmQv35HL+NQSJSUu25DuHyNbJVI5C197sIrcHrmP0FEyyLPowYyFtiS8CHmguTiax7zUDeElMV4Aj4PYTw7FGYyV0hQAOTEl28VkjBXSFAleLCqG+iJFGzcTAIMId2JRp1L1Ws2xUCeJmgdCpOhAlMqtoVbF3zYUTe2X+ZyQXa1Ynn4kjygBmDSQAP1/Nif5cJjLdPlBSA95gqlyrW6bpPY5Iqv2e5+47rvnWEJDXLNOpz5bfBNG5vye5xEVNq2ULbFMLujf08Hk0BprLxKVEUII8+ZEdDgEKP+geQSAng2ynKjVUBojoECth4QawKkGNg/LlagJh/C1gBYl0A+Zv8Lc11fl9INlgWRvlM+hCVv8tbWFhYWFhYuBv/AfqkHP1yGxiiAAAAAElFTkSuQmCC
 // @supportURL    https://github.com/sbis-team/ui-customizer/issues
 // @include       *inside.tensor.ru/*
 // @exclude       *inside.tensor.ru/obj/*
@@ -89,14 +89,24 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.1.9",
-"date": "22.02.2017 08:55:23",
+"version": "1.2.0",
+"date": "17.04.2017 14:23:13",
 "notes": {
-"added": [],
-"changed": [
-"В связи с новостью о закрытии inside, теперь плагин работает и на online.sbis.ru"
+"added": [
+"Кнопка персонализации в шапке сайта",
+"Новая опция 'Главная страница > Скрыть текст кнопок в шапке'",
+"Новая опция 'Главная страница > Уменьшить фото в ленте событий'",
+"Добавлены опции скрытия удаления и получения ссылки (старой) для карточек задач"
 ],
-"fixed": [],
+"changed": [
+"Убраны настройки ленты новостей",
+"Убрана настройка скрытие ленты уведомлений",
+"Убрана опция 'Комментарий для коммита'. Не актуально, функционал есть на самом сайте",
+"Новая иконка для настроек персонализации"
+],
+"fixed": [
+"Поправил настройки под новый онлайн"
+],
 "issues": []
 }
 }, /* jshint -W033 */
@@ -231,19 +241,6 @@ return {
 "value": false
 }
 }
-},
-"Notice": {
-"title": "Уведомления",
-"view": "block",
-"module": "HideNotice",
-"options": {
-"SBISPlugin": {
-"title": "Об отсутствии СБИС Плагина",
-"view": "option",
-"type": "boolean",
-"value": false
-}
-}
 }
 }
 },
@@ -252,6 +249,7 @@ return {
 "view": "group",
 "module": "HomePageModify",
 "options": {
+/*
 "News": {
 "title": "Новости",
 "view": "block",
@@ -288,6 +286,7 @@ return {
 }
 }
 },
+*/
 "Other": {
 "title": "Прочее",
 "view": "block",
@@ -298,8 +297,22 @@ return {
 "type": "boolean",
 "value": false
 },
+"TapeEventsMinFoto": {
+"title": "Уменьшить фото в ленте событий",
+"view": "option",
+"type": "boolean",
+"value": false
+},
+/*
 "HideTapeEvents": {
 "title": "Скрыть ленту событий",
+"view": "option",
+"type": "boolean",
+"value": false
+},
+*/
+"HideHeaderText": {
+"title": "Скрыть текст кнопок в шапке",
 "view": "option",
 "type": "boolean",
 "value": false
@@ -358,6 +371,18 @@ return {
 "view": "option",
 "type": "boolean",
 "value": false
+},
+"LinkOld": {
+"title": "Получить ссылку (старая)",
+"view": "option",
+"type": "boolean",
+"value": false
+},
+"Delete": {
+"title": "Удалить",
+"view": "option",
+"type": "boolean",
+"value": false
 }
 }
 },
@@ -371,12 +396,14 @@ return {
 "type": "boolean",
 "value": false
 },
+/*
 "СommitMsg": {
 "title": "Комментарий для коммита",
 "view": "option",
 "type": "boolean",
 "value": false
 },
+*/
 "TaskURL": {
 "title": "Ссылка на задачу",
 "view": "option",
@@ -434,6 +461,18 @@ return {
 },
 "Save": {
 "title": "Скачать",
+"view": "option",
+"type": "boolean",
+"value": false
+},
+"LinkOld": {
+"title": "Получить ссылку (старая)",
+"view": "option",
+"type": "boolean",
+"value": false
+},
+"Delete": {
+"title": "Удалить",
 "view": "option",
 "type": "boolean",
 "value": false
@@ -504,6 +543,18 @@ return {
 "view": "option",
 "type": "boolean",
 "value": false
+},
+"LinkOld": {
+"title": "Получить ссылку (старая)",
+"view": "option",
+"type": "boolean",
+"value": false
+},
+"Delete": {
+"title": "Удалить",
+"view": "option",
+"type": "boolean",
+"value": false
 }
 }
 },
@@ -524,8 +575,8 @@ return {
 }
 }
 }
-}
-)(), {'css':{'HomePageModify-FixHeight.css':`
+})()
+, {'css':{'HomePageModify-FixHeight.css':`
 .sn-NewsPage__oneNews-contentArticle {
 height: 20px;
 }
@@ -630,9 +681,20 @@ display: none !important;
 .sn-NewsPage__oneNews-itemAll {
 padding: 3px 12px 3px 12px !important;
 }
-`,'HomePageModify-HideTapeEvents.css':`
-.mp-NotificationCenter {
+`,'HomePageModify-HideHeaderText.css':`
+#header [sbisname="ConfigurationLink"] .controls-Link__field,
+#header div.user-button-component .controls-Link__field {
 display: none !important;
+}
+`,'HomePageModify-HideTapeEvents.css':`
+.online-OnlineBaseInnerView__notificationCenter {
+display: none !important;
+}
+.online-OnlineBaseInnerView__notificationButton {
+display: none !important;
+}
+#headerLeft {
+display: block !important;
 }
 `,'HomePageModify-SlimBorder.css':`
 .sn-NewsPage__oneNews-itemAll {
@@ -672,18 +734,34 @@ max-height: 64px !important;
 min-height: 120px !important;
 }
 `,'HomePageModify-StretchPage.css':`
-#sideRight,
 div.news-SpecialNews[sbisname="SpecialNewsRight"] {
 display: none !important;
 }
 #min-width {
 max-width: none;
 }
+@media screen and (min-width: 1618px) {
+.online-OnlineBaseInnerView__notificationCenter {
+left: inherit !important;
+right: 17px !important;
+}
+}
+`,'HomePageModify-TapeEventsMinFoto.css':`
+div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto {
+text-align: center;
+}
+div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto__with-miniCard {
+width: 42px !important;
+height: 42px !important;
+}
 `,'SettingsButton.css':`
 #SBIS-UI-Customizer-SettingsButton {
-margin: 9px 0 -8px 0;
+margin-bottom: 4px;
+padding-bottom: 8px;
+padding-top: 4px;
 height: 100%;
 font-size: 15px;
+border-bottom: 1px solid #e4e4e4;
 }
 #SBIS-UI-Customizer-SettingsButton .row {
 padding: 6px 0px 6px;
@@ -692,12 +770,43 @@ padding: 6px 0px 6px;
 cursor: pointer;
 background: #F0F4FB;
 }
-#SBIS-UI-Customizer-SettingsButton .icon-16 {
+#SBIS-UI-Customizer-SettingsButton .icon {
 float: left;
-margin: 1px 0px 0 15px;
+margin: 2px 0px 0 15px;
+height: 16px;
+width: 16px;
 }
 #SBIS-UI-Customizer-SettingsButton .title {
 margin-left: 37px;
+}
+#SBIS-UI-Customizer-SettingsButton .title:hover {
+color: #313E78;
+}
+#SBIS-UI-Customizer-SettingsButton-Header {
+float: right;
+margin-right: 8px;
+margin-top: 2px;
+}
+#SBIS-UI-Customizer-SettingsButton-Header .icon {
+height: 16px;
+width: 16px;
+cursor: pointer;
+}
+#SBIS-UI-Customizer-SettingsButton .icon>svg,
+#SBIS-UI-Customizer-SettingsButton-Header .icon>svg {
+fill: #587AB0;
+}
+#SBIS-UI-Customizer-SettingsButton .icon>svg>g,
+#SBIS-UI-Customizer-SettingsButton-Header .icon>svg>g {
+stroke: #587AB0;
+}
+#SBIS-UI-Customizer-SettingsButton .icon:hover>svg,
+#SBIS-UI-Customizer-SettingsButton-Header .icon:hover>svg {
+fill: #313E78;
+}
+#SBIS-UI-Customizer-SettingsButton .icon:hover>svg>g,
+#SBIS-UI-Customizer-SettingsButton-Header .icon:hover>svg>g {
+stroke: #313E78;
 }
 `,'SettingsDialog.css':`
 #SBIS-UI-Customizer-SettingsDialog-Area {
@@ -1282,26 +1391,29 @@ item(ret_elms);
 }
 }
 }
-function getHTML(name) {
+function getHTML(name, data) {
 name += '.xhtml';
 if (name in sources.xhtml) {
-return sources.xhtml[name];
+let xhtml = sources.xhtml[name];
+if (data) {
+xhtml = xhtml.replace(htmlre, function (str, key) {
+return key in data ? data[key] : str;
+});
+}
+return xhtml;
 } else {
 throw Error('Неизвестное имя файла: ' + name);
 }
 }
 function createElement(name, data) {
-var html = getHTML(name);
+var html = getHTML(name, data);
 var cnt = document.createElement('div');
-html = html.replace(htmlre, function (str, key) {
-return key in data ? data[key] : str;
-});
 cnt.className = 'SBIS-UI-Customizer ' + name;
 cnt.innerHTML = html;
 return cnt;
 }
-function createComponent(name) {
-var html = getHTML(name);
+function createComponent(name, data) {
+var html = getHTML(name, data);
 var cnt = document.createElement('div');
 cnt.id = 'SBIS-UI-Customizer-' + name;
 cnt.className = 'SBIS-UI-Customizer';
@@ -1562,7 +1674,9 @@ selectors: {
 'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoShowMonitoringDialog"]',
 'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSendToAgreement"]',
 'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSaveDocumentOnDisk"]'
+'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
+'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoGetLink"]',
+'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoDeleteDocument"]'
 }
 };
 return {
@@ -1570,26 +1684,6 @@ applySettings: applySettings
 };
 function applySettings(settings) {
 Task.applySettings(settings, 'ErrandToolbarBtns', property);
-}
-});
-`,'HideNotice.js':`
-UICustomizerDefine('HideNotice', ['Engine'], function (Engine) {
-"use strict";
-return {
-applySettings: applySettings
-};
-function applySettings(settings) {
-if (settings.options.SBISPlugin.value) {
-Engine.waitSync('span.ws-window-title[title="Установите СБИС Плагин"]', _hideSBISPlugin);
-} else {
-Engine.unsubscribeWaitSync('span.ws-window-title[title="Установите СБИС Плагин"]', _hideSBISPlugin);
-}
-}
-function _hideSBISPlugin(elms) {
-for (let i = 0; i < elms.length; i++) {
-let elm = elms[i].parentElement.parentElement;
-elm.wsControl.close();
-}
 }
 });
 `,'HomePageModify.js':`
@@ -1600,10 +1694,12 @@ applySettings: applySettings
 };
 function applySettings(settings) {
 var css = '';
+/*
 let news = settings.options.News.options;
 if (news.HideAuthor.value && news.HideFooterBtn.value) {
 css += Engine.getCSS('HomePageModify-FixHeight');
 }
+*/
 for (let groupName in settings.options) {
 let group = settings.options[groupName];
 for (let name in group.options) {
@@ -1612,6 +1708,7 @@ css += Engine.getCSS('HomePageModify-' + name);
 }
 }
 }
+/*
 if (news.HideAuthor.value && news.SlimBorder.value) {
 css += Engine.generateCSS.custom(
 '.sn-NewsPage .sn-DraftIcon, .sn-NewsPage .sn-FavoriteIcon, .sn-NewsPage .sn-PinIcon',
@@ -1619,14 +1716,7 @@ css += Engine.generateCSS.custom(
 '0px !important'
 );
 }
-let other = settings.options.Other.options;
-if (other.StretchPage.value || other.HideTapeEvents.value) {
-css += Engine.generateCSS.custom(
-'.np-View__twoColumns .sn-NewsPage__oneNews-contentLogo+.sn-NewsPage__oneNews-contentText',
-'max-width',
-'none !important'
-);
-}
+*/
 if (css) {
 Engine.appendCSS('HomePageModify', css);
 } else {
@@ -1649,7 +1739,9 @@ selectors: {
 'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoShowMonitoringDialog"]',
 'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSendToAgreement"]',
 'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSaveDocumentOnDisk"]'
+'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
+'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoGetLink"]',
+'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoDeleteDocument"]'
 }
 };
 return {
@@ -1665,9 +1757,8 @@ UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
 const selectors = {
 'Owl': 'div[data-component="SBIS3.Engine.HowEasy"]',
 'AsJust': \`
-.componentCommandsPannelArea div.mainPage_verticalLine,
 .componentCommandsPannelArea i[sbisname="ExpandOurOrg"],
-table.events_tape_wrapper .middle__OurOrgHowEasy
+.middle__OurOrgHowEasy
 \`,
 'SideRight': '#sideRight, div.news-SpecialNews[sbisname="SpecialNewsRight"]'
 };
@@ -1702,8 +1793,16 @@ init: init
 };
 function init() {
 Engine.appendCSS('SettingsButton');
-Engine.waitOnce('div.user-panel div[sbisname="Кнопки"]', function (elm) {
-var container = Engine.createComponent('SettingsButton');
+Engine.waitOnce('div.account_management__user-panel .account_management__user-panel-buttons-list .controls-ListView__itemsContainer', function (elm) {
+var container = Engine.createComponent('SettingsButton', {
+icon: Engine.getSVG('settings')
+});
+elm.parentElement.insertBefore(container, elm);
+});
+Engine.waitOnce('#header #headerLeft', function (elm) {
+var container = Engine.createComponent('SettingsButton-Header', {
+icon: Engine.getSVG('settings')
+});
 elm.parentElement.insertBefore(container, elm);
 });
 }
@@ -1719,7 +1818,10 @@ toggleSection: toggleSection,
 onchangeOptionBoolean: onchangeOptionBoolean
 };
 function open() {
-document.querySelector('div[templatename="js!SBIS3.AccountsManagement.UserPanel"]').wsControl.hide();
+var up = document.querySelector('div[templatename="js!SBIS3.AccountsManagement.UserPanel"]');
+if (up) {
+up.wsControl.hide();
+}
 if (dialog) {
 dialog.style.display = '';
 } else {
@@ -1840,7 +1942,7 @@ UICustomizerDefine('SocNet', ['Engine'], function (Engine) {
 var GroupUUID = '2d110a8e-7edb-469a-a3cb-5eb6d8095c10';
 var ChatUUID = '3af31f44-c91a-4bbf-8470-3dd423f0b6eb';
 var AuthorUUID = 'd7dde799-21cb-49ea-89cf-de56e4f7f78b';
-if (location.host === 'test-inside.tensor.ru') {
+if (location.host === 'test-online.sbis.ru') {
 GroupUUID = 'ceeeedd4-8d0e-4dd0-9635-88f1758c3ef3';
 ChatUUID = '83adaca3-d02b-490b-bbbf-95ce9953797d';
 AuthorUUID = '8cab8a51-da51-40fd-bef3-6f090edbdeaa';
@@ -1853,12 +1955,12 @@ sendFeedback: sendFeedback
 };
 function getFeedbackButtons() {
 if (!feedbackButtons) {
-feedbackButtons = Engine.getHTML('SocNet-FeedbackButtons');
-feedbackButtons = feedbackButtons
-.replace(/\\{\\{LikeIt\\}\\}/, Engine.getSVG('thumbsup'))
-.replace(/\\{\\{SendQuestion\\}\\}/, Engine.getSVG('comment-discussion'))
-.replace(/\\{\\{SendFeedback\\}\\}/, Engine.getSVG('megaphone'))
-.replace(/\\{\\{ReportError\\}\\}/, Engine.getSVG('bug'));
+feedbackButtons = Engine.getHTML('SocNet-FeedbackButtons', {
+'LikeIt': Engine.getSVG('thumbsup'),
+'SendQuestion': Engine.getSVG('comment-discussion'),
+'SendFeedback': Engine.getSVG('megaphone'),
+'ReportError': Engine.getSVG('bug')
+});
 }
 return feedbackButtons;
 }
@@ -1883,9 +1985,10 @@ _ReportError(msg);
 function _showInputDialog(title, hint, callback) {
 var dlg = document.createElement('div');
 dlg.className = "SBIS-UI-Customizer-SocNet-InputDialog";
-dlg.innerHTML = Engine.getHTML('SocNet-InputDialog')
-.replace(/\\{\\{title\\}\\}/, title)
-.replace(/\\{\\{hint\\}\\}/, hint);
+dlg.innerHTML = Engine.getHTML('SocNet-InputDialog', {
+'title': title,
+'hint': hint
+});
 dlg.children[3].onkeydown = function (event) {
 if (event.ctrlKey && event.keyCode === 13) {
 if (dlg.children[3].value) {
@@ -2048,7 +2151,9 @@ selectors: {
 'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoShowMonitoringDialog"]',
 'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSendToAgreement"]',
 'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSaveDocumentOnDisk"]'
+'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
+'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoGetLink"]',
+'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoDeleteDocument"]'
 }
 };
 var BranchNameUserLogin = '';
@@ -2275,7 +2380,7 @@ record = card.wsControl._options.componentOptions.record;
 if (record) {
 return check(record);
 }
-} catch (e) { }
+} catch (e) {}
 }
 checkControl();
 }
@@ -2383,15 +2488,21 @@ close();
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -1 16 18"><path d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"/></svg>
 `,'megaphone.svg':`
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M10 1c-.17 0-.36.05-.52.14C8.04 2.02 4.5 4.58 3 5c-1.38 0-3 .67-3 2.5S1.63 10 3 10c.3.08.64.23 1 .41V15h2v-3.45c1.34.86 2.69 1.83 3.48 2.31.16.09.34.14.52.14.52 0 1-.42 1-1V2c0-.58-.48-1-1-1zm0 12c-.38-.23-.89-.58-1.5-1-.16-.11-.33-.22-.5-.34V3.31c.16-.11.31-.2.47-.31.61-.41 1.16-.77 1.53-1v11zm2-6h4v1h-4V7zm0 2l4 2v1l-4-2V9zm4-6v1l-4 2V5l4-2z"/></svg>
+`,'settings.svg':`
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 512 512"><g fill="none" stroke="#000" stroke-linejoin="round" stroke-linecap="round" stroke-width="12" stroke-miterlimit="10"><path d="m439.7 197.4c1.8 5.6 2.7 11.8 2.9 18.6.4 21.8-14.7 46.4-43.9 53.2"/><path d="m398.7 161.2c11.2 3.3 20.5 8.2 27.6 14.8"/><path d="m377 269.1c-14.5-3.4-26.1-10.9-34.5-23.1-6.3-9.2-9.4-19.5-9.4-30.7 0-13 4.1-24.5 12.3-34.6 8.2-10 18.8-16.3 31.6-19.2"/><path d="m134.9 161.2c3.9 1.4 7.7 2.5 11.2 4.1 21.7 9.5 34.3 31 32.5 55.3-1.7 22.1-18.5 41.9-40.7 47.6"/><path d="m113.3 269.5c-27.9-8.4-43.8-26.4-43.8-56.1 0-22.4 15.8-45.5 43.8-52.1"/><path d="m217.1 267.4c6.6-6.7 15-11.8 24.5-14.3 1.1-.3 2.1-.6 3.6-1"/><path d="m241.7 358.7c-23.8-6.3-40.5-28.4-40.3-53 0-3.6.4-7.1 1.1-10.6"/><path d="m266.9 252.1c11.8 2.7 21.6 8.2 29.6 16.9 27.5 30.1 13.2 79.3-26.2 89.7"/></g><path d="m124.1 148.6c-2.8 0-5-2.2-5-5v-73c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v73c0 2.7-2.3 5-5 5"/><path d="m124.1 446.6c-2.8 0-5-2.2-5-5v-57.2c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v57.2c0 2.7-2.3 5-5 5"/><path d="m124.1 410.9c-2.8 0-5-2.2-5-5v-120.6c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v120.6c0 2.8-2.3 5-5 5"/><path d="m387.9 148.6c-2.8 0-5-2.2-5-5v-73c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v73c0 2.7-2.3 5-5 5"/><path d="m387.9 446.6c-2.8 0-5-2.2-5-5v-57.2c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v57.2c0 2.7-2.3 5-5 5"/><path d="m387.9 392.2c-2.8 0-5-2.2-5-5v-101.9c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v101.9c0 2.7-2.3 5-5 5"/><path d="m256 446.6c-2.8 0-5-2.2-5-5v-73c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v73c0 2.7-2.2 5-5 5"/><path d="m256 241.8c-2.8 0-5-2.2-5-5v-98.5c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v98.5c0 2.8-2.2 5-5 5"/><path d="m256 145c-2.8 0-5-2.2-5-5v-69.6c0-2.8 2.2-5 5-5 2.8 0 5 2.2 5 5v69.6c0 2.7-2.2 5-5 5"/></svg>
 `,'thumbsup.svg':`
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M14 14c-.05.69-1.27 1-2 1H5.67L4 14V8c1.36 0 2.11-.75 3.13-1.88 1.23-1.36 1.14-2.56.88-4.13-.08-.5.5-1 1-1 .83 0 2 2.73 2 4l-.02 1.03c0 .69.33.97 1.02.97h2c.63 0 .98.36 1 1l-1 6L14 14zm0-8h-2.02l.02-.98C12 3.72 10.83 0 9 0c-.58 0-1.17.3-1.56.77-.36.41-.5.91-.42 1.41.25 1.48.28 2.28-.63 3.28-1 1.09-1.48 1.55-2.39 1.55H2C.94 7 0 7.94 0 9v4c0 1.06.94 2 2 2h1.72l1.44.86c.16.09.33.14.52.14h6.33c1.13 0 2.84-.5 3-1.88l.98-5.95c.02-.08.02-.14.02-.2-.03-1.17-.84-1.97-2-1.97H14z"/></svg>
 `},'xhtml':{'ErrandToolbarBtns-TaskURL.xhtml':`
 <i class="TaskURL" onclick="UICustomizerEvent('TaskToolbarBtns','copyToClipboard',this,'TaskURL')" title="Скопировать ссылку на поручение">{{icon}}</i>
 `,'MRToolbarBtns-TaskURL.xhtml':`
 <i class="TaskURL" onclick="UICustomizerEvent('TaskToolbarBtns','copyToClipboard',this,'TaskURL')" title="Скопировать ссылку на MR">{{icon}}</i>
+`,'SettingsButton-Header.xhtml':`
+<div class="icon" title="Персонализация" onclick="UICustomizerEvent('SettingsDialog','open')">
+{{icon}}
+</div>
 `,'SettingsButton.xhtml':`
 <div class="row" onclick="UICustomizerEvent('SettingsDialog','open')">
-<div class="icon-16 icon-Profile icon-primary"></div>
+<div class="icon">{{icon}}</div>
 <div class="title">Персонализация</div>
 </div>
 `,'SettingsDialog-block.xhtml':`
