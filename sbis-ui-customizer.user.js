@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.2.1.rc1
+// @name          SBIS UI-Customizer v1.2.2.rc1
 // @namespace     SBIS
-// @version       1.2.1.rc1
-// @date          26.04.2017 13:48:31
+// @version       1.2.2.rc1
+// @date          22.05.2017 10:00:50
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,14 +89,19 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.2.1.rc1",
-"date": "26.04.2017 13:48:31",
+"version": "1.2.2.rc1",
+"date": "22.05.2017 10:00:50",
 "notes": {
 "added": [],
-"changed": [
-"Вернул кнопку 'Комментарий для коммита' в карточке задачи"
+"changed": [],
+"fixed": [
+"Скрытие пунктов аккордеона",
+"Скрытие правого баннера на главной",
+"Растягивание сайта по всей ширине страницы",
+"Скрытие блока 'Как просто' в шапке",
+"Отображение кнопки настроек плагина на главной",
+"Скрытие текста кнопок в шапке на главной"
 ],
-"fixed": [],
 "issues": []
 }
 }, /* jshint -W033 */
@@ -670,6 +675,7 @@ display: none !important;
 padding: 3px 12px 3px 12px !important;
 }
 `,'HomePageModify-HideHeaderText.css':`
+.engine-OnlineBaseInnerMinCoreView__headerCell .header-ConfigurationButton .controls-Button__text,
 #header [sbisname="ConfigurationLink"] .controls-Link__field,
 #header div.user-button-component .controls-Link__field {
 display: none !important;
@@ -722,10 +728,11 @@ max-height: 64px !important;
 min-height: 120px !important;
 }
 `,'HomePageModify-StretchPage.css':`
-div.news-SpecialNews[sbisname="SpecialNewsRight"] {
+div.news-SpecialNews {
 display: none !important;
 }
-#min-width {
+#min-width,
+.engine-OnlineBaseInnerMinCoreView__content {
 max-width: none;
 }
 @media screen and (min-width: 1618px) {
@@ -795,6 +802,10 @@ fill: #313E78;
 #SBIS-UI-Customizer-SettingsButton .icon:hover>svg>g,
 #SBIS-UI-Customizer-SettingsButton-Header .icon:hover>svg>g {
 stroke: #313E78;
+}
+.engine-OnlineBaseInnerMinCoreView__headerCell #SBIS-UI-Customizer-SettingsButton-Header {
+float: left;
+margin-top: 1px;
 }
 `,'SettingsDialog.css':`
 #SBIS-UI-Customizer-SettingsDialog-Area {
@@ -1118,19 +1129,19 @@ background-color: #fdd2c0 !important;
 UICustomizerDefine('AccordionHideItems', ['Engine'], function (Engine) {
 "use strict";
 const selectors = {
-'Documents': '#leftInfoBlocks div[data-id="documents"]',
-'Staff': '#leftInfoBlocks div[data-id="staff"]',
-'Tasks': '#leftInfoBlocks div[data-id="work"]',
-'Contacts': '#leftInfoBlocks div[data-id="contacts"]',
-'Calendar': '#leftInfoBlocks div[data-id="calendar"]',
-'MyPage': '#leftInfoBlocks div[data-id="myProfile"]',
-'Company': '#leftInfoBlocks div[data-id="contragents"]',
-'Business': '#leftInfoBlocks div[data-id="business"]',
-'Accounting': '#leftInfoBlocks div[data-id="accounting"]',
-'UTS': '#leftInfoBlocks div[data-id="ca_navication"]',
-'Telephony': '#leftInfoBlocks div[data-id="tel"]',
-'Retail': '#leftInfoBlocks div[data-id="retail"]',
-'Presto': '#leftInfoBlocks div[data-id="presto"]'
+'Documents': '.nav-menu-container a[data-id="documents"]',
+'Staff': '.nav-menu-container a[data-id="staff"]',
+'Tasks': '.nav-menu-container a[data-id="work"]',
+'Contacts': '.nav-menu-container a[data-id="contacts"]',
+'Calendar': '.nav-menu-container a[data-id="calendar"]',
+'MyPage': '.nav-menu-container a[data-id="myProfile"]',
+'Company': '.nav-menu-container a[data-id="contragents"]',
+'Business': '.nav-menu-container a[data-id="business"]',
+'Accounting': '.nav-menu-container a[data-id="accounting"]',
+'UTS': '.nav-menu-container a[data-id="ca_navication"]',
+'Telephony': '.nav-menu-container a[data-id="tel"]',
+'Retail': '.nav-menu-container a[data-id="retail"]',
+'Presto': '.nav-menu-container a[data-id="presto"]'
 };
 return {
 applySettings: applySettings
@@ -1745,10 +1756,10 @@ UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
 const selectors = {
 'Owl': 'div[data-component="SBIS3.Engine.HowEasy"]',
 'AsJust': \`
-.componentCommandsPannelArea i[sbisname="ExpandOurOrg"],
+.ExpandOurOrg__div,
 .middle__OurOrgHowEasy
 \`,
-'SideRight': '#sideRight, div.news-SpecialNews[sbisname="SpecialNewsRight"]'
+'SideRight': 'div.news-SpecialNews'
 };
 return {
 applySettings: applySettings
@@ -1788,6 +1799,12 @@ icon: Engine.getSVG('settings')
 elm.parentElement.insertBefore(container, elm);
 });
 Engine.waitOnce('#header #headerLeft', function (elm) {
+var container = Engine.createComponent('SettingsButton-Header', {
+icon: Engine.getSVG('settings')
+});
+elm.parentElement.insertBefore(container, elm);
+});
+Engine.waitOnce('.engine-OnlineBaseInnerMinCoreView__headerCell .header-ConfigurationButton', function (elm) {
 var container = Engine.createComponent('SettingsButton-Header', {
 icon: Engine.getSVG('settings')
 });
