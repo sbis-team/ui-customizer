@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.2.2
+// @name          SBIS UI-Customizer v1.2.3
 // @namespace     SBIS
-// @version       1.2.2
-// @date          22.05.2017 11:07:25
+// @version       1.2.3
+// @date          22.05.2017 13:57:00
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,18 +89,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.2.2",
-"date": "22.05.2017 11:07:25",
+"version": "1.2.3",
+"date": "22.05.2017 13:57:00",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Скрытие пунктов аккордеона",
-"Скрытие правого баннера на главной",
-"Растягивание сайта по всей ширине страницы",
-"Скрытие блока 'Как просто' в шапке",
-"Отображение кнопки настроек плагина на главной",
-"Скрытие текста кнопок в шапке на главной"
+"Копирование имя ветки и описания для коммита в карточке задачи"
 ],
 "issues": []
 }
@@ -2237,7 +2232,7 @@ docName = ReplaceDocTypeName[docName] || docName;
 text =
 docName + ' № ' +
 record.get('Номер') +
-' v' + _extractVersionName(record.get('Вехи')) + ' от ' +
+' v' + _extractVersionName(record.get('РП.ВехаДокумента')) + ' от ' +
 Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) + ' ' +
 record.get('ЛицоСоздал.Название') + '\\n' +
 location.protocol + '//' +
@@ -2260,7 +2255,7 @@ copyToClipboard(elm, action);
 }
 msg = 'Имя ветки скопировано в буфер обмена';
 text =
-_extractVersionName(record.get('Вехи')) + '/' +
+_extractVersionName(record.get('РП.ВехаДокумента')) + '/' +
 (record.get('РП.Документ').get('Регламент').get('Название') === 'Ошибка в разработку' ? 'bugfix' : 'feature') + '/' +
 (BranchNameUserLogin ? BranchNameUserLogin + '/' : '') +
 record.get('Номер');
@@ -2288,7 +2283,7 @@ function _extractVersionName(milestones) {
 let versionName = 'dev';
 let version = Infinity;
 milestones.each(function (record) {
-let curNames = record.get('Название').replace(/[ \\(\\)]/g, '\\n').split('\\n');
+let curNames = record.get('ДокументРасширение.Название').replace(/[ \\(\\)]/g, '\\n').split('\\n');
 for (let i = 0; i < curNames.length; i++) {
 let curName = curNames[i].replace(/[^\\d\\.]/g, '').replace(/^[\\.]+/, '').replace(/[\\.]+$/, '');
 if (curName) {
