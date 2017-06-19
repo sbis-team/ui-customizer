@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.2.4.rc1
+// @name          SBIS UI-Customizer v1.2.5.rc1
 // @namespace     SBIS
-// @version       1.2.4.rc1
-// @date          19.06.2017 11:24:36
+// @version       1.2.5.rc1
+// @date          19.06.2017 13:20:13
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,14 +89,15 @@
       });
    }
 })(unsafeWindow, {
-   "version": "1.2.4.rc1",
-   "date": "19.06.2017 11:24:36",
+   "version": "1.2.5.rc1",
+   "date": "19.06.2017 13:20:13",
    "notes": {
       "added": [],
-      "changed": [],
+      "changed": [
+         "Опции 'Карточка поручения и пр./Кнопки в шапке' теперь влияют на проекты, планы работ и прочие виды задач реализованные на компоненте SBIS3.EDO2.Dialog"
+      ],
       "fixed": [
-         "Поправил стили уменьшения фотки в ленте новостей, отъехали после обновления",
-         "Вернул пропавшие кнопки в шапке задачи/ошибки"
+         "Исправлены опции скрытия и показа кнопок в шапке"
       ],
       "issues": []
    }
@@ -1813,13 +1814,13 @@ UICustomizerDefine('ErrandToolbarBtns', ['Engine', 'TaskToolbarBtns'], function 
       },
       ExcludeDocTypeName: ['Merge request', 'Ошибка в разработку', 'Задача в разработку'],
       selectors: {
-         'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoShowDocTime"]',
-         'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoShowMonitoringDialog"]',
-         'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSendToAgreement"]',
-         'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoPrintDocument"]',
-         'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
-         'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoGetLink"]',
-         'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoDeleteDocument"]'
+         'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowDocTime"]',
+         'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+         'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSendToAgreement"]',
+         'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoPrintDocument"]',
+         'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+         'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoGetLink"]',
+         'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoDeleteDocument"]'
       }
    };
 
@@ -1885,13 +1886,13 @@ UICustomizerDefine('MRToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Eng
       },
       ApplyDocTypeName: ['Merge request'],
       selectors: {
-         'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoShowDocTime"]',
-         'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoShowMonitoringDialog"]',
-         'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSendToAgreement"]',
-         'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoPrintDocument"]',
-         'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
-         'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoGetLink"]',
-         'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoDeleteDocument"]'
+         'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowDocTime"]',
+         'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+         'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSendToAgreement"]',
+         'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoPrintDocument"]',
+         'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+         'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoGetLink"]',
+         'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoDeleteDocument"]'
       }
    };
 
@@ -2341,13 +2342,13 @@ UICustomizerDefine('TaskToolbarBtns', ['Engine'], function (Engine) {
       },
       ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
       selectors: {
-         'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoShowDocTime"]',
-         'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoShowMonitoringDialog"]',
-         'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSendToAgreement"]',
-         'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoPrintDocument"]',
-         'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
-         'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoGetLink"]',
-         'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoDeleteDocument"]'
+         'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowDocTime"]',
+         'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+         'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSendToAgreement"]',
+         'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoPrintDocument"]',
+         'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+         'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoGetLink"]',
+         'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoDeleteDocument"]'
       }
    };
    var BranchNameUserLogin = '';
@@ -2577,16 +2578,20 @@ UICustomizerDefine('TaskToolbarBtns', ['Engine'], function (Engine) {
          });
       }
       var card = elm.parentElement;
-      while (card && card.getAttribute('templatename') !== 'js!SBIS3.EDO.FTask' && card.parentElement) {
+      while (card && card.getAttribute('data-component') !== 'SBIS3.EDO2.Dialog' && card.parentElement) {
          card = card.parentElement;
       }
-      if (card && card.getAttribute('templatename') === 'js!SBIS3.EDO.FTask') {
+      if (card && card.getAttribute('data-component') === 'SBIS3.EDO2.Dialog') {
          try {
-            record = card.wsControl._options.componentOptions.record;
+            record = card.wsControl.getTopParent()._options.componentOptions.record;
             if (record) {
                return check(record);
             }
-         } catch (e) {}
+         } catch (e) {
+            return setTimeout(() => {
+               _isTask(elm, moduleProperty, callback);
+            }, 100);
+         }
       }
       checkControl();
    }
