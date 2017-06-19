@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.2.3
+// @name          SBIS UI-Customizer v1.2.4
 // @namespace     SBIS
-// @version       1.2.3
-// @date          22.05.2017 13:57:00
+// @version       1.2.4
+// @date          19.06.2017 12:21:51
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,13 +89,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.2.3",
-"date": "22.05.2017 13:57:00",
+"version": "1.2.4",
+"date": "19.06.2017 12:21:51",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Копирование имя ветки и описания для коммита в карточке задачи"
+"Поправил стили уменьшения фотки в ленте событий, отъехали после обновления",
+"Вернул пропавшие кнопки в шапке задачи/ошибки"
 ],
 "issues": []
 }
@@ -737,9 +738,10 @@ right: 17px !important;
 }
 }
 `,'HomePageModify-TapeEventsMinFoto.css':`
-div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto {
+div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt {
 text-align: center;
 }
+div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto,
 div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto__with-miniCard {
 width: 42px !important;
 height: 42px !important;
@@ -2198,18 +2200,18 @@ extbtn = extbtn.replace(/TaskToolbarBtns/g, moduleName);
 }
 css += extbtn;
 if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog_header-ServiceButtons', moduleProperty.WaitHandler);
+Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
 }
 moduleProperty.WaitHandler = _appendExtraButtons(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog_header-ServiceButtons', moduleProperty.WaitHandler);
+Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
 } else {
 if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog_header-ServiceButtons', moduleProperty.WaitHandler);
+Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
 delete moduleProperty.WaitHandler;
 }
 if (css) {
 moduleProperty.WaitHandler = _appendButtonsClass(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog_header-ServiceButtons', moduleProperty.WaitHandler);
+Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
 }
 Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons');
 }
