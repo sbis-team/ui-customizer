@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.2.4
+// @name          SBIS UI-Customizer v1.2.5
 // @namespace     SBIS
-// @version       1.2.4
-// @date          19.06.2017 12:21:51
+// @version       1.2.5
+// @date          10.07.2017 09:31:14
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,14 +89,16 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.2.4",
-"date": "19.06.2017 12:21:51",
+"version": "1.2.5",
+"date": "10.07.2017 09:31:14",
 "notes": {
 "added": [],
-"changed": [],
+"changed": [
+"Опции 'Карточка поручения и пр./Кнопки в шапке' теперь влияют на проекты, планы работ и прочие виды задач реализованные на компоненте SBIS3.EDO2.Dialog"
+],
 "fixed": [
-"Поправил стили уменьшения фотки в ленте событий, отъехали после обновления",
-"Вернул пропавшие кнопки в шапке задачи/ошибки"
+"Исправлены опции скрытия и показа кнопок в шапке",
+"Исправлены стили растягивания сайта на всю страницу (контент не улетает за границы)"
 ],
 "issues": []
 }
@@ -733,8 +735,11 @@ max-width: none;
 }
 @media screen and (min-width: 1618px) {
 .online-OnlineBaseInnerView__notificationCenter {
-left: inherit !important;
 right: 17px !important;
+left: inherit !important;
+}
+.engine-OnlineBaseInnerMinCoreView .online-OnlineBaseInnerView__notificationCenter {
+right: inherit !important;
 }
 }
 `,'HomePageModify-TapeEventsMinFoto.css':`
@@ -1666,13 +1671,13 @@ icon: 'link'
 },
 ExcludeDocTypeName: ['Merge request', 'Ошибка в разработку', 'Задача в разработку'],
 selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns i[data-id="edoDeleteDocument"]'
+'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowDocTime"]',
+'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSendToAgreement"]',
+'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoPrintDocument"]',
+'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoGetLink"]',
+'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoDeleteDocument"]'
 }
 };
 return {
@@ -1731,13 +1736,13 @@ icon: 'link'
 },
 ApplyDocTypeName: ['Merge request'],
 selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns i[data-id="edoDeleteDocument"]'
+'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowDocTime"]',
+'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSendToAgreement"]',
+'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoPrintDocument"]',
+'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoGetLink"]',
+'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoDeleteDocument"]'
 }
 };
 return {
@@ -2149,13 +2154,13 @@ icon: 'git-commit'
 },
 ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
 selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns i[data-id="edoDeleteDocument"]'
+'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowDocTime"]',
+'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSendToAgreement"]',
+'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoPrintDocument"]',
+'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoGetLink"]',
+'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoDeleteDocument"]'
 }
 };
 var BranchNameUserLogin = '';
@@ -2373,16 +2378,20 @@ checkControl();
 });
 }
 var card = elm.parentElement;
-while (card && card.getAttribute('templatename') !== 'js!SBIS3.EDO.FTask' && card.parentElement) {
+while (card && card.getAttribute('data-component') !== 'SBIS3.EDO2.Dialog' && card.parentElement) {
 card = card.parentElement;
 }
-if (card && card.getAttribute('templatename') === 'js!SBIS3.EDO.FTask') {
+if (card && card.getAttribute('data-component') === 'SBIS3.EDO2.Dialog') {
 try {
-record = card.wsControl._options.componentOptions.record;
+record = card.wsControl.getTopParent()._options.componentOptions.record;
 if (record) {
 return check(record);
 }
-} catch (e) {}
+} catch (e) {
+return setTimeout(() => {
+_isTask(elm, moduleProperty, callback);
+}, 100);
+}
 }
 checkControl();
 }
