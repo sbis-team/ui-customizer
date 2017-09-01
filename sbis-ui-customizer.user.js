@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.0.rc4
+// @name          SBIS UI-Customizer v1.3.0.rc5
 // @namespace     SBIS
-// @version       1.3.0.rc4
-// @date          01.09.2017 11:01:21
+// @version       1.3.0.rc5
+// @date          01.09.2017 11:12:41
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,8 +89,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.0.rc4",
-"date": "01.09.2017 11:01:21",
+"version": "1.3.0.rc5",
+"date": "01.09.2017 11:12:41",
 "notes": {
 "added": [
 "Добавлена новая кнопка для поручений, планов, и прочих типов документов 'Копировать описание'. Копирует в буфер описание с ссылкой на документ.",
@@ -1718,20 +1718,22 @@ face = clt ? (face + ' (' + clt + ')') : face;
 let info_text =
 (record.has('РазличныеДокументы.Информация') ? record.get('РазличныеДокументы.Информация') : '') ||
 (record.has('Примечание') ? record.get('Примечание') : '') ||
+(record.has('Описание') ? record.get('Описание') : '') ||
 (record.has('ДокументРасширение.Название') ? record.get('ДокументРасширение.Название') : '') ||
 '';
+let url = record.get('ИдентификаторДокумента');
 number = number ? (' № ' + number) : '';
 face = face ? (' ' + face) : '';
 info_text = Engine.cutOverflow(Engine.cutTags(info_text), 98, 1024);
-debugger
+if (url) {
+url = location.protocol + '//' + location.host + '/opendoc.html?guid=' + url;
+} else {
+url = '(Нет ссылки на документ, т.к. он не запущен в ЭДО)';
+}
 text =
 docName + number + ' от ' +
 Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) +
-face + '\\n' +
-location.protocol + '//' +
-location.host + '/opendoc.html?guid=' +
-record.get('ИдентификаторДокумента') + '\\n\\n' +
-info_text;
+face + '\\n' + url + '\\n\\n' + info_text;
 break;
 }
 Engine.copyToClipboard(text);
