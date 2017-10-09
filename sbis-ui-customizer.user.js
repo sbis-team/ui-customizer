@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.0
+// @name          SBIS UI-Customizer v1.3.1
 // @namespace     SBIS
-// @version       1.3.0
-// @date          01.09.2017 11:17:05
+// @version       1.3.1
+// @date          09.10.2017 14:01:20
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,14 +89,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.0",
-"date": "01.09.2017 11:17:05",
+"version": "1.3.1",
+"date": "09.10.2017 14:01:20",
 "notes": {
-"added": [
-"Добавлена новая кнопка для поручений, планов, и прочих типов документов 'Копировать описание'. Копирует в буфер описание с ссылкой на документ.",
-"'Копировать описание' проверено на: поручение, план, отгул, проект, этап, обращение, выполнить на рабочем, авария эксплуатации, инцидент"
+"added": [],
+"changed": [
+"Новая опция - Лента в одну колонку (BETA)"
 ],
-"changed": [],
 "fixed": [],
 "issues": []
 }
@@ -240,17 +239,17 @@ return {
 "view": "group",
 "module": "HomePageModify",
 "options": {
-/*
 "News": {
 "title": "Новости",
 "view": "block",
 "options": {
-"HideAuthor": {
-"title": "Скрыть автора из списка",
+"InOneColumn": {
+"title": "Лента в одну колонку (BETA)",
 "view": "option",
 "type": "boolean",
 "value": false
-},
+}
+}/*,
 "SmallImg": {
 "title": "Уменьшить фото новости",
 "view": "option",
@@ -276,8 +275,8 @@ return {
 "value": false
 }
 }
-},
 */
+},
 "Other": {
 "title": "Прочее",
 "view": "block",
@@ -1225,6 +1224,7 @@ custom: generateCSS_custom,
 displayNone: generateCSS_displayNone,
 inlineBlock: generateCSS_inlineBlock
 },
+hasCSS: hasCSS,
 getCSS: getCSS,
 appendCSS: appendCSS,
 removeCSS: removeCSS,
@@ -1439,6 +1439,10 @@ return \`\${selector} { display: none !important; }\`;
 }
 function generateCSS_inlineBlock(selector) {
 return \`\${selector} { display: inline-block !important; }\`;
+}
+function hasCSS(name) {
+name += '.css';
+return name in sources.css;
 }
 function getCSS(name) {
 name += '.css';
@@ -1748,8 +1752,8 @@ applySettings: applySettings
 };
 function applySettings(settings) {
 var css = '';
-/*
 let news = settings.options.News.options;
+/*
 if (news.HideAuthor.value && news.HideFooterBtn.value) {
 css += Engine.getCSS('HomePageModify-FixHeight');
 }
@@ -1757,8 +1761,9 @@ css += Engine.getCSS('HomePageModify-FixHeight');
 for (let groupName in settings.options) {
 let group = settings.options[groupName];
 for (let name in group.options) {
-if (group.options[name].value) {
-css += Engine.getCSS('HomePageModify-' + name);
+let cssname = 'HomePageModify-' + name;
+if (group.options[name].value && Engine.hasCSS(cssname)) {
+css += Engine.getCSS(cssname);
 }
 }
 }
@@ -1771,10 +1776,32 @@ css += Engine.generateCSS.custom(
 );
 }
 */
+if (news.InOneColumn.value) {
+let elm = document.querySelector('.mp-NewsColumnView');
+if (elm) {
+InOneColumn(elm);
+} else {
+Engine.waitOnce('.mp-NewsColumnView', function (elm) {
+InOneColumn(elm);
+});
+}
+}
 if (css) {
 Engine.appendCSS('HomePageModify', css);
 } else {
 Engine.removeCSS('HomePageModify');
+}
+}
+function InOneColumn() {
+if (document.querySelector('.mp-NewsColumnView .icon-Column2')) {
+if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
+document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
+Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
+elm.click();
+});
+} else {
+setTimeout(InOneColumn, 300);
+}
 }
 }
 });
