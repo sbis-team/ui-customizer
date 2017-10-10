@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.1
+// @name          SBIS UI-Customizer v1.3.2
 // @namespace     SBIS
-// @version       1.3.1
-// @date          09.10.2017 14:01:20
+// @version       1.3.2
+// @date          10.10.2017 12:49:20
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,14 +89,17 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.1",
-"date": "09.10.2017 14:01:20",
+"version": "1.3.2",
+"date": "10.10.2017 12:49:20",
 "notes": {
 "added": [],
-"changed": [
-"Новая опция - Лента в одну колонку (BETA)"
+"changed": [],
+"fixed": [
+"Отступ кнопки конфигурации UIC в шапке",
+"Перегрузка ленты новостей при изменении опций не связанных с отображением ленты в 1-ну колонку",
+"При переходе в другой раздел и возврате на главную (single-page), лента новостей оставалась в 2 колонки, вместо переключение обратно к 1-ой колонке",
+"При изменении раздела окна, когда лента должна автоматом переключиться, она оставалась в 2 колонки, вместо переключение обратно к 1-ой колонке"
 ],
-"fixed": [],
 "issues": []
 }
 }, /* jshint -W033 */
@@ -785,7 +788,7 @@ color: #313E78;
 #SBIS-UI-Customizer-SettingsButton-Header {
 float: right;
 margin-right: 8px;
-margin-top: 2px;
+margin-top: 5px;
 }
 #SBIS-UI-Customizer-SettingsButton-Header .icon {
 height: 16px;
@@ -810,7 +813,7 @@ stroke: #313E78;
 }
 .engine-OnlineBaseInnerMinCoreView__headerCell #SBIS-UI-Customizer-SettingsButton-Header {
 float: left;
-margin-top: 1px;
+margin-top: 4px;
 }
 `,'SettingsDialog.css':`
 #SBIS-UI-Customizer-SettingsDialog-Area {
@@ -1779,12 +1782,11 @@ css += Engine.generateCSS.custom(
 if (news.InOneColumn.value) {
 let elm = document.querySelector('.mp-NewsColumnView');
 if (elm) {
-InOneColumn(elm);
-} else {
-Engine.waitOnce('.mp-NewsColumnView', function (elm) {
-InOneColumn(elm);
-});
+InOneColumn();
 }
+Engine.wait('.sn-NewsLeftColumn', function () {
+InOneColumn();
+});
 }
 if (css) {
 Engine.appendCSS('HomePageModify', css);
@@ -1793,7 +1795,7 @@ Engine.removeCSS('HomePageModify');
 }
 }
 function InOneColumn() {
-if (document.querySelector('.mp-NewsColumnView .icon-Column2')) {
+if (document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
 if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
 document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
 Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
