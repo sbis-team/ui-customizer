@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.2.rc2
+// @name          SBIS UI-Customizer v1.3.2.rc3
 // @namespace     SBIS
-// @version       1.3.2.rc2
-// @date          10.10.2017 12:41:00
+// @version       1.3.2.rc3
+// @date          10.10.2017 12:45:26
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
