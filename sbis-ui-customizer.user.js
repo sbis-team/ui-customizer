@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.2
+// @name          SBIS UI-Customizer v1.3.3
 // @namespace     SBIS
-// @version       1.3.2
-// @date          10.10.2017 12:49:20
+// @version       1.3.3
+// @date          12.10.2017 10:09:38
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,18 +89,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.2",
-"date": "10.10.2017 12:49:20",
+"version": "1.3.3",
+"date": "12.10.2017 10:09:38",
 "notes": {
 "added": [],
 "changed": [],
-"fixed": [
-"Отступ кнопки конфигурации UIC в шапке",
-"Перегрузка ленты новостей при изменении опций не связанных с отображением ленты в 1-ну колонку",
-"При переходе в другой раздел и возврате на главную (single-page), лента новостей оставалась в 2 колонки, вместо переключение обратно к 1-ой колонке",
-"При изменении раздела окна, когда лента должна автоматом переключиться, она оставалась в 2 колонки, вместо переключение обратно к 1-ой колонке"
-],
-"issues": []
+"fixed": [],
+"issues": [
+"Для опции отображения ленты в одну колонку исправлено мерцание между режимами в 2 и 1 колонку при первой загрузке и переходах между разделами"
+]
 }
 }, /* jshint -W033 */
 (() => {
@@ -247,7 +244,7 @@ return {
 "view": "block",
 "options": {
 "InOneColumn": {
-"title": "Лента в одну колонку (BETA)",
+"title": "Лента в одну колонку",
 "view": "option",
 "type": "boolean",
 "value": false
@@ -1749,7 +1746,7 @@ Engine.openInformationPopup(rk(msg));
 });
 `,'HomePageModify.js':`
 UICustomizerDefine('HomePageModify', ['Engine'], function (Engine) {
-"use strict";
+'use strict';
 return {
 applySettings: applySettings
 };
@@ -1779,30 +1776,43 @@ css += Engine.generateCSS.custom(
 );
 }
 */
-if (news.InOneColumn.value) {
-let elm = document.querySelector('.mp-NewsColumnView');
-if (elm) {
-InOneColumn();
-}
-Engine.wait('.sn-NewsLeftColumn', function () {
-InOneColumn();
-});
-}
 if (css) {
 Engine.appendCSS('HomePageModify', css);
 } else {
 Engine.removeCSS('HomePageModify');
 }
+Engine.waitRequire(function () {
+require(['Core/UserConfig'], function (UserConfig) {
+let ifColumn2 = document.querySelector('.sn-NewsLeftColumn');
+if (news.InOneColumn.value) {
+if (ifColumn2) {
+UserConfig.setParam('OnlyOneColumn', 'true');
+toggleColumn(true);
 }
-function InOneColumn() {
-if (document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
+} else {
+if (!ifColumn2) {
+UserConfig.removeParam('OnlyOneColumn');
+toggleColumn(false);
+}
+}
+});
+});
+}
+function toggleColumn(isOne) {
+if (isOne && document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
 if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
 document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
 Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
 elm.click();
 });
 } else {
-setTimeout(InOneColumn, 300);
+setTimeout(function () { toggleColumn(isOne); }, 300);
+}
+} else {
+if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
+document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
+} else {
+setTimeout(function () { toggleColumn(isOne); }, 300);
 }
 }
 }
