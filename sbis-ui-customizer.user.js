@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.3.rc1
+// @name          SBIS UI-Customizer v1.3.4.rc1
 // @namespace     SBIS
-// @version       1.3.3.rc1
-// @date          12.10.2017 10:08:13
+// @version       1.3.4.rc1
+// @date          12.10.2017 11:08:40
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,14 +89,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.3.rc1",
-"date": "12.10.2017 10:08:13",
+"version": "1.3.4.rc1",
+"date": "12.10.2017 11:08:40",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [],
 "issues": [
-"Для опции отображения ленты в одну колонку исправлено мерцание между режимами в 2 и 1 колонку при первой загрузке и переходах между разделами"
+"Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент"
 ]
 }
 }, /* jshint -W033 */
@@ -1251,7 +1251,9 @@ settings = _copyObject(baseSettings);
 var localSettings = localStorage.getItem('SBIS-UI-Customizer-Settings');
 if (localSettings) {
 localSettings = JSON.parse(localSettings);
-_applySettings(settings, localSettings);
+_applySettings(settings, localSettings).then(function () {
+localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
+}, console.error);
 }
 localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
 var lastversion = localStorage.getItem('SBIS-UI-Customizer-LastVersion');
@@ -1504,7 +1506,9 @@ case 'boolean':
 setting.value = !!value;
 break;
 }
-_applySettings_toModule(moduleSettings);
+_applySettings_toModule(moduleSettings).then(function () {
+localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
+}, console.error);
 }
 function cutTags(text) {
 return (text + '')
@@ -1614,6 +1618,7 @@ newObj[name] = obj[name];
 return newObj;
 }
 function _applySettings(target, source, ptName) {
+let queue = [];
 for (let name in target) {
 let sName = name;
 if (!(sName in source)) {
@@ -1633,7 +1638,7 @@ tType === 'object' &&
 'options' in tVal &&
 sType === 'object'
 ) {
-_applySettings(tVal.options, sVal, fName);
+queue.push(_applySettings(tVal.options, sVal, fName));
 } else if (
 tType === 'object' &&
 'value' in tVal &&
@@ -1645,14 +1650,26 @@ tVal.value = sVal;
 console.error(Error(\`Неверный тип опции \${fName}\`));
 }
 if (tVal.module) {
-_applySettings_toModule(tVal);
+queue.push(_applySettings_toModule(tVal));
 }
 }
+return Promise.all(queue);
 }
 function _applySettings_toModule(moduleSettings) {
+return new Promise(function (resolve) {
+try {
 UICustomizerRequire([moduleSettings.module], function (module) {
+try {
 module.applySettings.call(module, moduleSettings);
-localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
+} catch (err) {
+console.error(err);
+}
+resolve();
+});
+} catch (err) {
+console.error(err);
+resolve();
+}
 });
 }
 function _minimizeSettings(conf) {
