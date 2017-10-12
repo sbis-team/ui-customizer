@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.4.rc1
+// @name          SBIS UI-Customizer v1.3.4.rc2
 // @namespace     SBIS
-// @version       1.3.4.rc1
-// @date          12.10.2017 11:08:40
+// @version       1.3.4.rc2
+// @date          12.10.2017 11:10:20
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -89,15 +89,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.4.rc1",
-"date": "12.10.2017 11:08:40",
+"version": "1.3.4.rc2",
+"date": "12.10.2017 11:10:20",
 "notes": {
 "added": [],
 "changed": [],
-"fixed": [],
-"issues": [
+"fixed": [
 "Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент"
-]
+],
+"issues": []
 }
 }, /* jshint -W033 */
 (() => {
