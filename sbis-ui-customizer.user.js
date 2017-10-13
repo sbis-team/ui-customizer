@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.5.rc1
+// @name          SBIS UI-Customizer v1.3.6.rc1
 // @namespace     SBIS
-// @version       1.3.5.rc1
-// @date          13.10.2017 12:39:52
+// @version       1.3.6.rc1
+// @date          13.10.2017 15:21:03
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -14,6 +14,7 @@
 // @exclude       *online.sbis.ru/shared/*
 // @exclude       *online.sbis.ru/docview/*
 // @exclude       *online.sbis.ru/auth/*
+// @exclude       *online.sbis.ru/webrtc/*
 // @exclude       *online.sbis.ru/carry.html*
 // @exclude       *online.sbis.ru/presto.html*
 // @exclude       *online.sbis.ru/booking.html*
@@ -87,13 +88,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.5.rc1",
-"date": "13.10.2017 12:39:52",
+"version": "1.3.6.rc1",
+"date": "13.10.2017 15:21:03",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Исключил страницы из плагина: /carry.html, /presto.html, /booking.html"
+"Расширен список игнорируемых ресурсов: /webrtc/* (Видео-звонки)"
 ],
 "issues": []
 }
