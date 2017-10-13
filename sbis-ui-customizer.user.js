@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.4.rc4
+// @name          SBIS UI-Customizer v1.3.4.rc5
 // @namespace     SBIS
-// @version       1.3.4.rc4
-// @date          13.10.2017 08:42:36
+// @version       1.3.4.rc5
+// @date          13.10.2017 08:45:24
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -84,11 +84,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.4.rc4",
-"date": "13.10.2017 08:42:36",
+"version": "1.3.4.rc5",
+"date": "13.10.2017 08:45:24",
 "notes": {
 "added": [],
-"changed": [],
+"changed": [
+"Убрал из настроек сайт inside.tensor.ru"
+],
 "fixed": [
 "Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент"
 ],
