@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.4.rc5
+// @name          SBIS UI-Customizer v1.3.4.rc6
 // @namespace     SBIS
-// @version       1.3.4.rc5
-// @date          13.10.2017 08:45:24
+// @version       1.3.4.rc6
+// @date          13.10.2017 09:01:34
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -84,225 +84,238 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.4.rc5",
-"date": "13.10.2017 08:45:24",
+"version": "1.3.4.rc6",
+"date": "13.10.2017 09:01:34",
 "notes": {
 "added": [],
 "changed": [
-"Убрал из настроек сайт inside.tensor.ru"
+"Убрал из настроек сайт inside.tensor.ru",
+"Добавлено скрытие пунктов аккордеона: Наша компания, Салон"
 ],
 "fixed": [
 "Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент"
 ],
 "issues": []
 }
-}, /* jshint -W033 */
-(() => {
+}, (() => {
 return {
-"HomePage": {
-"title": "Главная страница",
-"view": "section",
-"options": {
-"HideAccordion": {
-"title": "Скрыть пункты аккордеона",
-"view": "group",
-"module": "AccordionHideItems",
-"options": {
-"Main": {
-"title": "Основные",
-"view": "block",
-"options": {
-"Documents": {
-"title": "Документы",
-"view": "option",
-"type": "boolean",
-"value": false
+'HomePage': {
+'title': 'Главная страница',
+'view': 'section',
+'options': {
+'HideAccordion': {
+'title': 'Скрыть пункты аккордеона',
+'view': 'group',
+'module': 'AccordionHideItems',
+'options': {
+'Main': {
+'title': 'Основные',
+'view': 'block',
+'options': {
+'Documents': {
+'title': 'Документы',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Staff": {
-"title": "Сотрудники",
-"view": "option",
-"type": "boolean",
-"value": false
+'Staff': {
+'title': 'Сотрудники',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Tasks": {
-"title": "Задачи",
-"view": "option",
-"type": "boolean",
-"value": false
+'Tasks': {
+'title': 'Задачи',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Contacts": {
-"title": "Контакты",
-"view": "option",
-"type": "boolean",
-"value": false
+'Contacts': {
+'title': 'Контакты',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Calendar": {
-"title": "Календарь",
-"view": "option",
-"type": "boolean",
-"value": false
+'Calendar': {
+'title': 'Календарь',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"MyPage": {
-"title": "Моя страница",
-"view": "option",
-"type": "boolean",
-"value": false
+'MyPage': {
+'title': 'Моя страница',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'OurCompany': {
+'title': 'Наша компания',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 },
-"Other": {
-"title": "Прочие",
-"view": "block",
-"options": {
-"Company": {
-"title": "Компании",
-"view": "option",
-"type": "boolean",
-"value": false
+'Other': {
+'title': 'Прочие',
+'view': 'block',
+'options': {
+'Company': {
+'title': 'Компании',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Business": {
-"title": "Бизнес",
-"view": "option",
-"type": "boolean",
-"value": false
+'Business': {
+'title': 'Бизнес',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Accounting": {
-"title": "Учет",
-"view": "option",
-"type": "boolean",
-"value": false
+'Accounting': {
+'title': 'Учет',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"UTS": {
-"title": "УЦ",
-"view": "option",
-"type": "boolean",
-"value": false
+'UTS': {
+'title': 'УЦ',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Telephony": {
-"title": "Телефония",
-"view": "option",
-"type": "boolean",
-"value": false
+'Telephony': {
+'title': 'Телефония',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Retail": {
-"title": "Магазин",
-"view": "option",
-"type": "boolean",
-"value": false
+'Retail': {
+'title': 'Магазин',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Presto": {
-"title": "Presto",
-"view": "option",
-"type": "boolean",
-"value": false
-}
-}
-}
-}
+'Presto': {
+'title': 'Presto',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"HideOther": {
-"title": "Скрыть прочие блоки",
-"view": "group",
-"module": "OtherBlocksHide",
-"options": {
-"Banners": {
-"title": "Баннеры",
-"view": "block",
-"options": {
-"Owl": {
-"title": "Сова > Как просто",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"AsJust": {
-"title": "\"Как просто\" над лентой",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"SideRight": {
-"title": "Правый баннер",
-"view": "option",
-"type": "boolean",
-"value": false
+'Booking': {
+'title': 'Салон',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 }
 }
 },
-"Modify": {
-"title": "Изменить внешний вид",
-"view": "group",
-"module": "HomePageModify",
-"options": {
-"News": {
-"title": "Новости",
-"view": "block",
-"options": {
-"InOneColumn": {
-"title": "Лента в одну колонку",
-"view": "option",
-"type": "boolean",
-"value": false
+'HideOther': {
+'title': 'Скрыть прочие блоки',
+'view': 'group',
+'module': 'OtherBlocksHide',
+'options': {
+'Banners': {
+'title': 'Баннеры',
+'view': 'block',
+'options': {
+'Owl': {
+'title': 'Сова > Как просто',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'AsJust': {
+'title': '\'Как просто\' над лентой',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'SideRight': {
+'title': 'Правый баннер',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
-}/*,
-"SmallImg": {
-"title": "Уменьшить фото новости",
-"view": "option",
-"type": "boolean",
-"value": false
+}
+}
+}
 },
-"HideAttachments": {
-"title": "Скрыть вложения под спойлер",
-"view": "option",
-"type": "boolean",
-"value": false
+'Modify': {
+'title': 'Изменить внешний вид',
+'view': 'group',
+'module': 'HomePageModify',
+'options': {
+'News': {
+'title': 'Новости',
+'view': 'block',
+'options': {
+'InOneColumn': {
+'title': 'Лента в одну колонку',
+'view': 'option',
+'type': 'boolean',
+'value': false
+}
+}
+/*,
+'SmallImg': {
+'title': 'Уменьшить фото новости',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"HideFooterBtn": {
-"title": "Скрыть оценки и репосты",
-"view": "option",
-"type": "boolean",
-"value": false
+'HideAttachments': {
+'title': 'Скрыть вложения под спойлер',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"SlimBorder": {
-"title": "Тонкие границы новости",
-"view": "option",
-"type": "boolean",
-"value": false
+'HideFooterBtn': {
+'title': 'Скрыть оценки и репосты',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'SlimBorder': {
+'title': 'Тонкие границы новости',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 */
 },
-"Other": {
-"title": "Прочее",
-"view": "block",
-"options": {
-"StretchPage": {
-"title": "Растянуть сайт на всю страницу",
-"view": "option",
-"type": "boolean",
-"value": false
+'Other': {
+'title': 'Прочее',
+'view': 'block',
+'options': {
+'StretchPage': {
+'title': 'Растянуть сайт на всю страницу',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"TapeEventsMinFoto": {
-"title": "Уменьшить фото в ленте событий",
-"view": "option",
-"type": "boolean",
-"value": false
+'TapeEventsMinFoto': {
+'title': 'Уменьшить фото в ленте событий',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
 /*
-"HideTapeEvents": {
-"title": "Скрыть ленту событий",
-"view": "option",
-"type": "boolean",
-"value": false
+'HideTapeEvents': {
+'title': 'Скрыть ленту событий',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
 */
-"HideHeaderText": {
-"title": "Скрыть текст кнопок в шапке",
-"view": "option",
-"type": "boolean",
-"value": false
+'HideHeaderText': {
+'title': 'Скрыть текст кнопок в шапке',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 }
@@ -310,169 +323,90 @@ return {
 }
 }
 },
-"CardTask": {
-"title": "Карточка задачи и ошибки",
-"view": "section",
-"options": {
-"TaskToolbarBtns": {
-"title": "Кнопки в шапке",
-"view": "group",
-"module": "TaskToolbarBtns",
-"options": {
-"Show": {
-"title": "Показать",
-"view": "block",
-"options": {
-"Schedule": {
-"title": "Время по документу",
-"view": "option",
-"type": "boolean",
-"value": false
+'CardTask': {
+'title': 'Карточка задачи и ошибки',
+'view': 'section',
+'options': {
+'TaskToolbarBtns': {
+'title': 'Кнопки в шапке',
+'view': 'group',
+'module': 'TaskToolbarBtns',
+'options': {
+'Show': {
+'title': 'Показать',
+'view': 'block',
+'options': {
+'Schedule': {
+'title': 'Время по документу',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Monitoring": {
-"title": "Поставить на контроль",
-"view": "option",
-"type": "boolean",
-"value": false
+'Monitoring': {
+'title': 'Поставить на контроль',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Agreement": {
-"title": "Отправить на согласование",
-"view": "option",
-"type": "boolean",
-"value": false
+'Agreement': {
+'title': 'Отправить на согласование',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 },
-"Hide": {
-"title": "Скрыть",
-"view": "block",
-"options": {
-"Print": {
-"title": "Распечатать",
-"view": "option",
-"type": "boolean",
-"value": false
+'Hide': {
+'title': 'Скрыть',
+'view': 'block',
+'options': {
+'Print': {
+'title': 'Распечатать',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Save": {
-"title": "Скачать",
-"view": "option",
-"type": "boolean",
-"value": false
+'Save': {
+'title': 'Скачать',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"LinkOld": {
-"title": "Получить ссылку (старая)",
-"view": "option",
-"type": "boolean",
-"value": false
+'LinkOld': {
+'title': 'Получить ссылку (старая)',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Delete": {
-"title": "Удалить",
-"view": "option",
-"type": "boolean",
-"value": false
+'Delete': {
+'title': 'Удалить',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 },
-"Add": {
-"title": "Добавить",
-"view": "block",
-"options": {
-"BranchName": {
-"title": "Имя ветки",
-"view": "option",
-"type": "boolean",
-"value": false
+'Add': {
+'title': 'Добавить',
+'view': 'block',
+'options': {
+'BranchName': {
+'title': 'Имя ветки',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"СommitMsg": {
-"title": "Комментарий для коммита",
-"view": "option",
-"type": "boolean",
-"value": false
+'СommitMsg': {
+'title': 'Комментарий для коммита',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"TaskURL": {
-"title": "Ссылка на задачу",
-"view": "option",
-"type": "boolean",
-"value": false
-}
-}
-}
-}
-}
-}
-},
-"CardMR": {
-"title": "Карточка MR",
-"view": "section",
-"options": {
-"MRToolbarBtns": {
-"title": "Кнопки в шапке",
-"view": "group",
-"module": "MRToolbarBtns",
-"options": {
-"Show": {
-"title": "Показать",
-"view": "block",
-"options": {
-"Schedule": {
-"title": "Время по документу",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"Monitoring": {
-"title": "Поставить на контроль",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"Agreement": {
-"title": "Отправить на согласование",
-"view": "option",
-"type": "boolean",
-"value": false
-}
-}
-},
-"Hide": {
-"title": "Скрыть",
-"view": "block",
-"options": {
-"Print": {
-"title": "Распечатать",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"Save": {
-"title": "Скачать",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"LinkOld": {
-"title": "Получить ссылку (старая)",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"Delete": {
-"title": "Удалить",
-"view": "option",
-"type": "boolean",
-"value": false
-}
-}
-},
-"Add": {
-"title": "Добавить",
-"view": "block",
-"options": {
-"TaskURL": {
-"title": "Ссылка на MR",
-"view": "option",
-"type": "boolean",
-"value": false
+'TaskURL': {
+'title': 'Ссылка на задачу',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 }
@@ -480,84 +414,163 @@ return {
 }
 }
 },
-"CardErrand": {
-"title": "Карточка поручения и пр.",
-"view": "section",
-"options": {
-"ErrandToolbarBtns": {
-"title": "Кнопки в шапке",
-"view": "group",
-"module": "ErrandToolbarBtns",
-"options": {
-"Show": {
-"title": "Показать",
-"view": "block",
-"options": {
-"Schedule": {
-"title": "Время по документу",
-"view": "option",
-"type": "boolean",
-"value": false
+'CardMR': {
+'title': 'Карточка MR',
+'view': 'section',
+'options': {
+'MRToolbarBtns': {
+'title': 'Кнопки в шапке',
+'view': 'group',
+'module': 'MRToolbarBtns',
+'options': {
+'Show': {
+'title': 'Показать',
+'view': 'block',
+'options': {
+'Schedule': {
+'title': 'Время по документу',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Monitoring": {
-"title": "Поставить на контроль",
-"view": "option",
-"type": "boolean",
-"value": false
+'Monitoring': {
+'title': 'Поставить на контроль',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"Agreement": {
-"title": "Отправить на согласование",
-"view": "option",
-"type": "boolean",
-"value": false
-}
-}
-},
-"Hide": {
-"title": "Скрыть",
-"view": "block",
-"options": {
-"Print": {
-"title": "Распечатать",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"Save": {
-"title": "Скачать",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"LinkOld": {
-"title": "Получить ссылку (старая)",
-"view": "option",
-"type": "boolean",
-"value": false
-},
-"Delete": {
-"title": "Удалить",
-"view": "option",
-"type": "boolean",
-"value": false
+'Agreement': {
+'title': 'Отправить на согласование',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 },
-"Add": {
-"title": "Добавить",
-"view": "block",
-"options": {
-"TaskURL": {
-"title": "Ссылка на задание",
-"view": "option",
-"type": "boolean",
-"value": false
+'Hide': {
+'title': 'Скрыть',
+'view': 'block',
+'options': {
+'Print': {
+'title': 'Распечатать',
+'view': 'option',
+'type': 'boolean',
+'value': false
 },
-"CopyInfo": {
-"title": "Копировать описание",
-"view": "option",
-"type": "boolean",
-"value": false
+'Save': {
+'title': 'Скачать',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'LinkOld': {
+'title': 'Получить ссылку (старая)',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'Delete': {
+'title': 'Удалить',
+'view': 'option',
+'type': 'boolean',
+'value': false
+}
+}
+},
+'Add': {
+'title': 'Добавить',
+'view': 'block',
+'options': {
+'TaskURL': {
+'title': 'Ссылка на MR',
+'view': 'option',
+'type': 'boolean',
+'value': false
+}
+}
+}
+}
+}
+}
+},
+'CardErrand': {
+'title': 'Карточка поручения и пр.',
+'view': 'section',
+'options': {
+'ErrandToolbarBtns': {
+'title': 'Кнопки в шапке',
+'view': 'group',
+'module': 'ErrandToolbarBtns',
+'options': {
+'Show': {
+'title': 'Показать',
+'view': 'block',
+'options': {
+'Schedule': {
+'title': 'Время по документу',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'Monitoring': {
+'title': 'Поставить на контроль',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'Agreement': {
+'title': 'Отправить на согласование',
+'view': 'option',
+'type': 'boolean',
+'value': false
+}
+}
+},
+'Hide': {
+'title': 'Скрыть',
+'view': 'block',
+'options': {
+'Print': {
+'title': 'Распечатать',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'Save': {
+'title': 'Скачать',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'LinkOld': {
+'title': 'Получить ссылку (старая)',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'Delete': {
+'title': 'Удалить',
+'view': 'option',
+'type': 'boolean',
+'value': false
+}
+}
+},
+'Add': {
+'title': 'Добавить',
+'view': 'block',
+'options': {
+'TaskURL': {
+'title': 'Ссылка на задание',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'CopyInfo': {
+'title': 'Копировать описание',
+'view': 'option',
+'type': 'boolean',
+'value': false
 }
 }
 }
@@ -565,7 +578,7 @@ return {
 }
 }
 }
-}
+};
 })()
 , {'css':{'HomePageModify-FixHeight.css':`
 .sn-NewsPage__oneNews-contentArticle {
@@ -1129,7 +1142,7 @@ background-color: #fdd2c0 !important;
 }
 `},'js':{'AccordionHideItems.js':`
 UICustomizerDefine('AccordionHideItems', ['Engine'], function (Engine) {
-"use strict";
+'use strict';
 const selectors = {
 'Documents': '.nav-menu-container a[data-id="documents"]',
 'Staff': '.nav-menu-container a[data-id="staff"]',
@@ -1137,13 +1150,15 @@ const selectors = {
 'Contacts': '.nav-menu-container a[data-id="contacts"]',
 'Calendar': '.nav-menu-container a[data-id="calendar"]',
 'MyPage': '.nav-menu-container a[data-id="myProfile"]',
+'OurCompany': '.nav-menu-container a[data-id="our_company"]',
 'Company': '.nav-menu-container a[data-id="contragents"]',
 'Business': '.nav-menu-container a[data-id="business"]',
 'Accounting': '.nav-menu-container a[data-id="accounting"]',
 'UTS': '.nav-menu-container a[data-id="ca_navication"]',
 'Telephony': '.nav-menu-container a[data-id="tel"]',
 'Retail': '.nav-menu-container a[data-id="retail"]',
-'Presto': '.nav-menu-container a[data-id="presto"]'
+'Presto': '.nav-menu-container a[data-id="presto"]',
+'Booking': '.nav-menu-container a[data-id="booking"]'
 };
 return {
 applySettings: applySettings
