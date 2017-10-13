@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.4.rc7
+// @name          SBIS UI-Customizer v1.3.4.rc8
 // @namespace     SBIS
-// @version       1.3.4.rc7
-// @date          13.10.2017 09:28:54
+// @version       1.3.4.rc8
+// @date          13.10.2017 12:03:58
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -84,8 +84,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.4.rc7",
-"date": "13.10.2017 09:28:54",
+"version": "1.3.4.rc8",
+"date": "13.10.2017 12:03:58",
 "notes": {
 "added": [],
 "changed": [
@@ -94,7 +94,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 ],
 "fixed": [
 "Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент",
-"Исправлена кнопка отправки сообщения об ошибке"
+"Исправлена кнопка отправки сообщения об ошибке",
+"Исправлено появление ошибки в плагине при переходе с главной в задачи до завершения построения ленты новостей"
 ],
 "issues": []
 }
@@ -1838,7 +1839,7 @@ elm.click();
 } else {
 setTimeout(function () { toggleColumn(isOne); }, 300);
 }
-} else {
+} else if (document.querySelector('.mp-NewsColumnView')) {
 if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
 document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
 } else {
