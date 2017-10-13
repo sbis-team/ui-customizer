@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.4.rc6
+// @name          SBIS UI-Customizer v1.3.4.rc7
 // @namespace     SBIS
-// @version       1.3.4.rc6
-// @date          13.10.2017 09:01:34
+// @version       1.3.4.rc7
+// @date          13.10.2017 09:28:54
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -84,8 +84,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.4.rc6",
-"date": "13.10.2017 09:01:34",
+"version": "1.3.4.rc7",
+"date": "13.10.2017 09:28:54",
 "notes": {
 "added": [],
 "changed": [
@@ -93,7 +93,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 "Добавлено скрытие пунктов аккордеона: Наша компания, Салон"
 ],
 "fixed": [
-"Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент"
+"Исправлена ошибка потери опций при загрузке страницы и применении опций, в случае, если одну их опций по каким либо причинам нельзя применить в данный момент",
+"Исправлена кнопка отправки сообщения об ошибке"
 ],
 "issues": []
 }
@@ -2084,9 +2085,9 @@ sendFeedback: sendFeedback
 function getFeedbackButtons() {
 if (!feedbackButtons) {
 feedbackButtons = Engine.getHTML('SocNet-FeedbackButtons', {
-'LikeIt': Engine.getSVG('thumbsup'),
+//'LikeIt': Engine.getSVG('thumbsup'),
 'SendQuestion': Engine.getSVG('comment-discussion'),
-'SendFeedback': Engine.getSVG('megaphone'),
+//'SendFeedback': Engine.getSVG('megaphone'),
 'ReportError': Engine.getSVG('bug')
 });
 }
@@ -2197,7 +2198,8 @@ Engine.openInformationPopup(rk('Ваш отзыв успешно отправл�
 });
 }
 function _ReportError(msg) {
-var guid = $ws.helpers.createGUID();
+require(['Core/helpers/generate-helpers'], function (gh) {
+var guid = gh.createGUID();
 var ver = Engine.getVerInfo();
 msg = 'Ошибка: SBIS UI-Customizer ' + ver.version + '\\nСборка от: ' +
 ver.date + '\\n\\nСообщение:\\n' + msg + '\\n\\n--- Настройки плагина ---\\n' +
@@ -2230,6 +2232,7 @@ callback: function () {
 UICustomizerEvent('SettingsDialog', 'close');
 Engine.openInformationPopup(rk('Ваше сообщение успешно отправлено автору плагина'));
 }
+});
 });
 }
 function _JoinToGroup(callback) {
@@ -2665,8 +2668,8 @@ close();
 <!--i class="LikeIt" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'LikeIt')" title="Мне нравится!">{{LikeIt}}</i-->
 <!--i class="separator"></i-->
 <i class="SendQuestion" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'SendQuestion')" title="Задать вопрос в чате">{{SendQuestion}}</i>
-<i class="SendFeedback" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'SendFeedback')" title="Написать отзыв в группе">{{SendFeedback}}</i>
-<i class="separator"></i>
+<!--i class="SendFeedback" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'SendFeedback')" title="Написать отзыв в группе">{{SendFeedback}}</i-->
+<!--i class="separator"></i-->
 <i class="ReportError" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'ReportError')" title="Сообщить об ошибке">{{ReportError}}</i>
 `,'SocNet-InputDialog.xhtml':`
 <div class="controls-PopupMixin__closeButton" onclick="this.parentElement.remove()"></div>
