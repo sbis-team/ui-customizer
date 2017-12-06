@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.6.rc1
+// @name          SBIS UI-Customizer v1.3.7.rc1
 // @namespace     SBIS
-// @version       1.3.6.rc1
-// @date          13.10.2017 15:21:03
+// @version       1.3.7.rc1
+// @date          06.12.2017 13:46:18
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,15 +88,18 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.6.rc1",
-"date": "13.10.2017 15:21:03",
+"version": "1.3.7.rc1",
+"date": "06.12.2017 13:46:18",
 "notes": {
 "added": [],
 "changed": [],
-"fixed": [
-"Расширен список игнорируемых ресурсов: /webrtc/* (Видео-звонки)"
-],
-"issues": []
+"fixed": [],
+"issues": [
+[
+"https://github.com/sbis-team/ui-customizer/issues/8",
+"Исправлена плавающая ошибка падения загрузки страницы с включенным плагином"
+]
+]
 }
 }, (() => {
 return {
@@ -1183,7 +1186,7 @@ Engine.removeCSS('AccordionHideItems');
 });
 `,'Engine.js':`
 UICustomizerDefine('Engine', function () {
-"use strict";
+'use strict';
 const htmlre = /\\{\\{([\\w]+)\\}\\}/g;
 const migrateSettingsGroup = {};
 var verinfo, baseSettings, sources, gmapi, settings;
@@ -1201,11 +1204,15 @@ var _waitRequire = false;
 var _waitRequireEvents = [];
 var _waitRequireID = setInterval(function () {
 if (typeof require !== 'undefined') {
+require(['Core/core-ready'], function (cReady) {
+cReady.addCallback(function () {
 _waitRequireEvents.forEach(function (fn) {
 fn();
 });
 _waitRequire = true;
 _waitRequireEvents = null;
+});
+});
 clearInterval(_waitRequireID);
 }
 }, 100);
@@ -1213,7 +1220,7 @@ var _waitID = null;
 var _wait = {};
 var _waitSync = {};
 var _waitOnce = {};
-document.addEventListener("DOMNodeInserted", function (ev) {
+document.addEventListener('DOMNodeInserted', function () {
 _waiting();
 _waitingSync();
 }, false);
@@ -1812,7 +1819,7 @@ Engine.appendCSS('HomePageModify', css);
 Engine.removeCSS('HomePageModify');
 }
 Engine.waitRequire(function () {
-require(['Core/UserConfig'], function (UserConfig) {
+require(['WS.Data/Source/SbisService', 'Core/UserConfig'], function (SbisService, UserConfig) {
 let ifColumn2 = document.querySelector('.sn-NewsLeftColumn');
 if (news.InOneColumn.value) {
 if (ifColumn2) {
