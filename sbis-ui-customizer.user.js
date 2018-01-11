@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.7.rc2
+// @name          SBIS UI-Customizer v1.3.8.rc1
 // @namespace     SBIS
-// @version       1.3.7.rc2
-// @date          06.12.2017 13:48:02
+// @version       1.3.8.rc1
+// @date          11.01.2018 17:20:04
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,16 +88,16 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.7.rc2",
-"date": "06.12.2017 13:48:02",
+"version": "1.3.8.rc1",
+"date": "11.01.2018 17:20:04",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [],
 "issues": [
 [
-"https://github.com/sbis-team/ui-customizer/issues/8",
-"Исправлена плавающая ошибка, приводящая к падению загрузки страницы с включенным плагином"
+"https://github.com/sbis-team/ui-customizer/issues/9",
+"Исправлены падения загрузки страницы сайта при открытии документов в отдельной вкладке"
 ]
 ]
 }
@@ -1203,11 +1203,11 @@ _onloadEvents = null;
 var _waitRequire = false;
 var _waitRequireEvents = [];
 var _waitRequireID = setInterval(function () {
-if (typeof require !== 'undefined') {
-require(['Core/core-ready'], function (cReady) {
+if (typeof window.require !== 'undefined') {
+window.require(['Core/core-ready'], function (cReady) {
 cReady.addCallback(function () {
 _waitRequireEvents.forEach(function (fn) {
-fn();
+fn(window.require);
 });
 _waitRequire = true;
 _waitRequireEvents = null;
@@ -1302,7 +1302,7 @@ _onloadEvents.push(fn);
 }
 function waitRequire(fn) {
 if (_waitRequire) {
-fn();
+fn(window.require);
 } else {
 _waitRequireEvents.push(fn);
 }
@@ -1587,9 +1587,11 @@ return d + '.' + m + '.' + y;
 }
 function rpc_sbis(obj) {
 if (!SbisService) {
-return require(['js!WS.Data/Source/SbisService'], function (svr) {
+return waitRequire(function (require) {
+require(['WS.Data/Source/SbisService'], function (svr) {
 SbisService = svr;
 rpc_sbis(obj);
+})
 });
 }
 var service = obj.service ? ('/' + obj.service) : '';
@@ -1612,9 +1614,11 @@ bl.addErrback(errback);
 }
 function openInformationPopup(text, status) {
 if (!InformationPopupManager) {
-return require(['js!SBIS3.CONTROLS.Utils.InformationPopupManager'], function (ipm) {
+return waitRequire(function (require) {
+require(['js!SBIS3.CONTROLS.Utils.InformationPopupManager'], function (ipm) {
 InformationPopupManager = ipm;
 return openInformationPopup(text, status);
+});
 });
 }
 status = status ? status : 'success';
@@ -1818,7 +1822,7 @@ Engine.appendCSS('HomePageModify', css);
 } else {
 Engine.removeCSS('HomePageModify');
 }
-Engine.waitRequire(function () {
+Engine.waitRequire(function (require) {
 require(['WS.Data/Source/SbisService', 'Core/UserConfig'], function (SbisService, UserConfig) {
 let ifColumn2 = document.querySelector('.sn-NewsLeftColumn');
 if (news.InOneColumn.value) {
@@ -2073,8 +2077,9 @@ panel.style['max-height'] = (document.body.clientHeight - 49) + 'px';
 }
 });
 `,'SocNet.js':`
+/* globals UICustomizerEvent */
 UICustomizerDefine('SocNet', ['Engine'], function (Engine) {
-"use strict";
+'use strict';
 var GroupUUID = '2d110a8e-7edb-469a-a3cb-5eb6d8095c10';
 var ChatUUID = '3af31f44-c91a-4bbf-8470-3dd423f0b6eb';
 var AuthorUUID = 'd7dde799-21cb-49ea-89cf-de56e4f7f78b';
@@ -2167,7 +2172,7 @@ false
 },
 callback: function () {
 UICustomizerEvent('SettingsDialog', 'close');
-Engine.openInformationPopup(rk('Ваше сообщение успешно отправлено в чат "SBIS UI-Customizer"'));
+Engine.openInformationPopup('Ваше сообщение успешно отправлено в чат "SBIS UI-Customizer"');
 }
 });
 });
@@ -2199,12 +2204,13 @@ msg
 },
 callback: function () {
 UICustomizerEvent('SettingsDialog', 'close');
-Engine.openInformationPopup(rk('Ваш отзыв успешно отправлен в группу "SBIS UI-Customizer"'));
+Engine.openInformationPopup('Ваш отзыв успешно отправлен в группу "SBIS UI-Customizer"');
 }
 });
 });
 }
 function _ReportError(msg) {
+Engine.waitRequire(function (require) {
 require(['Core/helpers/generate-helpers'], function (gh) {
 var guid = gh.createGUID();
 var ver = Engine.getVerInfo();
@@ -2237,8 +2243,9 @@ false
 },
 callback: function () {
 UICustomizerEvent('SettingsDialog', 'close');
-Engine.openInformationPopup(rk('Ваше сообщение успешно отправлено автору плагина'));
+Engine.openInformationPopup('Ваше сообщение успешно отправлено автору плагина');
 }
+});
 });
 });
 }
@@ -2358,14 +2365,14 @@ Engine.removeCSS(moduleName);
 }
 }
 function copyToClipboard(elm, action) {
-var msg = '';
+var docName, msg = '';
 var text = '';
 var opener = elm.parentElement.parentElement.wsControl;
 var record = opener.getLinkedContext().getValue('record');
 switch (action) {
 case 'СommitMsg':
 msg = 'Описание скопировано в буфер обмена';
-let docName = record.get('РП.Документ').get('Регламент').get('Название');
+docName = record.get('РП.Документ').get('Регламент').get('Название');
 docName = ReplaceDocTypeName[docName] || docName;
 text =
 docName + ' № ' +
@@ -2400,7 +2407,7 @@ record.get('Номер');
 break;
 }
 Engine.copyToClipboard(text);
-Engine.openInformationPopup(rk(msg));
+Engine.openInformationPopup(msg);
 }
 function _readUserLogin(callback) {
 if (!idReadedUserLogin) {
@@ -2500,11 +2507,13 @@ if (moduleProperty.ExcludeDocTypeName && !~moduleProperty.ExcludeDocTypeName.ind
 return callback();
 }
 }
-var record, docName;
+var record;
 if (location.pathname === '/opendoc.html' && !elm.wsControl) {
-return require(['js!SBIS3.CORE.Control'], function () {
-$ws.single.ControlStorage.waitChildByName('ServiceButtons').addCallback(function () {
+return Engine.waitRequire(function (require) {
+require(['Lib/Control/Control'], function (CControl) {
+CControl.ControlStorage.waitChildByName('ServiceButtons').addCallback(function () {
 checkControl();
+});
 });
 });
 }
