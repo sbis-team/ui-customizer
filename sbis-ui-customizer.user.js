@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.8.rc1
+// @name          SBIS UI-Customizer v1.3.9.rc1
 // @namespace     SBIS
-// @version       1.3.8.rc1
-// @date          11.01.2018 17:20:04
+// @version       1.3.9.rc1
+// @date          29.01.2018 18:08:29
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,18 +88,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.8.rc1",
-"date": "11.01.2018 17:20:04",
+"version": "1.3.9.rc1",
+"date": "29.01.2018 18:08:29",
 "notes": {
 "added": [],
 "changed": [],
-"fixed": [],
-"issues": [
-[
-"https://github.com/sbis-team/ui-customizer/issues/9",
-"Исправлены падения загрузки страницы сайта при открытии документов в отдельной вкладке"
-]
-]
+"fixed": [
+"Исправлено периодическое падение страницы при загрузке, связанное с модулем 'Core/core-ready'"
+],
+"issues": []
 }
 }, (() => {
 return {
@@ -1202,19 +1199,39 @@ _onloadEvents = null;
 };
 var _waitRequire = false;
 var _waitRequireEvents = [];
-var _waitRequireID = setInterval(function () {
-if (typeof window.require !== 'undefined') {
-window.require(['Core/core-ready'], function (cReady) {
-cReady.addCallback(function () {
+var _waitRequireFN = function _waitRequireFN() {
+if (_waitRequireEvents) {
 _waitRequireEvents.forEach(function (fn) {
 fn(window.require);
 });
+}
 _waitRequire = true;
 _waitRequireEvents = null;
-});
+};
+var _waitRequireID = setInterval(function () {
+onload(function () {
+if (typeof window.require !== 'undefined') {
+window.require(['Core/core-ready'], function (ready) {
+ready.addCallback(_waitRequireFN);
+return ready;
+}, function (error) {
+console.warn('UICustomizer', error);
+window.require(['Core/core-init-min'],
+function (ready) {
+ready.addCallback(_waitRequireFN);
+return ready;
+},
+function (error) {
+console.warn('UICustomizer', error);
+console.warn('UICustomizer: Не удалось получить деферред готовности страницы');
+return error;
+}
+);
+return error;
 });
 clearInterval(_waitRequireID);
 }
+});
 }, 100);
 var _waitID = null;
 var _wait = {};
