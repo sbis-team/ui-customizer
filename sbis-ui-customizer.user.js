@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.9
+// @name          SBIS UI-Customizer v1.3.10
 // @namespace     SBIS
-// @version       1.3.9
-// @date          30.01.2018 10:58:56
+// @version       1.3.10
+// @date          19.02.2018 13:31:19
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,13 +88,17 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.9",
-"date": "30.01.2018 10:58:56",
+"version": "1.3.10",
+"date": "19.02.2018 13:31:19",
 "notes": {
 "added": [],
-"changed": [],
+"changed": [
+"Открытие диалога настроек через HotKeys: ctrl+shift+U и ctrl+alt+U",
+"Опция скрытия переключателя Мини/Макси в шапке сайта"
+],
 "fixed": [
-"Исправлено периодическое падение страницы при загрузке, связанное с модулем 'Core/core-ready'"
+"Правки стилей после обновления rc-3.18.10",
+"Убрана иконка настроек в шапке сайта (глючит шапка)"
 ],
 "issues": []
 }
@@ -236,6 +240,12 @@ return {
 },
 'SideRight': {
 'title': 'Правый баннер',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'HideMaximumButton': {
+'title': 'Переключатель аккордеона',
 'view': 'option',
 'type': 'boolean',
 'value': false
@@ -747,13 +757,10 @@ display: none !important;
 .engine-OnlineBaseInnerMinCoreView__content {
 max-width: none;
 }
-@media screen and (min-width: 1618px) {
+@media screen and (min-width: 1600px) {
 .online-OnlineBaseInnerView__notificationCenter {
-right: 17px !important;
 left: inherit !important;
-}
-.engine-OnlineBaseInnerMinCoreView .online-OnlineBaseInnerView__notificationCenter {
-right: inherit !important;
+right: 0 !important;
 }
 }
 `,'HomePageModify-TapeEventsMinFoto.css':`
@@ -837,63 +844,63 @@ z-index: 1000000;
 #SBIS-UI-Customizer-SettingsDialog {
 width: 520px;
 }
-#SBIS-UI-Customizer-SettingsDialog > .header {
+#SBIS-UI-Customizer-SettingsDialog>.header {
 height: 24px;
-padding: 12px;
+padding: 9px;
 border-bottom: 1px solid #EAEAEA;
 }
-#SBIS-UI-Customizer-SettingsDialog > .header .title {
+#SBIS-UI-Customizer-SettingsDialog>.header .title {
 font-weight: bold;
 font-size: 20px;
 color: #313e78;
 }
-#SBIS-UI-Customizer-SettingsDialog > .feedback {
+#SBIS-UI-Customizer-SettingsDialog>.feedback {
 position: absolute;
 right: 48px;
 height: 16px;
-top: 16px;
+top: 14px;
 display: inline-block;
 }
-#SBIS-UI-Customizer-SettingsDialog > .feedback i {
+#SBIS-UI-Customizer-SettingsDialog>.feedback i {
 cursor: pointer;
 margin-right: 4px;
 height: 16px;
 width: 16px;
 display: inline-block;
 }
-#SBIS-UI-Customizer-SettingsDialog > .feedback i.separator {
+#SBIS-UI-Customizer-SettingsDialog>.feedback i.separator {
 width: 4px;
 border-right: 1px solid #E4E4E4;
 }
-#SBIS-UI-Customizer-SettingsDialog > .feedback i svg {
+#SBIS-UI-Customizer-SettingsDialog>.feedback i svg {
 fill: #587AB0;
 }
-#SBIS-UI-Customizer-SettingsDialog > .feedback i:hover svg {
+#SBIS-UI-Customizer-SettingsDialog>.feedback i:hover svg {
 fill: #FF7033;
 }
-#SBIS-UI-Customizer-SettingsDialog > .Settings-panel {
+#SBIS-UI-Customizer-SettingsDialog>.Settings-panel {
 overflow-y: auto;
 }
 .SBIS-UI-Customizer .SettingsDialog-section {
 float: left;
 width: 100%;
 }
-.SBIS-UI-Customizer .SettingsDialog-section:last-child > .header {
+.SBIS-UI-Customizer .SettingsDialog-section:last-child>.header {
 border-bottom: none;
 border-bottom-left-radius: 3px;
 }
-.SBIS-UI-Customizer .SettingsDialog-section.active > .header {
+.SBIS-UI-Customizer .SettingsDialog-section.active>.header {
 background: #F3F3F3;
 }
-.SBIS-UI-Customizer .SettingsDialog-section > .header {
+.SBIS-UI-Customizer .SettingsDialog-section>.header {
 padding: 6px 12px;
 cursor: pointer;
 border-bottom: 1px solid #F5F5F5;
 }
-.SBIS-UI-Customizer .SettingsDialog-section > .header:hover {
+.SBIS-UI-Customizer .SettingsDialog-section>.header:hover {
 background: #F0F5FB;
 }
-.SBIS-UI-Customizer .SettingsDialog-section > .header .title {
+.SBIS-UI-Customizer .SettingsDialog-section>.header .title {
 font-size: 18px;
 color: #313E78;
 font-weight: bold;
@@ -914,18 +921,18 @@ border-bottom: none;
 float: left;
 width: 100%;
 }
-.SBIS-UI-Customizer .SettingsDialog-group > .box {
+.SBIS-UI-Customizer .SettingsDialog-group>.box {
 float: left;
 width: 100%;
 border-bottom: 1px solid #EAEAEA;
 }
-.SBIS-UI-Customizer .SettingsDialog-section .SettingsDialog-group:last-child > .box {
+.SBIS-UI-Customizer .SettingsDialog-section .SettingsDialog-group:last-child>.box {
 border-bottom: none;
 }
-.SBIS-UI-Customizer .SettingsDialog-group > .header {
+.SBIS-UI-Customizer .SettingsDialog-group>.header {
 border-bottom: 1px solid #F5F5F5;
 }
-.SBIS-UI-Customizer .SettingsDialog-group > .header .title {
+.SBIS-UI-Customizer .SettingsDialog-group>.header .title {
 font-size: 16px;
 padding: 4px 12px;
 display: inline-block;
@@ -934,14 +941,14 @@ display: inline-block;
 float: left;
 width: 250px;
 }
-.SBIS-UI-Customizer .SettingsDialog-block > .title {
+.SBIS-UI-Customizer .SettingsDialog-block>.title {
 color: #313E78;
 font-size: 14px;
 font-weight: bold;
 padding: 6px 12px 0;
 display: inline-block;
 }
-.SBIS-UI-Customizer .SettingsDialog-block > .box {
+.SBIS-UI-Customizer .SettingsDialog-block>.box {
 padding: 0px 0px 6px 12px;
 }
 .SBIS-UI-Customizer .SettingsDialog-option-boolean label {
@@ -962,7 +969,7 @@ cursor: pointer;
 .SBIS-UI-Customizer .SettingsDialog-option-boolean label:hover input {
 background: #F0F5FB;
 }
-.SBIS-UI-Customizer .SettingsDialog-option-boolean input:checked:after{
+.SBIS-UI-Customizer .SettingsDialog-option-boolean input:checked:after {
 content: '\\2714';
 font-size: 14px;
 position: absolute;
@@ -991,12 +998,12 @@ top: 0;
 right: 0;
 z-index: 1000001;
 }
-.SBIS-UI-Customizer-SocNet-InputDialog > .header {
+.SBIS-UI-Customizer-SocNet-InputDialog>.header {
 height: 24px;
-padding: 12px;
+padding: 9px;
 border-bottom: 1px solid #EAEAEA;
 }
-.SBIS-UI-Customizer-SocNet-InputDialog > .header .title {
+.SBIS-UI-Customizer-SocNet-InputDialog>.header .title {
 font-weight: bold;
 font-size: 20px;
 color: #313e78;
@@ -1010,14 +1017,14 @@ border: 1px solid #EAEAEA;
 }
 .SBIS-UI-Customizer-SocNet-InputDialog .send {
 position: absolute;
-top: 12px;
+top: 9px;
 right: 44px;
 padding: 2px 8px;
 cursor: pointer;
 border: 1px solid #ff7033;
 border-radius: 16px;
 }
-.SBIS-UI-Customizer-SocNet-InputDialog .send:hover{
+.SBIS-UI-Customizer-SocNet-InputDialog .send:hover {
 background: #FDECD9;
 }
 .SBIS-UI-Customizer-SocNet-InputDialog .send:active {
@@ -1305,6 +1312,9 @@ localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
 }
 UICustomizerRequire(['SettingsButton'], function (SettingsButton) {
 SettingsButton.init();
+});
+UICustomizerRequire(['HotKeys'], function (HotKeys) {
+HotKeys.init();
 });
 }
 function getVerInfo() {
@@ -1608,7 +1618,7 @@ return waitRequire(function (require) {
 require(['WS.Data/Source/SbisService'], function (svr) {
 SbisService = svr;
 rpc_sbis(obj);
-})
+});
 });
 }
 var service = obj.service ? ('/' + obj.service) : '';
@@ -1875,6 +1885,38 @@ setTimeout(function () { toggleColumn(isOne); }, 300);
 }
 }
 });
+`,'HotKeys.js':`
+UICustomizerDefine('HotKeys', ['SettingsDialog'], function (SettingsDialog) {
+'use strict';
+var keys = {
+'ctrl-shift-KeyU': () => SettingsDialog.toggle(),
+'ctrl-alt-KeyU': () => SettingsDialog.toggle()
+};
+return {
+init: init
+};
+function init() {
+document.addEventListener('keydown', (event) => {
+var hkey = '';
+if (event.ctrlKey) {
+hkey += 'ctrl-';
+}
+if (event.shiftKey) {
+hkey += 'shift-';
+}
+if (event.altKey) {
+hkey += 'alt-';
+}
+hkey += event.code;
+if (hkey in keys) {
+keys[hkey]();
+event.stopPropagation();
+}
+}, {
+capture: true
+});
+}
+});
 `,'MRToolbarBtns.js':`
 UICustomizerDefine('MRToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
 "use strict";
@@ -1904,14 +1946,15 @@ Task.applySettings(settings, 'MRToolbarBtns', property);
 });
 `,'OtherBlocksHide.js':`
 UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
-"use strict";
+'use strict';
 const selectors = {
 'Owl': 'div[data-component="SBIS3.Engine.HowEasy"]',
 'AsJust': \`
 .ExpandOurOrg__div,
 .middle__OurOrgHowEasy
 \`,
-'SideRight': 'div.news-SpecialNews'
+'SideRight': 'div.news-SpecialNews',
+'HideMaximumButton': '.NavSchemeLink.navSidebar__navSchemeLink'
 };
 return {
 applySettings: applySettings
@@ -1938,7 +1981,7 @@ Engine.removeCSS('OtherBlocksHide');
 });
 `,'SettingsButton.js':`
 UICustomizerDefine('SettingsButton', ['Engine'], function (Engine) {
-"use strict";
+'use strict';
 return {
 init: init
 };
@@ -1946,18 +1989,6 @@ function init() {
 Engine.appendCSS('SettingsButton');
 Engine.waitOnce('div.account_management__user-panel .account_management__user-panel-buttons-list .controls-ListView__itemsContainer', function (elm) {
 var container = Engine.createComponent('SettingsButton', {
-icon: Engine.getSVG('settings')
-});
-elm.parentElement.insertBefore(container, elm);
-});
-Engine.waitOnce('#header #headerLeft', function (elm) {
-var container = Engine.createComponent('SettingsButton-Header', {
-icon: Engine.getSVG('settings')
-});
-elm.parentElement.insertBefore(container, elm);
-});
-Engine.waitOnce('.engine-OnlineBaseInnerMinCoreView__headerCell .header-ConfigurationButton', function (elm) {
-var container = Engine.createComponent('SettingsButton-Header', {
 icon: Engine.getSVG('settings')
 });
 elm.parentElement.insertBefore(container, elm);
@@ -1971,6 +2002,7 @@ var dialog;
 return {
 open: open,
 close: close,
+toggle: toggle,
 toggleSection: toggleSection,
 onchangeOptionBoolean: onchangeOptionBoolean
 };
@@ -1990,6 +2022,13 @@ window.addEventListener('resize', _resize);
 function close() {
 dialog.style.display = 'none';
 window.removeEventListener('resize', _resize);
+}
+function toggle() {
+if (!dialog || dialog.style.display === 'none') {
+open();
+} else {
+close();
+}
 }
 function toggleSection(section) {
 var classList = section.parentElement.classList;
@@ -2693,7 +2732,7 @@ close();
 <span class="title">{{title}}</span>
 </div>
 `,'SettingsDialog.xhtml':`
-<div class="controls-PopupMixin__closeButton" onclick="UICustomizerEvent('SettingsDialog','close')"></div>
+<div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="UICustomizerEvent('SettingsDialog','close')"></div>
 <div class="header">
 <span class="title">Персонализация</span>
 </div>
@@ -2705,7 +2744,7 @@ close();
 <!--i class="separator"></i-->
 <i class="ReportError" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'ReportError')" title="Сообщить об ошибке">{{ReportError}}</i>
 `,'SocNet-InputDialog.xhtml':`
-<div class="controls-PopupMixin__closeButton" onclick="this.parentElement.remove()"></div>
+<div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="this.parentElement.remove()"></div>
 <div class="send">Отправить</div>
 <div class="header">
 <span class="title">{{title}}</span>
