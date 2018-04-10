@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.12.rc1
+// @name          SBIS UI-Customizer v1.3.12.rc2
 // @namespace     SBIS
-// @version       1.3.12.rc1
-// @date          10.04.2018 12:18:57
+// @version       1.3.12.rc2
+// @date          10.04.2018 12:22:17
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,8 +88,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.12.rc1",
-"date": "10.04.2018 12:18:57",
+"version": "1.3.12.rc2",
+"date": "10.04.2018 12:22:17",
 "notes": {
 "added": [],
 "changed": [
@@ -2810,7 +2810,7 @@ v.{{version}}
 <a target="_blank" href="https://github.com/sbis-team/ui-customizer/issues">Список задач</a>
 </div>
 <div class="links right">
-<a href="https://online.sbis.ru/groups/2d110a8e-7edb-469a-a3cb-5eb6d8095c10" target="_blank">Наша группа</a>
+<a href="https://online.sbis.ru/groups/2d110a8e-7edb-469a-a3cb-5eb6d8095c10" target="_blank" onclick="UICustomizerEvent( 'VersionInformer', 'close')">Наша группа</a>
 <span class="link" onclick="UICustomizerEvent( 'VersionInformer', 'settings')">Настройки</span>
 </div>
 <div class="button" onclick="UICustomizerEvent( 'VersionInformer', 'close')">ОК</div>
