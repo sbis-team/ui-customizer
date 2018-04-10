@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.12.rc3
+// @name          SBIS UI-Customizer v1.3.12.rc4
 // @namespace     SBIS
-// @version       1.3.12.rc3
-// @date          10.04.2018 12:33:04
+// @version       1.3.12.rc4
+// @date          10.04.2018 13:00:20
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,8 +88,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.12.rc3",
-"date": "10.04.2018 12:33:04",
+"version": "1.3.12.rc4",
+"date": "10.04.2018 13:00:20",
 "notes": {
 "added": [],
 "changed": [
@@ -1889,21 +1889,9 @@ toggleColumn(false);
 });
 }
 function toggleColumn(isOne) {
-if (isOne && document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
-if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
-document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
-Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
-elm.click();
-});
-} else {
-setTimeout(function () { toggleColumn(isOne); }, 300);
-}
-} else if (document.querySelector('.mp-NewsColumnView')) {
-if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
-document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
-} else {
-setTimeout(function () { toggleColumn(isOne); }, 300);
-}
+var news = document.querySelector('.n-NewsPageList');
+if (news && news.wsControl) {
+news.wsControl._setOneColumnMode(isOne, false);
 }
 }
 });
