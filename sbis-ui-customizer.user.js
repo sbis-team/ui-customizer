@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.10.rc1
+// @name          SBIS UI-Customizer v1.3.11.rc1
 // @namespace     SBIS
-// @version       1.3.10.rc1
-// @date          19.02.2018 13:29:17
+// @version       1.3.11.rc1
+// @date          10.04.2018 08:44:54
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -25,615 +25,619 @@
 // ==/UserScript==
 /* jshint esnext:true */
 (function (window, verinfo, settings, sources) {
-"use strict";
-var JSModules = {};
-window.UICustomizerDefine = UICustomizerDefine;
-window.UICustomizerRequire = UICustomizerRequire;
-window.UICustomizerEvent = UICustomizerEvent;
-var globalContainer = document.createElement('userscript');
-globalContainer.id = 'SBIS-UI-Customizer';
-document.getElementsByTagName('html')[0].appendChild(globalContainer);
-UICustomizerRequire(['Engine'], function (Engine) {
-Engine.init(verinfo, settings, sources, {
-GM_info: GM_info,
-GM_setClipboard: GM_setClipboard
-});
-});
-function UICustomizerDefine(name, dependences, constructor) {
-if (typeof dependences === 'function') {
-constructor = dependences;
-dependences = [];
-}
-UICustomizerRequire(dependences, function () {
-try {
-JSModules[name] = constructor.apply(null, dependences);
-} catch (err) {
-console.error(name, '-', err);
-}
-});
-}
-function UICustomizerRequire(dependences, func) {
-if (typeof dependences === 'function') {
-func = dependences;
-dependences = [];
-}
-for (let i = 0; i < dependences.length; i++) {
-let name = dependences[i];
-if (!(name in JSModules)) {
-let module = document.createElement('script');
-module.id = `SBIS-UI-Customizer-${name}-script`;
-module.className = 'SBIS-UI-Customizer';
-module.type = 'text/javascript';
-module.innerHTML = sources.js[name + '.js'];
-globalContainer.appendChild(module);
-}
-if (typeof (dependences[i] = JSModules[name]) !== 'object') {
-console.error('Модуль', name, 'недоступен');
-return false;
-}
-}
-func.apply(null, dependences);
-}
-function UICustomizerEvent(moduleName, eventName) {
-var args = [];
-for (let i = 2; i < arguments.length; i++) {
-args.push(arguments[i]);
-}
-UICustomizerRequire([moduleName], function (module) {
-try {
-module[eventName].apply(module, args);
-} catch (err) {
-console.error(moduleName + '.' + eventName, '-', err);
-}
-});
-}
+   "use strict";
+   var JSModules = {};
+   window.UICustomizerDefine = UICustomizerDefine;
+   window.UICustomizerRequire = UICustomizerRequire;
+   window.UICustomizerEvent = UICustomizerEvent;
+   var globalContainer = document.createElement('userscript');
+   globalContainer.id = 'SBIS-UI-Customizer';
+   document.getElementsByTagName('html')[0].appendChild(globalContainer);
+   UICustomizerRequire(['Engine'], function (Engine) {
+      Engine.init(verinfo, settings, sources, {
+         GM_info: GM_info,
+         GM_setClipboard: GM_setClipboard
+      });
+   });
+   function UICustomizerDefine(name, dependences, constructor) {
+      if (typeof dependences === 'function') {
+         constructor = dependences;
+         dependences = [];
+      }
+      UICustomizerRequire(dependences, function () {
+         try {
+            JSModules[name] = constructor.apply(null, dependences);
+         } catch (err) {
+            console.error(name, '-', err);
+         }
+      });
+   }
+   function UICustomizerRequire(dependences, func) {
+      if (typeof dependences === 'function') {
+         func = dependences;
+         dependences = [];
+      }
+      for (let i = 0; i < dependences.length; i++) {
+         let name = dependences[i];
+         if (!(name in JSModules)) {
+            let module = document.createElement('script');
+            module.id = `SBIS-UI-Customizer-${name}-script`;
+            module.className = 'SBIS-UI-Customizer';
+            module.type = 'text/javascript';
+            module.innerHTML = sources.js[name + '.js'];
+            globalContainer.appendChild(module);
+         }
+         if (typeof (dependences[i] = JSModules[name]) !== 'object') {
+            console.error('Модуль', name, 'недоступен');
+            return false;
+         }
+      }
+      func.apply(null, dependences);
+   }
+   function UICustomizerEvent(moduleName, eventName) {
+      var args = [];
+      for (let i = 2; i < arguments.length; i++) {
+         args.push(arguments[i]);
+      }
+      UICustomizerRequire([moduleName], function (module) {
+         try {
+            module[eventName].apply(module, args);
+         } catch (err) {
+            console.error(moduleName + '.' + eventName, '-', err);
+         }
+      });
+   }
 })(unsafeWindow, {
-"version": "1.3.10.rc1",
-"date": "19.02.2018 13:29:17",
-"notes": {
-"added": [],
-"changed": [
-"Открытие диалога настроек через HotKeys: ctrl+shift+U и ctrl+alt+U",
-"Опция скрытия переключателя Мини/Макси в шапке сайта"
-],
-"fixed": [
-"Правки стилей после обновления rc-3.18.10",
-"Убрана иконка настроек в шапке сайта (глючит шапка)"
-],
-"issues": []
-}
+   "version": "1.3.11.rc1",
+   "date": "10.04.2018 08:44:54",
+   "notes": {
+      "added": [],
+      "changed": [],
+      "fixed": [
+         "Опция скрытия совы",
+         "Опции дополнительных кнопок в карточках задач, ошибок, поручение и т.д."
+      ],
+      "issues": []
+   }
 }, (() => {
-return {
-'HomePage': {
-'title': 'Главная страница',
-'view': 'section',
-'options': {
-'HideAccordion': {
-'title': 'Скрыть пункты аккордеона',
-'view': 'group',
-'module': 'AccordionHideItems',
-'options': {
-'Main': {
-'title': 'Основные',
-'view': 'block',
-'options': {
-'Documents': {
-'title': 'Документы',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Staff': {
-'title': 'Сотрудники',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Tasks': {
-'title': 'Задачи',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Contacts': {
-'title': 'Контакты',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Calendar': {
-'title': 'Календарь',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'MyPage': {
-'title': 'Моя страница',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'OurCompany': {
-'title': 'Наша компания',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Other': {
-'title': 'Прочие',
-'view': 'block',
-'options': {
-'Company': {
-'title': 'Компании',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Business': {
-'title': 'Бизнес',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Accounting': {
-'title': 'Учет',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'UTS': {
-'title': 'УЦ',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Telephony': {
-'title': 'Телефония',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Retail': {
-'title': 'Магазин',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Presto': {
-'title': 'Presto',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Booking': {
-'title': 'Салон',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-}
-}
-},
-'HideOther': {
-'title': 'Скрыть прочие блоки',
-'view': 'group',
-'module': 'OtherBlocksHide',
-'options': {
-'Banners': {
-'title': 'Баннеры',
-'view': 'block',
-'options': {
-'Owl': {
-'title': 'Сова > Как просто',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'AsJust': {
-'title': '\'Как просто\' над лентой',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'SideRight': {
-'title': 'Правый баннер',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'HideMaximumButton': {
-'title': 'Переключатель аккордеона',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-}
-}
-},
-'Modify': {
-'title': 'Изменить внешний вид',
-'view': 'group',
-'module': 'HomePageModify',
-'options': {
-'News': {
-'title': 'Новости',
-'view': 'block',
-'options': {
-'InOneColumn': {
-'title': 'Лента в одну колонку',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-/*,
-'SmallImg': {
-'title': 'Уменьшить фото новости',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'HideAttachments': {
-'title': 'Скрыть вложения под спойлер',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'HideFooterBtn': {
-'title': 'Скрыть оценки и репосты',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'SlimBorder': {
-'title': 'Тонкие границы новости',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-*/
-},
-'Other': {
-'title': 'Прочее',
-'view': 'block',
-'options': {
-'StretchPage': {
-'title': 'Растянуть сайт на всю страницу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'TapeEventsMinFoto': {
-'title': 'Уменьшить фото в ленте событий',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-/*
-'HideTapeEvents': {
-'title': 'Скрыть ленту событий',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-*/
-'HideHeaderText': {
-'title': 'Скрыть текст кнопок в шапке',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-}
-}
-}
-}
-},
-'CardTask': {
-'title': 'Карточка задачи и ошибки',
-'view': 'section',
-'options': {
-'TaskToolbarBtns': {
-'title': 'Кнопки в шапке',
-'view': 'group',
-'module': 'TaskToolbarBtns',
-'options': {
-'Show': {
-'title': 'Показать',
-'view': 'block',
-'options': {
-'Schedule': {
-'title': 'Время по документу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Monitoring': {
-'title': 'Поставить на контроль',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Agreement': {
-'title': 'Отправить на согласование',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Hide': {
-'title': 'Скрыть',
-'view': 'block',
-'options': {
-'Print': {
-'title': 'Распечатать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Save': {
-'title': 'Скачать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'LinkOld': {
-'title': 'Получить ссылку (старая)',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Delete': {
-'title': 'Удалить',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Add': {
-'title': 'Добавить',
-'view': 'block',
-'options': {
-'BranchName': {
-'title': 'Имя ветки',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'СommitMsg': {
-'title': 'Комментарий для коммита',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'TaskURL': {
-'title': 'Ссылка на задачу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-}
-}
-}
-}
-},
-'CardMR': {
-'title': 'Карточка MR',
-'view': 'section',
-'options': {
-'MRToolbarBtns': {
-'title': 'Кнопки в шапке',
-'view': 'group',
-'module': 'MRToolbarBtns',
-'options': {
-'Show': {
-'title': 'Показать',
-'view': 'block',
-'options': {
-'Schedule': {
-'title': 'Время по документу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Monitoring': {
-'title': 'Поставить на контроль',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Agreement': {
-'title': 'Отправить на согласование',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Hide': {
-'title': 'Скрыть',
-'view': 'block',
-'options': {
-'Print': {
-'title': 'Распечатать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Save': {
-'title': 'Скачать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'LinkOld': {
-'title': 'Получить ссылку (старая)',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Delete': {
-'title': 'Удалить',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Add': {
-'title': 'Добавить',
-'view': 'block',
-'options': {
-'TaskURL': {
-'title': 'Ссылка на MR',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-}
-}
-}
-}
-},
-'CardErrand': {
-'title': 'Карточка поручения и пр.',
-'view': 'section',
-'options': {
-'ErrandToolbarBtns': {
-'title': 'Кнопки в шапке',
-'view': 'group',
-'module': 'ErrandToolbarBtns',
-'options': {
-'Show': {
-'title': 'Показать',
-'view': 'block',
-'options': {
-'Schedule': {
-'title': 'Время по документу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Monitoring': {
-'title': 'Поставить на контроль',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Agreement': {
-'title': 'Отправить на согласование',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Hide': {
-'title': 'Скрыть',
-'view': 'block',
-'options': {
-'Print': {
-'title': 'Распечатать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Save': {
-'title': 'Скачать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'LinkOld': {
-'title': 'Получить ссылку (старая)',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Delete': {
-'title': 'Удалить',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
-'Add': {
-'title': 'Добавить',
-'view': 'block',
-'options': {
-'TaskURL': {
-'title': 'Ссылка на задание',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'CopyInfo': {
-'title': 'Копировать описание',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-}
-}
-}
-}
-}
-};
+  return {
+    'HomePage': {
+      'title': 'Главная страница',
+      'view': 'section',
+      'options': {
+        'HideAccordion': {
+          'title': 'Скрыть пункты аккордеона',
+          'view': 'group',
+          'module': 'AccordionHideItems',
+          'options': {
+            'Main': {
+              'title': 'Основные',
+              'view': 'block',
+              'options': {
+                'Documents': {
+                  'title': 'Документы',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Staff': {
+                  'title': 'Сотрудники',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Tasks': {
+                  'title': 'Задачи',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Contacts': {
+                  'title': 'Контакты',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Calendar': {
+                  'title': 'Календарь',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'MyPage': {
+                  'title': 'Моя страница',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'OurCompany': {
+                  'title': 'Наша компания',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Other': {
+              'title': 'Прочие',
+              'view': 'block',
+              'options': {
+                'Company': {
+                  'title': 'Компании',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Business': {
+                  'title': 'Бизнес',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Accounting': {
+                  'title': 'Учет',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'UTS': {
+                  'title': 'УЦ',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Telephony': {
+                  'title': 'Телефония',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Retail': {
+                  'title': 'Магазин',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Presto': {
+                  'title': 'Presto',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Booking': {
+                  'title': 'Салон',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            }
+          }
+        },
+        'HideOther': {
+          'title': 'Скрыть прочие блоки',
+          'view': 'group',
+          'module': 'OtherBlocksHide',
+          'options': {
+            'Banners': {
+              'title': 'Баннеры',
+              'view': 'block',
+              'options': {
+                'Owl': {
+                  'title': 'Сова > Как просто',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'AsJust': {
+                  'title': '\'Как просто\' над лентой',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'SideRight': {
+                  'title': 'Правый баннер',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'HideMaximumButton': {
+                  'title': 'Переключатель аккордеона',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            }
+          }
+        },
+        'Modify': {
+          'title': 'Изменить внешний вид',
+          'view': 'group',
+          'module': 'HomePageModify',
+          'options': {
+            'News': {
+              'title': 'Новости',
+              'view': 'block',
+              'options': {
+                'InOneColumn': {
+                  'title': 'Лента в одну колонку',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+              /*,
+              'SmallImg': {
+                  'title': 'Уменьшить фото новости',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+              },
+              'HideAttachments': {
+                  'title': 'Скрыть вложения под спойлер',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+              },
+              'HideFooterBtn': {
+                  'title': 'Скрыть оценки и репосты',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+              },
+              'SlimBorder': {
+                  'title': 'Тонкие границы новости',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+              }
+            }
+            */
+            },
+            'Other': {
+              'title': 'Прочее',
+              'view': 'block',
+              'options': {
+                'StretchPage': {
+                  'title': 'Растянуть сайт на всю страницу',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'TapeEventsMinFoto': {
+                  'title': 'Уменьшить фото в ленте событий',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                /*
+                'HideTapeEvents': {
+                   'title': 'Скрыть ленту событий',
+                   'view': 'option',
+                   'type': 'boolean',
+                   'value': false
+                },
+                */
+                'HideHeaderText': {
+                  'title': 'Скрыть текст кнопок в шапке',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    'CardTask': {
+      'title': 'Карточка задачи и ошибки',
+      'view': 'section',
+      'options': {
+        'TaskToolbarBtns': {
+          'title': 'Кнопки в шапке',
+          'view': 'group',
+          'module': 'TaskToolbarBtns',
+          'options': {
+            'Show': {
+              'title': 'Показать',
+              'view': 'block',
+              'options': {
+                'Schedule': {
+                  'title': 'Время по документу',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Monitoring': {
+                  'title': 'Поставить на контроль',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Agreement': {
+                  'title': 'Отправить на согласование',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Hide': {
+              'title': 'Скрыть',
+              'view': 'block',
+              'options': {
+                'Print': {
+                  'title': 'Распечатать',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Save': {
+                  'title': 'Скачать',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'LinkOld': {
+                  'title': 'Получить ссылку (старая)',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Delete': {
+                  'title': 'Удалить',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Add': {
+              'title': 'Добавить',
+              'view': 'block',
+              'options': {
+                'BranchName': {
+                  'title': 'Имя ветки',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'СommitMsg': {
+                  'title': 'Комментарий для коммита',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'TaskURL': {
+                  'title': 'Ссылка на задачу',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    'CardMR': {
+      'title': 'Карточка MR',
+      'view': 'section',
+      'options': {
+        'MRToolbarBtns': {
+          'title': 'Кнопки в шапке',
+          'view': 'group',
+          'module': 'MRToolbarBtns',
+          'options': {
+            'Show': {
+              'title': 'Показать',
+              'view': 'block',
+              'options': {
+                'Schedule': {
+                  'title': 'Время по документу',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Monitoring': {
+                  'title': 'Поставить на контроль',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Agreement': {
+                  'title': 'Отправить на согласование',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Hide': {
+              'title': 'Скрыть',
+              'view': 'block',
+              'options': {
+                'Print': {
+                  'title': 'Распечатать',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Save': {
+                  'title': 'Скачать',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'LinkOld': {
+                  'title': 'Получить ссылку (старая)',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Delete': {
+                  'title': 'Удалить',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Add': {
+              'title': 'Добавить',
+              'view': 'block',
+              'options': {
+                'TaskURL': {
+                  'title': 'Ссылка на MR',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    'CardErrand': {
+      'title': 'Карточка поручения и пр.',
+      'view': 'section',
+      'options': {
+        'ErrandToolbarBtns': {
+          'title': 'Кнопки в шапке',
+          'view': 'group',
+          'module': 'ErrandToolbarBtns',
+          'options': {
+            'Show': {
+              'title': 'Показать',
+              'view': 'block',
+              'options': {
+                'Schedule': {
+                  'title': 'Время по документу',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Monitoring': {
+                  'title': 'Поставить на контроль',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Agreement': {
+                  'title': 'Отправить на согласование',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Hide': {
+              'title': 'Скрыть',
+              'view': 'block',
+              'options': {
+                'Print': {
+                  'title': 'Распечатать',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Save': {
+                  'title': 'Скачать',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'LinkOld': {
+                  'title': 'Получить ссылку (старая)',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'Delete': {
+                  'title': 'Удалить',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            },
+            'Add': {
+              'title': 'Добавить',
+              'view': 'block',
+              'options': {
+                'TaskURL': {
+                  'title': 'Ссылка на задание',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                },
+                'CopyInfo': {
+                  'title': 'Копировать описание',
+                  'view': 'option',
+                  'type': 'boolean',
+                  'value': false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  };
 })()
 , {'css':{'HomePageModify-FixHeight.css':`
 .sn-NewsPage__oneNews-contentArticle {
-height: 20px;
+   height: 20px;
 }
+
 .sn-NewsPage__oneNews-contentLogoBrif,
 .sn-NewsPage__oneNews-contentText:not(.sn-NewsPage__oneNews-NewsOnlyMedia) {
-min-height: 100px !important;
-max-height: 100px !important;
+   min-height: 100px !important;
+   max-height: 100px !important;
 }
+
 .sn-NewsPage__oneNews-contentLogoBrif {
-margin-bottom: 2px !important;
-overflow: hidden;
+   margin-bottom: 2px !important;
+   overflow: hidden;
 }
+
 .sn-NewsPage__oneNews-itemAll,
 .sn-NewsPage__oneNews {
-min-height: 156px;
+   min-height: 156px;
 }
 `,'HomePageModify-HideAttachments.css':`
 .sn-NewsPage__oneNews-contentCollage:before {
-content: 'Показать вложения...';
-color: #8991A9;
-font-size: 12px;
+   content: 'Показать вложения...';
+   color: #8991A9;
+   font-size: 12px;
 }
+
 .sn-NewsPage__oneNews-contentCollage {
-height: auto !important;
-margin-top: 0px;
-display: inline-block;
-margin: 0px 0px 2px 0px !important;
+   height: auto !important;
+   margin-top: 0px;
+   display: inline-block;
+   margin: 0px 0px 2px 0px !important;
 }
+
 .sn-NewsPage__oneNews-contentCollage .socnet-collage,
 .sn-NewsPage__oneNews-contentCollage .socnet-collage__content {
-display: none;
+   display: none;
 }
+
 .sn-NewsPage__oneNews-contentCollage:hover {
-display: block;
-z-index: 1;
-position: relative;
+   display: block;
+   z-index: 1;
+   position: relative;
 }
+
 .sn-NewsPage__oneNews-contentCollage:hover .socnet-collage,
 .sn-NewsPage__oneNews-contentCollage:hover .socnet-collage__content {
-display: block;
-background: white;
-border: 1px solid #f4f4f4;
+   display: block;
+   background: white;
+   border: 1px solid #f4f4f4;
 }
 `,'HomePageModify-HideAuthor.css':`
 .sn-NewsPage__oneNews-headerPhoto,
@@ -644,2038 +648,2255 @@ border: 1px solid #f4f4f4;
 .sn-NewsPage__oneNews-itemAll .sn-NewsPage__oneNews-repostComment,
 .sn-NewsPage__oneNews-itemAll .sn-RepostIcon,
 .sn-NewsPage__oneNews-itemAll .activity__ActivityMarker {
-display: none !important;
+   display: none !important;
 }
+
 .sn-NewsPage__oneNews>.sn-NewsPage__oneNews-itemAll {
-padding: 3px 6px 3px 6px !important;
+   padding: 3px 6px 3px 6px !important;
 }
+
 .sn-NewsPage__oneNews-headerTop,
 .sn-NewsPage__oneNews-contentButtons div {
-z-index: 1;
+   z-index: 1;
 }
+
 .sn-NewsPage__oneNews-header {
-margin: 0px !important;
+   margin: 0px !important;
 }
+
 .sn-NewsPage__repostHeader,
 .sn-NewsPage__oneNews-header,
 .sn-NewsPage__oneNews-headerTop {
-height: auto !important;
+   height: auto !important;
 }
+
 .sn-NewsPage .controls-ItemsToolbar {
-top: 8px !important;
+   top: 8px !important;
 }
+
 .sn-NewsPage .sn-DraftIcon,
 .sn-NewsPage .sn-FavoriteIcon,
 .sn-NewsPage .sn-PinIcon {
-top: -4px !important;
-right: 88px !important;
+   top: -4px !important;
+   right: 88px !important;
 }
+
 .np-View__twoColumns .np-News__item[style*="left: 0px"] .sn-DraftIcon,
 .np-View__twoColumns .np-News__item[style*="left: 0px"] .sn-FavoriteIcon {
-right: 85px !important;
+   right: 85px !important;
 }
+
 .sn-NewsPage__oneNews-headerRead {
-top: 0 !important;
-margin-top: 0 !important;
-background-color: #fff;
-line-height: 16px;
-padding-left: 80px;
+   top: 0 !important;
+   margin-top: 0 !important;
+   background-color: #fff;
+   line-height: 16px;
+   padding-left: 80px;
 }
+
 .sn-NewsPage__oneNews-contentButtons div {
-padding-top: 0px !important;
+   padding-top: 0px !important;
 }
+
 .sn-NewsPage__oneNews-headerDate {
-max-width: none !important;
-line-height: inherit !important;
-margin-top: 0 !important;
+   max-width: none !important;
+   line-height: inherit !important;
+   margin-top: 0 !important;
 }
 `,'HomePageModify-HideFooterBtn.css':`
 .sn-NewsPage__oneNews-footer {
-display: none !important;
+   display: none !important;
 }
+
 .sn-NewsPage__oneNews-itemAll {
-padding: 3px 12px 3px 12px !important;
+   padding: 3px 12px 3px 12px !important;
 }
 `,'HomePageModify-HideHeaderText.css':`
 .engine-OnlineBaseInnerMinCoreView__headerCell .header-ConfigurationButton .controls-Button__text,
 #header [sbisname="ConfigurationLink"] .controls-Link__field,
 #header div.user-button-component .controls-Link__field {
-display: none !important;
+   display: none !important;
 }
 `,'HomePageModify-HideTapeEvents.css':`
 .online-OnlineBaseInnerView__notificationCenter {
-display: none !important;
+   display: none !important;
 }
+
 .online-OnlineBaseInnerView__notificationButton {
-display: none !important;
+   display: none !important;
 }
+
 #headerLeft {
-display: block !important;
+   display: block !important;
 }
 `,'HomePageModify-SlimBorder.css':`
 .sn-NewsPage__oneNews-itemAll {
-margin-top: 0 !important;
-border-radius: 0 !important;
+   margin-top: 0 !important;
+   border-radius: 0 !important;
 }
+
 .sn-NewsPage__oneNews-contentArticle {
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
 }
+
 .np-View__twoColumns .np-News__item[style*="left: 0px"] .sn-NewsPage__oneNews-itemAll {
-margin-right: 1px !important;
-border-radius: 0 !important;
+   margin-right: 1px !important;
+   border-radius: 0 !important;
 }
+
 .np-View__twoColumns .np-News__item:not([style*="left: 0px"]) .sn-NewsPage__oneNews-itemAll {
-margin-left: 0 !important;
+   margin-left: 0 !important;
 }
+
 .sn-NewsPage .controls-ItemsToolbar {
-top: 14px;
+   top: 14px;
 }
 `,'HomePageModify-SmallImg.css':`
 img.sn-NewsPage__oneNews-contentLogo {
-width: 64px !important;
-height: 64px !important;
+   width: 64px !important;
+   height: 64px !important;
 }
+
 div.sn-NewsPage__oneNews-withLogo {
-margin-left: 74px !important;
+   margin-left: 74px !important;
 }
+
 .sn-NewsPage__oneNews-contentLogoBrif,
 .sn-NewsPage__oneNews-contentText:not(.sn-NewsPage__oneNews-NewsOnlyMedia) {
-min-height: 64px !important;
-max-height: 64px !important;
+   min-height: 64px !important;
+   max-height: 64px !important;
 }
+
 .sn-NewsPage__oneNews-itemAll,
 .sn-NewsPage__oneNews {
-min-height: 120px !important;
+   min-height: 120px !important;
 }
 `,'HomePageModify-StretchPage.css':`
 div.news-SpecialNews {
-display: none !important;
+  display: none !important;
 }
+
 #min-width,
 .engine-OnlineBaseInnerMinCoreView__content {
-max-width: none;
+  max-width: none;
 }
+
 @media screen and (min-width: 1600px) {
-.online-OnlineBaseInnerView__notificationCenter {
-left: inherit !important;
-right: 0 !important;
-}
+  .online-OnlineBaseInnerView__notificationCenter {
+    left: inherit !important;
+    right: 0 !important;
+  }
 }
 `,'HomePageModify-TapeEventsMinFoto.css':`
 div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt {
-text-align: center;
+   text-align: center;
 }
+
 div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto,
 div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto__with-miniCard {
-width: 42px !important;
-height: 42px !important;
+   width: 42px !important;
+   height: 42px !important;
 }
 `,'SettingsButton.css':`
 #SBIS-UI-Customizer-SettingsButton {
-margin-bottom: 4px;
-padding-bottom: 8px;
-padding-top: 4px;
-height: 100%;
-font-size: 15px;
-border-bottom: 1px solid #e4e4e4;
+   margin-bottom: 4px;
+   padding-bottom: 8px;
+   padding-top: 4px;
+   height: 100%;
+   font-size: 15px;
+   border-bottom: 1px solid #e4e4e4;
 }
+
 #SBIS-UI-Customizer-SettingsButton .row {
-padding: 6px 0px 6px;
+   padding: 6px 0px 6px;
 }
+
 #SBIS-UI-Customizer-SettingsButton .row:hover {
-cursor: pointer;
-background: #F0F4FB;
+   cursor: pointer;
+   background: #F0F4FB;
 }
+
 #SBIS-UI-Customizer-SettingsButton .icon {
-float: left;
-margin: 2px 0px 0 15px;
-height: 16px;
-width: 16px;
+   float: left;
+   margin: 2px 0px 0 15px;
+   height: 16px;
+   width: 16px;
 }
+
 #SBIS-UI-Customizer-SettingsButton .title {
-margin-left: 37px;
+   margin-left: 37px;
 }
+
 #SBIS-UI-Customizer-SettingsButton .title:hover {
-color: #313E78;
+   color: #313E78;
 }
+
 #SBIS-UI-Customizer-SettingsButton-Header {
-float: right;
-margin-right: 8px;
-margin-top: 5px;
+   float: right;
+   margin-right: 8px;
+   margin-top: 5px;
 }
+
 #SBIS-UI-Customizer-SettingsButton-Header .icon {
-height: 16px;
-width: 16px;
-cursor: pointer;
+   height: 16px;
+   width: 16px;
+   cursor: pointer;
 }
+
 #SBIS-UI-Customizer-SettingsButton .icon>svg,
 #SBIS-UI-Customizer-SettingsButton-Header .icon>svg {
-fill: #587AB0;
+   fill: #587AB0;
 }
+
 #SBIS-UI-Customizer-SettingsButton .icon>svg>g,
 #SBIS-UI-Customizer-SettingsButton-Header .icon>svg>g {
-stroke: #587AB0;
+   stroke: #587AB0;
 }
+
 #SBIS-UI-Customizer-SettingsButton .icon:hover>svg,
 #SBIS-UI-Customizer-SettingsButton-Header .icon:hover>svg {
-fill: #313E78;
+   fill: #313E78;
 }
+
 #SBIS-UI-Customizer-SettingsButton .icon:hover>svg>g,
 #SBIS-UI-Customizer-SettingsButton-Header .icon:hover>svg>g {
-stroke: #313E78;
+   stroke: #313E78;
 }
+
 .engine-OnlineBaseInnerMinCoreView__headerCell #SBIS-UI-Customizer-SettingsButton-Header {
-float: left;
-margin-top: 4px;
+   float: left;
+   margin-top: 4px;
 }
 `,'SettingsDialog.css':`
 #SBIS-UI-Customizer-SettingsDialog-Area {
-background: #FFFFFF;
-border-left: 2px solid #DDDDDD;
-border-bottom: 2px solid #DDDDDD;
-border-bottom-left-radius: 5px;
-position: absolute;
-top: 0;
-right: 0;
-z-index: 1000000;
+  background: #FFFFFF;
+  border-left: 2px solid #DDDDDD;
+  border-bottom: 2px solid #DDDDDD;
+  border-bottom-left-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000000;
 }
+
 #SBIS-UI-Customizer-SettingsDialog {
-width: 520px;
+  width: 520px;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.header {
-height: 24px;
-padding: 9px;
-border-bottom: 1px solid #EAEAEA;
+  height: 24px;
+  padding: 9px;
+  border-bottom: 1px solid #EAEAEA;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.header .title {
-font-weight: bold;
-font-size: 20px;
-color: #313e78;
+  font-weight: bold;
+  font-size: 20px;
+  color: #313e78;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.feedback {
-position: absolute;
-right: 48px;
-height: 16px;
-top: 14px;
-display: inline-block;
+  position: absolute;
+  right: 48px;
+  height: 16px;
+  top: 14px;
+  display: inline-block;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.feedback i {
-cursor: pointer;
-margin-right: 4px;
-height: 16px;
-width: 16px;
-display: inline-block;
+  cursor: pointer;
+  margin-right: 4px;
+  height: 16px;
+  width: 16px;
+  display: inline-block;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.feedback i.separator {
-width: 4px;
-border-right: 1px solid #E4E4E4;
+  width: 4px;
+  border-right: 1px solid #E4E4E4;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.feedback i svg {
-fill: #587AB0;
+  fill: #587AB0;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.feedback i:hover svg {
-fill: #FF7033;
+  fill: #FF7033;
 }
+
 #SBIS-UI-Customizer-SettingsDialog>.Settings-panel {
-overflow-y: auto;
+  overflow-y: auto;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section {
-float: left;
-width: 100%;
+  float: left;
+  width: 100%;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section:last-child>.header {
-border-bottom: none;
-border-bottom-left-radius: 3px;
+  border-bottom: none;
+  border-bottom-left-radius: 3px;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section.active>.header {
-background: #F3F3F3;
+  background: #F3F3F3;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section>.header {
-padding: 6px 12px;
-cursor: pointer;
-border-bottom: 1px solid #F5F5F5;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #F5F5F5;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section>.header:hover {
-background: #F0F5FB;
+  background: #F0F5FB;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section>.header .title {
-font-size: 18px;
-color: #313E78;
-font-weight: bold;
+  font-size: 18px;
+  color: #313E78;
+  font-weight: bold;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section .slider {
-float: left;
-width: 100%;
-border-bottom: 1px solid #EAEAEA;
-display: none;
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #EAEAEA;
+  display: none;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section.active .slider {
-display: block;
+  display: block;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section:last-child .slider {
-border-bottom: none;
+  border-bottom: none;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-group {
-float: left;
-width: 100%;
+  float: left;
+  width: 100%;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-group>.box {
-float: left;
-width: 100%;
-border-bottom: 1px solid #EAEAEA;
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #EAEAEA;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-section .SettingsDialog-group:last-child>.box {
-border-bottom: none;
+  border-bottom: none;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-group>.header {
-border-bottom: 1px solid #F5F5F5;
+  border-bottom: 1px solid #F5F5F5;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-group>.header .title {
-font-size: 16px;
-padding: 4px 12px;
-display: inline-block;
+  font-size: 16px;
+  padding: 4px 12px;
+  display: inline-block;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-block {
-float: left;
-width: 250px;
+  float: left;
+  width: 250px;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-block>.title {
-color: #313E78;
-font-size: 14px;
-font-weight: bold;
-padding: 6px 12px 0;
-display: inline-block;
+  color: #313E78;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 12px 0;
+  display: inline-block;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-block>.box {
-padding: 0px 0px 6px 12px;
+  padding: 0px 0px 6px 12px;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-option-boolean label {
-cursor: pointer;
-display: inline-block;
-padding: 2px 0;
+  cursor: pointer;
+  display: inline-block;
+  padding: 2px 0;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-option-boolean input {
--webkit-appearance: none;
-/*-moz-appearance: none;*/
-border: 1px solid #ADADAD;
-vertical-align: middle;
-height: 14px;
-width: 14px;
-position: relative;
-cursor: pointer;
+  -webkit-appearance: none;
+  /*-moz-appearance: none;*/
+  border: 1px solid #ADADAD;
+  vertical-align: middle;
+  height: 14px;
+  width: 14px;
+  position: relative;
+  cursor: pointer;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-option-boolean label:hover input {
-background: #F0F5FB;
+  background: #F0F5FB;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-option-boolean input:checked:after {
-content: '\\2714';
-font-size: 14px;
-position: absolute;
-left: 0;
-color: #FF7033;
-font-weight: bold;
-line-height: 12px;
-vertical-align: middle;
+  content: '\\2714';
+  font-size: 14px;
+  position: absolute;
+  left: 0;
+  color: #FF7033;
+  font-weight: bold;
+  line-height: 12px;
+  vertical-align: middle;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-option-boolean span {
-vertical-align: middle;
-padding-left: 4px;
+  vertical-align: middle;
+  padding-left: 4px;
 }
+
 .SBIS-UI-Customizer .SettingsDialog-option-boolean label:hover span {
-text-decoration: underline;
-color: #FF7033;
+  text-decoration: underline;
+  color: #FF7033;
 }
 `,'SocNet.css':`
 .SBIS-UI-Customizer-SocNet-InputDialog {
-background: #FFFFFF;
-border-left: 2px solid #DDDDDD;
-border-bottom: 2px solid #DDDDDD;
-border-bottom-left-radius: 5px;
-position: absolute;
-top: 0;
-right: 0;
-z-index: 1000001;
+  background: #FFFFFF;
+  border-left: 2px solid #DDDDDD;
+  border-bottom: 2px solid #DDDDDD;
+  border-bottom-left-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000001;
 }
+
 .SBIS-UI-Customizer-SocNet-InputDialog>.header {
-height: 24px;
-padding: 9px;
-border-bottom: 1px solid #EAEAEA;
+  height: 24px;
+  padding: 9px;
+  border-bottom: 1px solid #EAEAEA;
 }
+
 .SBIS-UI-Customizer-SocNet-InputDialog>.header .title {
-font-weight: bold;
-font-size: 20px;
-color: #313e78;
+  font-weight: bold;
+  font-size: 20px;
+  color: #313e78;
 }
+
 .SBIS-UI-Customizer-SocNet-InputDialog textarea {
-width: 350px;
-resize: none;
-padding: 6px;
-margin: 8px;
-border: 1px solid #EAEAEA;
+  width: 350px;
+  resize: none;
+  padding: 6px;
+  margin: 8px;
+  border: 1px solid #EAEAEA;
 }
+
 .SBIS-UI-Customizer-SocNet-InputDialog .send {
-position: absolute;
-top: 9px;
-right: 44px;
-padding: 2px 8px;
-cursor: pointer;
-border: 1px solid #ff7033;
-border-radius: 16px;
+  position: absolute;
+  top: 9px;
+  right: 44px;
+  padding: 2px 8px;
+  cursor: pointer;
+  border: 1px solid #ff7033;
+  border-radius: 16px;
 }
+
 .SBIS-UI-Customizer-SocNet-InputDialog .send:hover {
-background: #FDECD9;
+  background: #FDECD9;
 }
+
 .SBIS-UI-Customizer-SocNet-InputDialog .send:active {
-background: #FDD2C0
+  background: #FDD2C0
 }
 `,'TaskToolbarBtns-ExtraButtons.css':`
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons {
-display: inline-block;
-border-right: 1px solid #E4E4E4;
-margin-right: 5px;
+   display: inline-block;
+   border-right: 1px solid #E4E4E4;
+   margin-right: 5px;
 }
+
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i {
-vertical-align: middle;
-cursor: pointer;
-margin-right: 4px;
-height: 24px;
-width: 24px;
-display: inline-block;
+   vertical-align: middle;
+   cursor: pointer;
+   margin-right: 4px;
+   height: 24px;
+   width: 24px;
+   display: inline-block;
 }
+
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i svg {
-fill: #587AB0;
+   fill: #587AB0;
 }
+
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i:hover svg {
-fill: #FF7033;
+   fill: #FF7033;
 }
 `,'VersionInformer.css':`
 .SBIS-UI-Customizer .VersionInformer .background {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-z-index: 7000000;
-background-color: #000;
-opacity: 0.1;
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   z-index: 7000000;
+   background-color: #000;
+   opacity: 0.1;
 }
+
 .SBIS-UI-Customizer .VersionInformer .area {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-z-index: 7000001;
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   z-index: 7000001;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog {
-min-width: 600px;
-max-width: 800px;
-display: inline-block;
-background: #FFFFFF;
-border: 2px solid #DDDDDD;
-border-top-width: 0px;
+   min-width: 600px;
+   max-width: 800px;
+   display: inline-block;
+   background: #FFFFFF;
+   border: 2px solid #DDDDDD;
+   border-top-width: 0px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .header {
-height: 24px;
-padding: 12px;
-border-bottom: 1px solid #EAEAEA;
-border-top: 3px solid #135091;
-}
+   height: 24px;
+   padding: 12px;
+   border-bottom: 1px solid #EAEAEA;
+   border-top: 3px solid #135091;
+} 
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .header .title {
-font-weight: bold;
-font-size: 20px;
-color: #313e78;
-padding-right: 16px;
+   font-weight: bold;
+   font-size: 20px;
+   color: #313e78;
+   padding-right: 16px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .header .info {
-float: right;
-color: #999;
-font-size: 12px;
+   float: right;
+   color: #999;
+   font-size: 12px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .content {
-padding: 12px 16px;
+   padding: 12px 16px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .content > .group {
-padding-bottom: 8px;
+   padding-bottom: 8px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .content > .group > .title {
-color: #313E78;
-font-weight: bold;
-font-size: 15px;
-line-height: 24px;
+   color: #313E78;
+   font-weight: bold;
+   font-size: 15px;
+   line-height: 24px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .content > .group > ul {
-padding-left: 26px;
+   padding-left: 26px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .content > .group > ul > li {
-padding-bottom: 8px;
+   padding-bottom: 8px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer {
-padding: 16px 0;
-border-top: 1px solid #EAEAEA;
-background: #F5F5F5;
+   padding: 16px 0;
+   border-top: 1px solid #EAEAEA;
+   background: #F5F5F5;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links {
-float: left;
-padding: 0 12px;
-line-height: 25px;
+   float: left;
+   padding: 0 12px;
+   line-height: 25px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links.right {
-float: right;
+   float: right;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links > a {
-border-right: 1px solid #EAEAEA;
-padding-right: 6px;
-padding-left: 2px;
+
+.SBIS-UI-Customizer .VersionInformer .dialog > .footer >  .links > a {
+   border-right: 1px solid #EAEAEA;
+   padding-right: 6px;
+   padding-left: 2px;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links > a:last-child {
-border-right: none;
+   border-right: none;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer .button {
-border: 1px solid #ff7033;
-margin: auto;
-border-radius: 16px;
-padding: 2px;
-width: 100px;
-text-align: center;
-cursor: pointer;
+   border: 1px solid #ff7033;
+   margin: auto;
+   border-radius: 16px;
+   padding: 2px;
+   width: 100px;
+   text-align: center;
+   cursor: pointer;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer .button:hover {
-background-color: #fdecd9;
+   background-color: #fdecd9;
 }
+
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer .button:active {
-background-color: #fdd2c0 !important;
+   background-color: #fdd2c0 !important;
 }
 `},'js':{'AccordionHideItems.js':`
 UICustomizerDefine('AccordionHideItems', ['Engine'], function (Engine) {
-'use strict';
-const selectors = {
-'Documents': '.nav-menu-container a[data-id="documents"]',
-'Staff': '.nav-menu-container a[data-id="staff"]',
-'Tasks': '.nav-menu-container a[data-id="work"]',
-'Contacts': '.nav-menu-container a[data-id="contacts"]',
-'Calendar': '.nav-menu-container a[data-id="calendar"]',
-'MyPage': '.nav-menu-container a[data-id="myProfile"]',
-'OurCompany': '.nav-menu-container a[data-id="our_company"]',
-'Company': '.nav-menu-container a[data-id="contragents"]',
-'Business': '.nav-menu-container a[data-id="business"]',
-'Accounting': '.nav-menu-container a[data-id="accounting"]',
-'UTS': '.nav-menu-container a[data-id="ca_navication"]',
-'Telephony': '.nav-menu-container a[data-id="tel"]',
-'Retail': '.nav-menu-container a[data-id="retail"]',
-'Presto': '.nav-menu-container a[data-id="presto"]',
-'Booking': '.nav-menu-container a[data-id="booking"]'
-};
-return {
-applySettings: applySettings
-};
-function applySettings(settings) {
-var css = '';
-for (let groupName in settings.options) {
-let group = settings.options[groupName];
-for (let name in group.options) {
-if (group.options[name].value) {
-css += Engine.generateCSS.displayNone(selectors[name]);
-}
-}
-}
-if (css) {
-Engine.appendCSS('AccordionHideItems', css);
-} else {
-Engine.removeCSS('AccordionHideItems');
-}
-}
+  'use strict';
+
+  const selectors = {
+    'Documents': '.nav-menu-container a[data-id="documents"]',
+    'Staff': '.nav-menu-container a[data-id="staff"]',
+    'Tasks': '.nav-menu-container a[data-id="work"]',
+    'Contacts': '.nav-menu-container a[data-id="contacts"]',
+    'Calendar': '.nav-menu-container a[data-id="calendar"]',
+    'MyPage': '.nav-menu-container a[data-id="myProfile"]',
+    'OurCompany': '.nav-menu-container a[data-id="our_company"]',
+    'Company': '.nav-menu-container a[data-id="contragents"]',
+    'Business': '.nav-menu-container a[data-id="business"]',
+    'Accounting': '.nav-menu-container a[data-id="accounting"]',
+    'UTS': '.nav-menu-container a[data-id="ca_navication"]',
+    'Telephony': '.nav-menu-container a[data-id="tel"]',
+    'Retail': '.nav-menu-container a[data-id="retail"]',
+    'Presto': '.nav-menu-container a[data-id="presto"]',
+    'Booking': '.nav-menu-container a[data-id="booking"]'
+  };
+
+  return {
+    applySettings: applySettings
+  };
+
+  function applySettings(settings) {
+    var css = '';
+    for (let groupName in settings.options) {
+      let group = settings.options[groupName];
+      for (let name in group.options) {
+        if (group.options[name].value) {
+          css += Engine.generateCSS.displayNone(selectors[name]);
+        }
+      }
+    }
+    if (css) {
+      Engine.appendCSS('AccordionHideItems', css);
+    } else {
+      Engine.removeCSS('AccordionHideItems');
+    }
+  }
+
 });
 `,'Engine.js':`
 UICustomizerDefine('Engine', function () {
-'use strict';
-const htmlre = /\\{\\{([\\w]+)\\}\\}/g;
-const migrateSettingsGroup = {};
-var verinfo, baseSettings, sources, gmapi, settings;
-var SbisService, InformationPopupManager;
-var _onload = false;
-var _onloadEvents = [];
-window.onload = function () {
-_onloadEvents.forEach(function (fn) {
-fn();
-});
-_onload = true;
-_onloadEvents = null;
-};
-var _waitRequire = false;
-var _waitRequireEvents = [];
-var _waitRequireFN = function _waitRequireFN() {
-if (_waitRequireEvents) {
-_waitRequireEvents.forEach(function (fn) {
-fn(window.require);
-});
-}
-_waitRequire = true;
-_waitRequireEvents = null;
-};
-var _waitRequireID = setInterval(function () {
-onload(function () {
-if (typeof window.require !== 'undefined') {
-window.require(['Core/core-ready'], function (ready) {
-ready.addCallback(_waitRequireFN);
-return ready;
-}, function (error) {
-console.warn('UICustomizer', error);
-window.require(['Core/core-init-min'],
-function (ready) {
-ready.addCallback(_waitRequireFN);
-return ready;
-},
-function (error) {
-console.warn('UICustomizer', error);
-console.warn('UICustomizer: Не удалось получить деферред готовности страницы');
-return error;
-}
-);
-return error;
-});
-clearInterval(_waitRequireID);
-}
-});
-}, 100);
-var _waitID = null;
-var _wait = {};
-var _waitSync = {};
-var _waitOnce = {};
-document.addEventListener('DOMNodeInserted', function () {
-_waiting();
-_waitingSync();
-}, false);
-return {
-init: init,
-getVerInfo: getVerInfo,
-waitRequire: waitRequire,
-onload: onload,
-wait: wait,
-waitSync: waitSync,
-unsubscribeWait: unsubscribeWait,
-unsubscribeWaitSync: unsubscribeWaitSync,
-waitOnce: waitOnce,
-unsubscribeWaitOnce: unsubscribeWaitOnce,
-getHTML: getHTML,
-createElement: createElement,
-createComponent: createComponent,
-removeByQuery: removeByQuery,
-generateCSS: {
-custom: generateCSS_custom,
-displayNone: generateCSS_displayNone,
-inlineBlock: generateCSS_inlineBlock
-},
-hasCSS: hasCSS,
-getCSS: getCSS,
-appendCSS: appendCSS,
-removeCSS: removeCSS,
-getSVG: getSVG,
-getSettings: getSettings,
-setSetting: setSetting,
-cutTags: cutTags,
-cutOverflow: cutOverflow,
-copyToClipboard: copyToClipboard,
-getDate: getDate,
-rpc: {
-sbis: rpc_sbis
-},
-openInformationPopup: openInformationPopup
-};
-function init(_verinfo, _baseSettings, _sources, _gmapi) {
-/* jshint -W040 */
-delete this.init;
-verinfo = _verinfo;
-baseSettings = _baseSettings;
-sources = _sources;
-gmapi = _gmapi;
-settings = _copyObject(baseSettings);
-var localSettings = localStorage.getItem('SBIS-UI-Customizer-Settings');
-if (localSettings) {
-localSettings = JSON.parse(localSettings);
-_applySettings(settings, localSettings).then(function () {
-localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
-}, console.error);
-}
-localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
-var lastversion = localStorage.getItem('SBIS-UI-Customizer-LastVersion');
-if (lastversion || localSettings) {
-if (lastversion !== verinfo.version) {
-UICustomizerRequire(['VersionInformer'], function (VersionInformer) {
-VersionInformer.open();
-});
-}
-} else {
-localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
-}
-UICustomizerRequire(['SettingsButton'], function (SettingsButton) {
-SettingsButton.init();
-});
-UICustomizerRequire(['HotKeys'], function (HotKeys) {
-HotKeys.init();
-});
-}
-function getVerInfo() {
-return _copyObject(verinfo);
-}
-function onload(fn) {
-if (_onload) {
-fn();
-} else {
-_onloadEvents.push(fn);
-}
-}
-function waitRequire(fn) {
-if (_waitRequire) {
-fn(window.require);
-} else {
-_waitRequireEvents.push(fn);
-}
-}
-function wait(selector, fn) {
-if (!(selector in _wait)) {
-_wait[selector] = new Set();
-}
-_wait[selector].add(fn);
-_waiting();
-}
-function waitSync(selector, fn) {
-if (!(selector in _waitSync)) {
-_waitSync[selector] = new Set();
-}
-_waitSync[selector].add(fn);
-_waitingSync();
-}
-function unsubscribeWait(selector, fn) {
-if (typeof (fn) === 'undefined') {
-delete _wait[selector];
-} else {
-if (selector in _wait) {
-let set = _wait[selector];
-set.delete(fn);
-if (!set.size) {
-delete _wait[selector];
-}
-}
-}
-}
-function unsubscribeWaitSync(selector, fn) {
-if (typeof (fn) === 'undefined') {
-delete _waitSync[selector];
-} else {
-if (selector in _waitSync) {
-let set = _waitSync[selector];
-set.delete(fn);
-if (!set.size) {
-delete _waitSync[selector];
-}
-}
-}
-}
-function waitOnce(selector, fn) {
-if (!(selector in _waitOnce)) {
-_waitOnce[selector] = new Set();
-}
-_waitOnce[selector].add(fn);
-_waiting();
-}
-function unsubscribeWaitOnce(selector, fn) {
-if (typeof (fn) === 'undefined') {
-delete _waitOnce[selector];
-} else {
-if (selector in _waitOnce) {
-let set = _waitOnce[selector];
-set.delete(fn);
-if (!set.size) {
-delete _waitOnce[selector];
-}
-}
-}
-}
-function _waiting() {
-if (!_waitID) {
-_waitID = setTimeout(_waitingHandler, 1);
-}
-}
-function _waitingHandler() {
-for (let i in _wait) {
-let elms = document.querySelectorAll(i);
-let ret_elms = [];
-for (let j = 0; j < elms.length; j++) {
-let elm = elms[j];
-if (!elm.UIC_Found) {
-elm.UIC_Found = true;
-ret_elms.push(elm);
-}
-}
-if (ret_elms.length > 0) {
-for (let item of _wait[i]) {
-item(ret_elms);
-}
-}
-}
-for (let i in _waitOnce) {
-let elm = document.querySelector(i);
-if (elm) {
-for (let item of _waitOnce[i]) {
-item(elm);
-}
-delete _waitOnce[i];
-}
-}
-_waitID = null;
-}
-function _waitingSync() {
-for (let i in _waitSync) {
-let elms = document.querySelectorAll(i);
-let ret_elms = [];
-for (let j = 0; j < elms.length; j++) {
-let elm = elms[j];
-if (!elm.UIC_Found) {
-elm.UIC_Found = true;
-ret_elms.push(elm);
-}
-}
-if (ret_elms.length > 0) {
-for (let item of _waitSync[i]) {
-item(ret_elms);
-}
-}
-}
-}
-function getHTML(name, data) {
-name += '.xhtml';
-if (name in sources.xhtml) {
-let xhtml = sources.xhtml[name];
-if (data) {
-xhtml = xhtml.replace(htmlre, function (str, key) {
-return key in data ? data[key] : str;
-});
-}
-return xhtml;
-} else {
-throw Error('Неизвестное имя файла: ' + name);
-}
-}
-function createElement(name, data) {
-var html = getHTML(name, data);
-var cnt = document.createElement('div');
-cnt.className = 'SBIS-UI-Customizer ' + name;
-cnt.innerHTML = html;
-return cnt;
-}
-function createComponent(name, data) {
-var html = getHTML(name, data);
-var cnt = document.createElement('div');
-cnt.id = 'SBIS-UI-Customizer-' + name;
-cnt.className = 'SBIS-UI-Customizer';
-cnt.innerHTML = html;
-return cnt;
-}
-function removeByQuery(query) {
-var elms = document.querySelectorAll(query);
-for (let i = 0; i < elms.length; i++) {
-elms[i].remove();
-}
-}
-function generateCSS_custom(selector, rule, value) {
-return \`\${selector} { \${rule}: \${value}; }\`;
-}
-function generateCSS_displayNone(selector) {
-return \`\${selector} { display: none !important; }\`;
-}
-function generateCSS_inlineBlock(selector) {
-return \`\${selector} { display: inline-block !important; }\`;
-}
-function hasCSS(name) {
-name += '.css';
-return name in sources.css;
-}
-function getCSS(name) {
-name += '.css';
-if (name in sources.css) {
-return sources.css[name];
-} else {
-throw Error('Неизвестное имя файла: ' + name);
-}
-}
-function appendCSS(name, use_css) {
-let fullname = name + '.css';
-if (fullname in sources.css || use_css) {
-var id = \`SBIS-UI-Customizer-\${fullname}\`;
-var elm = document.getElementById(id);
-if (!elm) {
-elm = document.createElement('style');
-elm.id = id;
-elm.type = 'text/css';
-elm.className = 'SBIS-UI-Customizer';
-document.getElementById('SBIS-UI-Customizer').appendChild(elm);
-}
-elm.innerHTML = use_css || getCSS(name);
-}
-}
-function removeCSS(name) {
-let fullname = name + '.css';
-var id = \`SBIS-UI-Customizer-\${fullname}\`;
-var elm = document.getElementById(id);
-if (elm) {
-elm.remove();
-}
-}
-function getSVG(name) {
-name += '.svg';
-if (name in sources.svg) {
-return sources.svg[name];
-} else {
-throw Error('Неизвестное имя файла: ' + name);
-}
-}
-function getSettings(minimize) {
-return minimize ? _minimizeSettings(_copyObject(settings)) : _copyObject(settings);
-}
-function setSetting(name, value) {
-var names = name.split('.');
-var setting = settings;
-var moduleSettings = null;
-while (names.length > 0) {
-setting = setting[names.shift()];
-if (setting.module) {
-moduleSettings = setting;
-}
-if (names.length > 0) {
-setting = setting.options;
-}
-}
-switch (setting.type) {
-case 'boolean':
-setting.value = !!value;
-break;
-}
-_applySettings_toModule(moduleSettings).then(function () {
-localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
-}, console.error);
-}
-function cutTags(text) {
-return (text + '')
-.replace(/<\\/?\\w+[^>]*>/g, '')
-.replace(/&nbsp;/g, ' ')
-.replace(/\\n\\s+\\n/g, '\\n\\n')
-.replace(/\\n\\n+/g, '\\n\\n')
-.replace(/\\n\\n+$/g, '\\n');
-}
-function cutOverflow(text, maxLine, maxLength) {
-text = (text + '').split('\\n');
-maxLine = maxLine || 80;
-maxLength = maxLength || 256;
-let result = [];
-for (let i = 0; i < text.length; i++) {
-let line = text[i];
-if (line.length > maxLine) {
-line = line.split(' ');
-let newLine = '';
-while (line.length > 0) {
-let word = line.shift();
-let testLine = newLine + (newLine ? ' ' : '') + word;
-if (testLine.length < maxLine) {
-newLine = testLine;
-} else {
-if (newLine) {
-result.push(newLine);
-}
-while (word.length > maxLine) {
-result.push(word.substring(0, maxLine));
-word = word.substring(maxLine);
-}
-newLine = word;
-}
-}
-result.push(newLine);
-} else {
-result.push(line);
-}
-}
-result = result.join('\\n');
-if (result.length > maxLength) {
-result = result.substring(0, maxLength - 3) + '...';
-}
-return result;
-}
-function copyToClipboard(text) {
-gmapi.GM_setClipboard(text, { type: 'text', mimetype: 'text/plain' });
-}
-function getDate(date) {
-date = date || new Date();
-var d = ('0' + date.getDate()).slice(-2);
-var m = ('0' + (date.getMonth() + 1)).slice(-2);
-var y = String(date.getFullYear()).slice(-2);
-return d + '.' + m + '.' + y;
-}
-function rpc_sbis(obj) {
-if (!SbisService) {
-return waitRequire(function (require) {
-require(['WS.Data/Source/SbisService'], function (svr) {
-SbisService = svr;
-rpc_sbis(obj);
-});
-});
-}
-var service = obj.service ? ('/' + obj.service) : '';
-var method = obj.method.split('.');
-var params = obj.params || {};
-var callback = obj.callback;
-var errback = obj.errback;
-var bl = new SbisService({
-endpoint: {
-address: service + '/service/',
-contract: method[0]
-}
-}).call(method[1], params);
-if (callback) {
-bl.addCallback(callback);
-}
-if (errback) {
-bl.addErrback(errback);
-}
-}
-function openInformationPopup(text, status) {
-if (!InformationPopupManager) {
-return waitRequire(function (require) {
-require(['js!SBIS3.CONTROLS.Utils.InformationPopupManager'], function (ipm) {
-InformationPopupManager = ipm;
-return openInformationPopup(text, status);
-});
-});
-}
-status = status ? status : 'success';
-InformationPopupManager.showNotification({
-status: status,
-caption: text
-});
-}
-function _copyObject(obj) {
-var newObj = {};
-for (let name in obj) {
-let val = obj[name];
-if (val instanceof Array) {
-newObj[name] = obj[name].slice();
-} else if (typeof val === 'object') {
-newObj[name] = _copyObject(obj[name]);
-} else {
-newObj[name] = obj[name];
-}
-}
-return newObj;
-}
-function _applySettings(target, source, ptName) {
-let queue = [];
-for (let name in target) {
-let sName = name;
-if (!(sName in source)) {
-if (name in migrateSettingsGroup) {
-sName = migrateSettingsGroup[name];
-} else {
-continue;
-}
-}
-let fName = ptName ? \`\${ptName}.\${name}\` : name;
-let tVal = target[name];
-let sVal = source[sName];
-let tType = typeof tVal;
-let sType = typeof sVal;
-if (
-tType === 'object' &&
-'options' in tVal &&
-sType === 'object'
-) {
-queue.push(_applySettings(tVal.options, sVal, fName));
-} else if (
-tType === 'object' &&
-'value' in tVal &&
-sType !== 'object' &&
-typeof tVal.value === sType
-) {
-tVal.value = sVal;
-} else {
-console.error(Error(\`Неверный тип опции \${fName}\`));
-}
-if (tVal.module) {
-queue.push(_applySettings_toModule(tVal));
-}
-}
-return Promise.all(queue);
-}
-function _applySettings_toModule(moduleSettings) {
-return new Promise(function (resolve) {
-try {
-UICustomizerRequire([moduleSettings.module], function (module) {
-try {
-module.applySettings.call(module, moduleSettings);
-} catch (err) {
-console.error(err);
-}
-resolve();
-});
-} catch (err) {
-console.error(err);
-resolve();
-}
-});
-}
-function _minimizeSettings(conf) {
-var min = {};
-for (let name in conf) {
-let obj = conf[name];
-if ('value' in obj) {
-min[name] = obj.value;
-} else if ('options' in obj) {
-min[name] = _minimizeSettings(obj.options);
-}
-}
-return min;
-}
+  'use strict';
+
+  const htmlre = /\\{\\{([\\w]+)\\}\\}/g;
+
+  const migrateSettingsGroup = {};
+
+  var verinfo, baseSettings, sources, gmapi, settings;
+
+  var SbisService, InformationPopupManager;
+
+  var _onload = false;
+  var _onloadEvents = [];
+  window.onload = function () {
+    _onloadEvents.forEach(function (fn) {
+      fn();
+    });
+    _onload = true;
+    _onloadEvents = null;
+  };
+
+  var _waitRequire = false;
+  var _waitRequireEvents = [];
+  var _waitRequireFN = function _waitRequireFN() {
+    if (_waitRequireEvents) {
+      _waitRequireEvents.forEach(function (fn) {
+        fn(window.require);
+      });
+    }
+    _waitRequire = true;
+    _waitRequireEvents = null;
+  };
+  var _waitRequireID = setInterval(function () {
+    onload(function () {
+      if (typeof window.require !== 'undefined') {
+        window.require(['Core/core-ready'], function (ready) {
+          ready.addCallback(_waitRequireFN);
+          return ready;
+        }, function (error) {
+          console.warn('UICustomizer', error);
+          window.require(['Core/core-init-min'],
+            function (ready) {
+              ready.addCallback(_waitRequireFN);
+              return ready;
+            },
+            function (error) {
+              console.warn('UICustomizer', error);
+              console.warn('UICustomizer: Не удалось получить деферред готовности страницы');
+              return error;
+            }
+          );
+          return error;
+        });
+        clearInterval(_waitRequireID);
+      }
+    });
+  }, 100);
+
+  var _waitID = null;
+  var _wait = {};
+  var _waitSync = {};
+  var _waitOnce = {};
+  document.addEventListener('DOMNodeInserted', function () {
+    _waiting();
+    _waitingSync();
+  }, false);
+
+  return {
+    init: init,
+    getVerInfo: getVerInfo,
+    waitRequire: waitRequire,
+    onload: onload,
+    wait: wait,
+    waitSync: waitSync,
+    unsubscribeWait: unsubscribeWait,
+    unsubscribeWaitSync: unsubscribeWaitSync,
+    waitOnce: waitOnce,
+    unsubscribeWaitOnce: unsubscribeWaitOnce,
+    getHTML: getHTML,
+    createElement: createElement,
+    createComponent: createComponent,
+    removeByQuery: removeByQuery,
+    generateCSS: {
+      custom: generateCSS_custom,
+      displayNone: generateCSS_displayNone,
+      inlineBlock: generateCSS_inlineBlock
+    },
+    hasCSS: hasCSS,
+    getCSS: getCSS,
+    appendCSS: appendCSS,
+    removeCSS: removeCSS,
+    getSVG: getSVG,
+    getSettings: getSettings,
+    setSetting: setSetting,
+    cutTags: cutTags,
+    cutOverflow: cutOverflow,
+    copyToClipboard: copyToClipboard,
+    getDate: getDate,
+    rpc: {
+      sbis: rpc_sbis
+    },
+    openInformationPopup: openInformationPopup
+  };
+
+  function init(_verinfo, _baseSettings, _sources, _gmapi) {
+    /* jshint -W040 */
+    delete this.init;
+    verinfo = _verinfo;
+    baseSettings = _baseSettings;
+    sources = _sources;
+    gmapi = _gmapi;
+    settings = _copyObject(baseSettings);
+    var localSettings = localStorage.getItem('SBIS-UI-Customizer-Settings');
+    if (localSettings) {
+      localSettings = JSON.parse(localSettings);
+      _applySettings(settings, localSettings).then(function () {
+        localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
+      }, console.error);
+    }
+    localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
+    var lastversion = localStorage.getItem('SBIS-UI-Customizer-LastVersion');
+    if (lastversion || localSettings) {
+      if (lastversion !== verinfo.version) {
+        UICustomizerRequire(['VersionInformer'], function (VersionInformer) {
+          VersionInformer.open();
+        });
+      }
+    } else {
+      localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
+    }
+    UICustomizerRequire(['SettingsButton'], function (SettingsButton) {
+      SettingsButton.init();
+    });
+    UICustomizerRequire(['HotKeys'], function (HotKeys) {
+      HotKeys.init();
+    });
+  }
+
+  function getVerInfo() {
+    return _copyObject(verinfo);
+  }
+
+  function onload(fn) {
+    if (_onload) {
+      fn();
+    } else {
+      _onloadEvents.push(fn);
+    }
+  }
+
+  function waitRequire(fn) {
+    if (_waitRequire) {
+      fn(window.require);
+    } else {
+      _waitRequireEvents.push(fn);
+    }
+  }
+
+  function wait(selector, fn) {
+    if (!(selector in _wait)) {
+      _wait[selector] = new Set();
+    }
+    _wait[selector].add(fn);
+    _waiting();
+  }
+
+  function waitSync(selector, fn) {
+    if (!(selector in _waitSync)) {
+      _waitSync[selector] = new Set();
+    }
+    _waitSync[selector].add(fn);
+    _waitingSync();
+  }
+
+  function unsubscribeWait(selector, fn) {
+    if (typeof (fn) === 'undefined') {
+      delete _wait[selector];
+    } else {
+      if (selector in _wait) {
+        let set = _wait[selector];
+        set.delete(fn);
+        if (!set.size) {
+          delete _wait[selector];
+        }
+      }
+    }
+  }
+
+  function unsubscribeWaitSync(selector, fn) {
+    if (typeof (fn) === 'undefined') {
+      delete _waitSync[selector];
+    } else {
+      if (selector in _waitSync) {
+        let set = _waitSync[selector];
+        set.delete(fn);
+        if (!set.size) {
+          delete _waitSync[selector];
+        }
+      }
+    }
+  }
+
+  function waitOnce(selector, fn) {
+    if (!(selector in _waitOnce)) {
+      _waitOnce[selector] = new Set();
+    }
+    _waitOnce[selector].add(fn);
+    _waiting();
+  }
+
+  function unsubscribeWaitOnce(selector, fn) {
+    if (typeof (fn) === 'undefined') {
+      delete _waitOnce[selector];
+    } else {
+      if (selector in _waitOnce) {
+        let set = _waitOnce[selector];
+        set.delete(fn);
+        if (!set.size) {
+          delete _waitOnce[selector];
+        }
+      }
+    }
+  }
+
+  function _waiting() {
+    if (!_waitID) {
+      _waitID = setTimeout(_waitingHandler, 1);
+    }
+  }
+
+  function _waitingHandler() {
+    for (let i in _wait) {
+      let elms = document.querySelectorAll(i);
+      let ret_elms = [];
+      for (let j = 0; j < elms.length; j++) {
+        let elm = elms[j];
+        if (!elm.UIC_Found) {
+          elm.UIC_Found = true;
+          ret_elms.push(elm);
+        }
+      }
+      if (ret_elms.length > 0) {
+        for (let item of _wait[i]) {
+          item(ret_elms);
+        }
+      }
+    }
+    for (let i in _waitOnce) {
+      let elm = document.querySelector(i);
+      if (elm) {
+        for (let item of _waitOnce[i]) {
+          item(elm);
+        }
+        delete _waitOnce[i];
+      }
+    }
+    _waitID = null;
+  }
+
+  function _waitingSync() {
+    for (let i in _waitSync) {
+      let elms = document.querySelectorAll(i);
+      let ret_elms = [];
+      for (let j = 0; j < elms.length; j++) {
+        let elm = elms[j];
+        if (!elm.UIC_Found) {
+          elm.UIC_Found = true;
+          ret_elms.push(elm);
+        }
+      }
+      if (ret_elms.length > 0) {
+        for (let item of _waitSync[i]) {
+          item(ret_elms);
+        }
+      }
+    }
+  }
+
+  function getHTML(name, data) {
+    name += '.xhtml';
+    if (name in sources.xhtml) {
+      let xhtml = sources.xhtml[name];
+      if (data) {
+        xhtml = xhtml.replace(htmlre, function (str, key) {
+          return key in data ? data[key] : str;
+        });
+      }
+      return xhtml;
+    } else {
+      throw Error('Неизвестное имя файла: ' + name);
+    }
+  }
+
+  function createElement(name, data) {
+    var html = getHTML(name, data);
+    var cnt = document.createElement('div');
+    cnt.className = 'SBIS-UI-Customizer ' + name;
+    cnt.innerHTML = html;
+    return cnt;
+  }
+
+  function createComponent(name, data) {
+    var html = getHTML(name, data);
+    var cnt = document.createElement('div');
+    cnt.id = 'SBIS-UI-Customizer-' + name;
+    cnt.className = 'SBIS-UI-Customizer';
+    cnt.innerHTML = html;
+    return cnt;
+  }
+
+  function removeByQuery(query) {
+    var elms = document.querySelectorAll(query);
+    for (let i = 0; i < elms.length; i++) {
+      elms[i].remove();
+    }
+  }
+
+  function generateCSS_custom(selector, rule, value) {
+    return \`\${selector} { \${rule}: \${value}; }\`;
+  }
+
+  function generateCSS_displayNone(selector) {
+    return \`\${selector} { display: none !important; }\`;
+  }
+
+  function generateCSS_inlineBlock(selector) {
+    return \`\${selector} { display: inline-block !important; }\`;
+  }
+
+  function hasCSS(name) {
+    name += '.css';
+    return name in sources.css;
+  }
+
+  function getCSS(name) {
+    name += '.css';
+    if (name in sources.css) {
+      return sources.css[name];
+    } else {
+      throw Error('Неизвестное имя файла: ' + name);
+    }
+  }
+
+  function appendCSS(name, use_css) {
+    let fullname = name + '.css';
+    if (fullname in sources.css || use_css) {
+      var id = \`SBIS-UI-Customizer-\${fullname}\`;
+      var elm = document.getElementById(id);
+      if (!elm) {
+        elm = document.createElement('style');
+        elm.id = id;
+        elm.type = 'text/css';
+        elm.className = 'SBIS-UI-Customizer';
+        document.getElementById('SBIS-UI-Customizer').appendChild(elm);
+      }
+      elm.innerHTML = use_css || getCSS(name);
+    }
+  }
+
+  function removeCSS(name) {
+    let fullname = name + '.css';
+    var id = \`SBIS-UI-Customizer-\${fullname}\`;
+    var elm = document.getElementById(id);
+    if (elm) {
+      elm.remove();
+    }
+  }
+
+  function getSVG(name) {
+    name += '.svg';
+    if (name in sources.svg) {
+      return sources.svg[name];
+    } else {
+      throw Error('Неизвестное имя файла: ' + name);
+    }
+  }
+
+  function getSettings(minimize) {
+    return minimize ? _minimizeSettings(_copyObject(settings)) : _copyObject(settings);
+  }
+
+  function setSetting(name, value) {
+    var names = name.split('.');
+    var setting = settings;
+    var moduleSettings = null;
+    while (names.length > 0) {
+      setting = setting[names.shift()];
+      if (setting.module) {
+        moduleSettings = setting;
+      }
+      if (names.length > 0) {
+        setting = setting.options;
+      }
+    }
+    switch (setting.type) {
+      case 'boolean':
+        setting.value = !!value;
+        break;
+    }
+    _applySettings_toModule(moduleSettings).then(function () {
+      localStorage.setItem('SBIS-UI-Customizer-Settings', JSON.stringify(_minimizeSettings(settings)));
+    }, console.error);
+  }
+
+  function cutTags(text) {
+    return (text + '')
+      .replace(/<\\/?\\w+[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\\n\\s+\\n/g, '\\n\\n')
+      .replace(/\\n\\n+/g, '\\n\\n')
+      .replace(/\\n\\n+$/g, '\\n');
+  }
+
+  function cutOverflow(text, maxLine, maxLength) {
+    text = (text + '').split('\\n');
+    maxLine = maxLine || 80;
+    maxLength = maxLength || 256;
+    let result = [];
+    for (let i = 0; i < text.length; i++) {
+      let line = text[i];
+      if (line.length > maxLine) {
+        line = line.split(' ');
+        let newLine = '';
+        while (line.length > 0) {
+          let word = line.shift();
+          let testLine = newLine + (newLine ? ' ' : '') + word;
+          if (testLine.length < maxLine) {
+            newLine = testLine;
+          } else {
+            if (newLine) {
+              result.push(newLine);
+            }
+            while (word.length > maxLine) {
+              result.push(word.substring(0, maxLine));
+              word = word.substring(maxLine);
+            }
+            newLine = word;
+          }
+        }
+        result.push(newLine);
+      } else {
+        result.push(line);
+      }
+    }
+    result = result.join('\\n');
+    if (result.length > maxLength) {
+      result = result.substring(0, maxLength - 3) + '...';
+    }
+    return result;
+  }
+
+  function copyToClipboard(text) {
+    gmapi.GM_setClipboard(text, { type: 'text', mimetype: 'text/plain' });
+  }
+
+  function getDate(date) {
+    date = date || new Date();
+    var d = ('0' + date.getDate()).slice(-2);
+    var m = ('0' + (date.getMonth() + 1)).slice(-2);
+    var y = String(date.getFullYear()).slice(-2);
+    return d + '.' + m + '.' + y;
+  }
+
+  function rpc_sbis(obj) {
+    if (!SbisService) {
+      return waitRequire(function (require) {
+        require(['WS.Data/Source/SbisService'], function (svr) {
+          SbisService = svr;
+          rpc_sbis(obj);
+        });
+      });
+    }
+    var service = obj.service ? ('/' + obj.service) : '';
+    var method = obj.method.split('.');
+    var params = obj.params || {};
+    var callback = obj.callback;
+    var errback = obj.errback;
+    var bl = new SbisService({
+      endpoint: {
+        address: service + '/service/',
+        contract: method[0]
+      }
+    }).call(method[1], params);
+    if (callback) {
+      bl.addCallback(callback);
+    }
+    if (errback) {
+      bl.addErrback(errback);
+    }
+  }
+
+  function openInformationPopup(text, status) {
+    if (!InformationPopupManager) {
+      return waitRequire(function (require) {
+        require(['js!SBIS3.CONTROLS.Utils.InformationPopupManager'], function (ipm) {
+          InformationPopupManager = ipm;
+          return openInformationPopup(text, status);
+        });
+      });
+    }
+    status = status ? status : 'success';
+    InformationPopupManager.showNotification({
+      status: status,
+      caption: text
+    });
+  }
+
+  function _copyObject(obj) {
+    var newObj = {};
+    for (let name in obj) {
+      let val = obj[name];
+      if (val instanceof Array) {
+        newObj[name] = obj[name].slice();
+      } else if (typeof val === 'object') {
+        newObj[name] = _copyObject(obj[name]);
+      } else {
+        newObj[name] = obj[name];
+      }
+    }
+    return newObj;
+  }
+
+  function _applySettings(target, source, ptName) {
+    let queue = [];
+    for (let name in target) {
+      let sName = name;
+      if (!(sName in source)) {
+        if (name in migrateSettingsGroup) {
+          sName = migrateSettingsGroup[name];
+        } else {
+          continue;
+        }
+      }
+      let fName = ptName ? \`\${ptName}.\${name}\` : name;
+      let tVal = target[name];
+      let sVal = source[sName];
+      let tType = typeof tVal;
+      let sType = typeof sVal;
+      if (
+        tType === 'object' &&
+        'options' in tVal &&
+        sType === 'object'
+      ) {
+        queue.push(_applySettings(tVal.options, sVal, fName));
+      } else if (
+        tType === 'object' &&
+        'value' in tVal &&
+        sType !== 'object' &&
+        typeof tVal.value === sType
+      ) {
+        tVal.value = sVal;
+      } else {
+        console.error(Error(\`Неверный тип опции \${fName}\`));
+      }
+      if (tVal.module) {
+        queue.push(_applySettings_toModule(tVal));
+      }
+    }
+    return Promise.all(queue);
+  }
+
+  function _applySettings_toModule(moduleSettings) {
+    return new Promise(function (resolve) {
+      try {
+        UICustomizerRequire([moduleSettings.module], function (module) {
+          try {
+            module.applySettings.call(module, moduleSettings);
+          } catch (err) {
+            console.error(err);
+          }
+          resolve();
+        });
+      } catch (err) {
+        console.error(err);
+        resolve();
+      }
+    });
+  }
+
+  function _minimizeSettings(conf) {
+    var min = {};
+    for (let name in conf) {
+      let obj = conf[name];
+      if ('value' in obj) {
+        min[name] = obj.value;
+      } else if ('options' in obj) {
+        min[name] = _minimizeSettings(obj.options);
+      }
+    }
+    return min;
+  }
+
 });
 `,'ErrandToolbarBtns.js':`
 UICustomizerDefine('ErrandToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
-"use strict";
-var property = {
-btns: {
-TaskURL: {
-icon: 'link'
-},
-CopyInfo: {
-icon: 'info'
-}
-},
-ExcludeDocTypeName: ['Merge request', 'Ошибка в разработку', 'Задача в разработку'],
-selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoDeleteDocument"]'
-}
-};
-return {
-applySettings: applySettings,
-copyToClipboard: copyToClipboard
-};
-function applySettings(settings) {
-Task.applySettings(settings, 'ErrandToolbarBtns', property);
-}
-function copyToClipboard(elm, action) {
-var msg = '';
-var text = '';
-var opener = elm.parentElement.parentElement.wsControl;
-var record = opener.getLinkedContext().getValue('record');
-switch (action) {
-case 'CopyInfo':
-msg = 'Описание скопировано в буфер обмена';
-let docName = record.get('РП.Документ').get('Регламент').get('Название');
-let number =
-(record.has('Номер') ? record.get('Номер') : '') ||
-'';
-let face =
-(record.has('ЛицоСоздал.Название') ? record.get('ЛицоСоздал.Название') : '') ||
-(record.has('Лицо1.Название') ? record.get('Лицо1.Название') : '') ||
-(record.has('Автор.Название') ? record.get('Автор.Название') : '') ||
-'';
-if (docName === 'Обращение') {
-let clt = record.get('Лицо.Название') || '';
-face = clt ? (face + ' (' + clt + ')') : face;
-}
-let info_text =
-(record.has('РазличныеДокументы.Информация') ? record.get('РазличныеДокументы.Информация') : '') ||
-(record.has('Примечание') ? record.get('Примечание') : '') ||
-(record.has('Описание') ? record.get('Описание') : '') ||
-(record.has('ДокументРасширение.Название') ? record.get('ДокументРасширение.Название') : '') ||
-'';
-let url = record.get('ИдентификаторДокумента');
-number = number ? (' № ' + number) : '';
-face = face ? (' ' + face) : '';
-info_text = Engine.cutOverflow(Engine.cutTags(info_text), 98, 1024);
-if (url) {
-url = location.protocol + '//' + location.host + '/opendoc.html?guid=' + url;
-} else {
-url = '(Нет ссылки на документ, т.к. он не запущен в ЭДО)';
-}
-text =
-docName + number + ' от ' +
-Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) +
-face + '\\n' + url + '\\n\\n' + info_text;
-break;
-}
-Engine.copyToClipboard(text);
-Engine.openInformationPopup(rk(msg));
-}
+   "use strict";
+
+   var property = {
+      btns: {
+         TaskURL: {
+            icon: 'link'
+         },
+         CopyInfo: {
+            icon: 'info'
+         }
+      },
+      ExcludeDocTypeName: ['Merge request', 'Ошибка в разработку', 'Задача в разработку'],
+      selectors: {
+         'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowDocTime"]',
+         'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+         'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSendToAgreement"]',
+         'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoPrintDocument"]',
+         'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+         'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoGetLink"]',
+         'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoDeleteDocument"]'
+      }
+   };
+
+   return {
+      applySettings: applySettings,
+      copyToClipboard: copyToClipboard
+   };
+
+   function applySettings(settings) {
+      Task.applySettings(settings, 'ErrandToolbarBtns', property);
+   }
+
+   function copyToClipboard(elm, action) {
+      var msg = '';
+      var text = '';
+      var opener = elm.parentElement.parentElement.wsControl;
+      var record = opener.getLinkedContext().getValue('record');
+      switch (action) {
+         case 'CopyInfo':
+            msg = 'Описание скопировано в буфер обмена';
+            let docName = record.get('РП.Документ').get('Регламент').get('Название');
+            let number =
+               (record.has('Номер') ? record.get('Номер') : '') ||
+               '';
+            let face =
+               (record.has('ЛицоСоздал.Название') ? record.get('ЛицоСоздал.Название') : '') ||
+               (record.has('Лицо1.Название') ? record.get('Лицо1.Название') : '') ||
+               (record.has('Автор.Название') ? record.get('Автор.Название') : '') ||
+               '';
+            if (docName === 'Обращение') {
+               let clt = record.get('Лицо.Название') || '';
+               face = clt ? (face + ' (' + clt + ')') : face;
+            }
+            let info_text =
+               (record.has('РазличныеДокументы.Информация') ? record.get('РазличныеДокументы.Информация') : '') ||
+               (record.has('Примечание') ? record.get('Примечание') : '') ||
+               (record.has('Описание') ? record.get('Описание') : '') ||
+               (record.has('ДокументРасширение.Название') ? record.get('ДокументРасширение.Название') : '') ||
+               '';
+            let url = record.get('ИдентификаторДокумента');
+            number = number ? (' № ' + number) : '';
+            face = face ? (' ' + face) : '';
+            info_text = Engine.cutOverflow(Engine.cutTags(info_text), 98, 1024);
+            if (url) {
+               url = location.protocol + '//' + location.host + '/opendoc.html?guid=' + url;
+            } else {
+               url = '(Нет ссылки на документ, т.к. он не запущен в ЭДО)';
+            }
+            text =
+               docName + number + ' от ' +
+               Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) +
+               face + '\\n' + url + '\\n\\n' + info_text;
+            break;
+      }
+      Engine.copyToClipboard(text);
+      Engine.openInformationPopup(rk(msg));
+   }
+
 });
 `,'HomePageModify.js':`
 UICustomizerDefine('HomePageModify', ['Engine'], function (Engine) {
-'use strict';
-return {
-applySettings: applySettings
-};
-function applySettings(settings) {
-var css = '';
-let news = settings.options.News.options;
-/*
-if (news.HideAuthor.value && news.HideFooterBtn.value) {
-css += Engine.getCSS('HomePageModify-FixHeight');
-}
-*/
-for (let groupName in settings.options) {
-let group = settings.options[groupName];
-for (let name in group.options) {
-let cssname = 'HomePageModify-' + name;
-if (group.options[name].value && Engine.hasCSS(cssname)) {
-css += Engine.getCSS(cssname);
-}
-}
-}
-/*
-if (news.HideAuthor.value && news.SlimBorder.value) {
-css += Engine.generateCSS.custom(
-'.sn-NewsPage .sn-DraftIcon, .sn-NewsPage .sn-FavoriteIcon, .sn-NewsPage .sn-PinIcon',
-'top',
-'0px !important'
-);
-}
-*/
-if (css) {
-Engine.appendCSS('HomePageModify', css);
-} else {
-Engine.removeCSS('HomePageModify');
-}
-Engine.waitRequire(function (require) {
-require(['WS.Data/Source/SbisService', 'Core/UserConfig'], function (SbisService, UserConfig) {
-let ifColumn2 = document.querySelector('.sn-NewsLeftColumn');
-if (news.InOneColumn.value) {
-if (ifColumn2) {
-UserConfig.setParam('OnlyOneColumn', 'true');
-toggleColumn(true);
-}
-} else {
-if (!ifColumn2) {
-UserConfig.removeParam('OnlyOneColumn');
-toggleColumn(false);
-}
-}
-});
-});
-}
-function toggleColumn(isOne) {
-if (isOne && document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
-if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
-document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
-Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
-elm.click();
-});
-} else {
-setTimeout(function () { toggleColumn(isOne); }, 300);
-}
-} else if (document.querySelector('.mp-NewsColumnView')) {
-if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
-document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
-} else {
-setTimeout(function () { toggleColumn(isOne); }, 300);
-}
-}
-}
+  'use strict';
+
+  return {
+    applySettings: applySettings
+  };
+
+  function applySettings(settings) {
+    var css = '';
+    let news = settings.options.News.options;
+    /*
+    if (news.HideAuthor.value && news.HideFooterBtn.value) {
+       css += Engine.getCSS('HomePageModify-FixHeight');
+    }
+    */
+    for (let groupName in settings.options) {
+      let group = settings.options[groupName];
+      for (let name in group.options) {
+        let cssname = 'HomePageModify-' + name;
+        if (group.options[name].value && Engine.hasCSS(cssname)) {
+          css += Engine.getCSS(cssname);
+        }
+      }
+    }
+    /*
+    if (news.HideAuthor.value && news.SlimBorder.value) {
+       css += Engine.generateCSS.custom(
+          '.sn-NewsPage .sn-DraftIcon, .sn-NewsPage .sn-FavoriteIcon, .sn-NewsPage .sn-PinIcon',
+          'top',
+          '0px !important'
+       );
+    }
+    */
+    if (css) {
+      Engine.appendCSS('HomePageModify', css);
+    } else {
+      Engine.removeCSS('HomePageModify');
+    }
+    Engine.waitRequire(function (require) {
+      require(['WS.Data/Source/SbisService', 'Core/UserConfig'], function (SbisService, UserConfig) {
+        let ifColumn2 = document.querySelector('.sn-NewsLeftColumn');
+        if (news.InOneColumn.value) {
+          if (ifColumn2) {
+            UserConfig.setParam('OnlyOneColumn', 'true');
+            toggleColumn(true);
+          }
+        } else {
+          if (!ifColumn2) {
+            UserConfig.removeParam('OnlyOneColumn');
+            toggleColumn(false);
+          }
+        }
+      });
+    });
+  }
+
+  function toggleColumn(isOne) {
+    if (isOne && document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
+      if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
+        document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
+        Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
+          elm.click();
+        });
+      } else {
+        setTimeout(function () { toggleColumn(isOne); }, 300);
+      }
+    } else if (document.querySelector('.mp-NewsColumnView')) {
+      if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
+        document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
+      } else {
+        setTimeout(function () { toggleColumn(isOne); }, 300);
+      }
+    }
+  }
+
 });
 `,'HotKeys.js':`
 UICustomizerDefine('HotKeys', ['SettingsDialog'], function (SettingsDialog) {
-'use strict';
-var keys = {
-'ctrl-shift-KeyU': () => SettingsDialog.toggle(),
-'ctrl-alt-KeyU': () => SettingsDialog.toggle()
-};
-return {
-init: init
-};
-function init() {
-document.addEventListener('keydown', (event) => {
-var hkey = '';
-if (event.ctrlKey) {
-hkey += 'ctrl-';
-}
-if (event.shiftKey) {
-hkey += 'shift-';
-}
-if (event.altKey) {
-hkey += 'alt-';
-}
-hkey += event.code;
-if (hkey in keys) {
-keys[hkey]();
-event.stopPropagation();
-}
-}, {
-capture: true
-});
-}
+  'use strict';
+
+  var keys = {
+    'ctrl-shift-KeyU': () => SettingsDialog.toggle(),
+    'ctrl-alt-KeyU': () => SettingsDialog.toggle()
+  };
+
+  return {
+    init: init
+  };
+
+  function init() {
+    document.addEventListener('keydown', (event) => {
+      var hkey = '';
+      if (event.ctrlKey) {
+        hkey += 'ctrl-';
+      }
+      if (event.shiftKey) {
+        hkey += 'shift-';
+      }
+      if (event.altKey) {
+        hkey += 'alt-';
+      }
+      hkey += event.code;
+      if (hkey in keys) {
+        keys[hkey]();
+        event.stopPropagation();
+      }
+    }, {
+      capture: true
+    });
+  }
+
 });
 `,'MRToolbarBtns.js':`
 UICustomizerDefine('MRToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
-"use strict";
-var property = {
-btns: {
-TaskURL: {
-icon: 'link'
-}
-},
-ApplyDocTypeName: ['Merge request'],
-selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoDeleteDocument"]'
-}
-};
-return {
-applySettings: applySettings
-};
-function applySettings(settings) {
-Task.applySettings(settings, 'MRToolbarBtns', property);
-}
+   "use strict";
+
+   var property = {
+      btns: {
+         TaskURL: {
+            icon: 'link'
+         }
+      },
+      ApplyDocTypeName: ['Merge request'],
+      selectors: {
+         'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowDocTime"]',
+         'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+         'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSendToAgreement"]',
+         'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoPrintDocument"]',
+         'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+         'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoGetLink"]',
+         'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoDeleteDocument"]'
+      }
+   };
+
+   return {
+      applySettings: applySettings
+   };
+
+   function applySettings(settings) {
+      Task.applySettings(settings, 'MRToolbarBtns', property);
+   }
+
 });
 `,'OtherBlocksHide.js':`
 UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
-'use strict';
-const selectors = {
-'Owl': 'div[data-component="SBIS3.Engine.HowEasy"]',
-'AsJust': \`
-.ExpandOurOrg__div,
-.middle__OurOrgHowEasy
-\`,
-'SideRight': 'div.news-SpecialNews',
-'HideMaximumButton': '.NavSchemeLink.navSidebar__navSchemeLink'
-};
-return {
-applySettings: applySettings
-};
-function applySettings(settings) {
-var css = '';
-for (let groupName in settings.options) {
-let group = settings.options[groupName];
-if (group.module) {
-continue;
-}
-for (let name in group.options) {
-if (group.options[name].value) {
-css += Engine.generateCSS.displayNone(selectors[name]);
-}
-}
-}
-if (css) {
-Engine.appendCSS('OtherBlocksHide', css);
-} else {
-Engine.removeCSS('OtherBlocksHide');
-}
-}
+  'use strict';
+
+  const selectors = {
+    'Owl': 'div[sbisname="howEasy"]',
+    'AsJust': \`
+         .ExpandOurOrg__div,
+         .middle__OurOrgHowEasy
+      \`,
+    'SideRight': 'div.news-SpecialNews',
+    'HideMaximumButton': '.NavSchemeLink.navSidebar__navSchemeLink'
+  };
+
+  return {
+    applySettings: applySettings
+  };
+
+  function applySettings(settings) {
+    var css = '';
+    for (let groupName in settings.options) {
+      let group = settings.options[groupName];
+      if (group.module) {
+        continue;
+      }
+      for (let name in group.options) {
+        if (group.options[name].value) {
+          css += Engine.generateCSS.displayNone(selectors[name]);
+        }
+      }
+    }
+    if (css) {
+      Engine.appendCSS('OtherBlocksHide', css);
+    } else {
+      Engine.removeCSS('OtherBlocksHide');
+    }
+  }
+
 });
 `,'SettingsButton.js':`
 UICustomizerDefine('SettingsButton', ['Engine'], function (Engine) {
-'use strict';
-return {
-init: init
-};
-function init() {
-Engine.appendCSS('SettingsButton');
-Engine.waitOnce('div.account_management__user-panel .account_management__user-panel-buttons-list .controls-ListView__itemsContainer', function (elm) {
-var container = Engine.createComponent('SettingsButton', {
-icon: Engine.getSVG('settings')
-});
-elm.parentElement.insertBefore(container, elm);
-});
-}
+  'use strict';
+
+  return {
+    init: init
+  };
+
+  function init() {
+    Engine.appendCSS('SettingsButton');
+    Engine.waitOnce('div.account_management__user-panel .account_management__user-panel-buttons-list .controls-ListView__itemsContainer', function (elm) {
+      var container = Engine.createComponent('SettingsButton', {
+        icon: Engine.getSVG('settings')
+      });
+      elm.parentElement.insertBefore(container, elm);
+    });
+  }
+
 });
 `,'SettingsDialog.js':`
 UICustomizerDefine('SettingsDialog', ['Engine', 'SocNet'], function (Engine, SocNet) {
-"use strict";
-var dialog;
-return {
-open: open,
-close: close,
-toggle: toggle,
-toggleSection: toggleSection,
-onchangeOptionBoolean: onchangeOptionBoolean
-};
-function open() {
-var up = document.querySelector('div[templatename="js!SBIS3.AccountsManagement.UserPanel"]');
-if (up) {
-up.wsControl.hide();
-}
-if (dialog) {
-dialog.style.display = '';
-} else {
-_createDialog();
-}
-_resize();
-window.addEventListener('resize', _resize);
-}
-function close() {
-dialog.style.display = 'none';
-window.removeEventListener('resize', _resize);
-}
-function toggle() {
-if (!dialog || dialog.style.display === 'none') {
-open();
-} else {
-close();
-}
-}
-function toggleSection(section) {
-var classList = section.parentElement.classList;
-if (classList.contains('active')) {
-classList.remove('active');
-} else {
-classList.add('active');
-}
-}
-function onchangeOptionBoolean(element) {
-var optname = element.getAttribute('optname');
-var value = element.checked;
-Engine.setSetting(optname, value);
-}
-function _createDialog() {
-Engine.appendCSS('SettingsDialog');
-dialog = document.createElement('div');
-dialog.id = 'SBIS-UI-Customizer-SettingsDialog-Area';
-var template = Engine.createComponent('SettingsDialog');
-var feedback = document.createElement('div');
-feedback.className = 'feedback';
-feedback.innerHTML = SocNet.getFeedbackButtons();
-template.appendChild(feedback);
-_buildSettings(template);
-dialog.appendChild(template);
-document.body.appendChild(dialog);
-open();
-}
-function _buildSettings(parent) {
-var stgs = Engine.getSettings();
-var container = document.createElement('div');
-container.className = 'Settings-panel';
-for (let i in stgs) {
-stgs[i].fullName = i;
-container.appendChild(_buildComponent(stgs[i]));
-}
-parent.appendChild(container);
-}
-function _buildComponent(options) {
-switch (options.view) {
-case 'section':
-return _buildSection(options);
-case 'group':
-return _buildGroup(options);
-case 'block':
-return _buildBlock(options);
-case 'option':
-return _buildOption(options);
-}
-}
-function _buildSection(options) {
-var section = Engine.createElement('SettingsDialog-section', {
-title: options.title
-});
-var slider = document.createElement('div');
-slider.className = 'slider';
-for (let i in options.options) {
-options.options[i].fullName = options.fullName + '.' + i;
-slider.appendChild(_buildComponent(options.options[i]));
-}
-section.appendChild(slider);
-return section;
-}
-function _buildGroup(options) {
-var group = Engine.createElement('SettingsDialog-group', {
-title: options.title
-});
-var box = document.createElement('div');
-box.className = 'box';
-for (let i in options.options) {
-options.options[i].fullName = options.fullName + '.' + i;
-box.appendChild(_buildComponent(options.options[i]));
-}
-group.appendChild(box);
-return group;
-}
-function _buildBlock(options) {
-var block = Engine.createElement('SettingsDialog-block', {
-title: options.title
-});
-var box = document.createElement('div');
-box.className = 'box';
-for (let i in options.options) {
-options.options[i].fullName = options.fullName + '.' + i;
-box.appendChild(_buildComponent(options.options[i]));
-}
-block.appendChild(box);
-return block;
-}
-function _buildOption(options) {
-var tmpl = \`SettingsDialog-option-\${options.type}\`;
-var option = Engine.createElement(tmpl, {
-title: options.title,
-optname: options.fullName,
-value: options.value ? 'checked' : ''
-});
-return option;
-}
-function _resize() {
-var panel = dialog.children[0].children[3];
-panel.style['max-height'] = (document.body.clientHeight - 49) + 'px';
-}
+  "use strict";
+
+  var dialog;
+
+  return {
+    open: open,
+    close: close,
+    toggle: toggle,
+    toggleSection: toggleSection,
+    onchangeOptionBoolean: onchangeOptionBoolean
+  };
+
+  function open() {
+    var up = document.querySelector('div[templatename="js!SBIS3.AccountsManagement.UserPanel"]');
+    if (up) {
+      up.wsControl.hide();
+    }
+    if (dialog) {
+      dialog.style.display = '';
+    } else {
+      _createDialog();
+    }
+    _resize();
+    window.addEventListener('resize', _resize);
+  }
+
+  function close() {
+    dialog.style.display = 'none';
+    window.removeEventListener('resize', _resize);
+  }
+
+  function toggle() {
+    if (!dialog || dialog.style.display === 'none') {
+      open();
+    } else {
+      close();
+    }
+  }
+
+  function toggleSection(section) {
+    var classList = section.parentElement.classList;
+    if (classList.contains('active')) {
+      classList.remove('active');
+    } else {
+      classList.add('active');
+    }
+  }
+
+  function onchangeOptionBoolean(element) {
+    var optname = element.getAttribute('optname');
+    var value = element.checked;
+    Engine.setSetting(optname, value);
+  }
+
+  function _createDialog() {
+    Engine.appendCSS('SettingsDialog');
+    dialog = document.createElement('div');
+    dialog.id = 'SBIS-UI-Customizer-SettingsDialog-Area';
+    var template = Engine.createComponent('SettingsDialog');
+    var feedback = document.createElement('div');
+    feedback.className = 'feedback';
+    feedback.innerHTML = SocNet.getFeedbackButtons();
+    template.appendChild(feedback);
+    _buildSettings(template);
+    dialog.appendChild(template);
+    document.body.appendChild(dialog);
+    open();
+  }
+
+  function _buildSettings(parent) {
+    var stgs = Engine.getSettings();
+    var container = document.createElement('div');
+    container.className = 'Settings-panel';
+    for (let i in stgs) {
+      stgs[i].fullName = i;
+      container.appendChild(_buildComponent(stgs[i]));
+    }
+    parent.appendChild(container);
+  }
+
+  function _buildComponent(options) {
+    switch (options.view) {
+      case 'section':
+        return _buildSection(options);
+      case 'group':
+        return _buildGroup(options);
+      case 'block':
+        return _buildBlock(options);
+      case 'option':
+        return _buildOption(options);
+    }
+  }
+
+  function _buildSection(options) {
+    var section = Engine.createElement('SettingsDialog-section', {
+      title: options.title
+    });
+    var slider = document.createElement('div');
+    slider.className = 'slider';
+    for (let i in options.options) {
+      options.options[i].fullName = options.fullName + '.' + i;
+      slider.appendChild(_buildComponent(options.options[i]));
+    }
+    section.appendChild(slider);
+    return section;
+  }
+
+  function _buildGroup(options) {
+    var group = Engine.createElement('SettingsDialog-group', {
+      title: options.title
+    });
+    var box = document.createElement('div');
+    box.className = 'box';
+    for (let i in options.options) {
+      options.options[i].fullName = options.fullName + '.' + i;
+      box.appendChild(_buildComponent(options.options[i]));
+    }
+    group.appendChild(box);
+    return group;
+  }
+
+  function _buildBlock(options) {
+    var block = Engine.createElement('SettingsDialog-block', {
+      title: options.title
+    });
+    var box = document.createElement('div');
+    box.className = 'box';
+    for (let i in options.options) {
+      options.options[i].fullName = options.fullName + '.' + i;
+      box.appendChild(_buildComponent(options.options[i]));
+    }
+    block.appendChild(box);
+    return block;
+  }
+
+  function _buildOption(options) {
+    var tmpl = \`SettingsDialog-option-\${options.type}\`;
+    var option = Engine.createElement(tmpl, {
+      title: options.title,
+      optname: options.fullName,
+      value: options.value ? 'checked' : ''
+    });
+    return option;
+  }
+
+  function _resize() {
+    var panel = dialog.children[0].children[3];
+    panel.style['max-height'] = (document.body.clientHeight - 49) + 'px';
+  }
+
 });
 `,'SocNet.js':`
 /* globals UICustomizerEvent */
 UICustomizerDefine('SocNet', ['Engine'], function (Engine) {
-'use strict';
-var GroupUUID = '2d110a8e-7edb-469a-a3cb-5eb6d8095c10';
-var ChatUUID = '3af31f44-c91a-4bbf-8470-3dd423f0b6eb';
-var AuthorUUID = 'd7dde799-21cb-49ea-89cf-de56e4f7f78b';
-if (location.host === 'test-online.sbis.ru') {
-GroupUUID = 'ceeeedd4-8d0e-4dd0-9635-88f1758c3ef3';
-ChatUUID = '83adaca3-d02b-490b-bbbf-95ce9953797d';
-AuthorUUID = '8cab8a51-da51-40fd-bef3-6f090edbdeaa';
-}
-var feedbackButtons = '';
-Engine.appendCSS('SocNet');
-return {
-getFeedbackButtons: getFeedbackButtons,
-sendFeedback: sendFeedback
-};
-function getFeedbackButtons() {
-if (!feedbackButtons) {
-feedbackButtons = Engine.getHTML('SocNet-FeedbackButtons', {
-//'LikeIt': Engine.getSVG('thumbsup'),
-'SendQuestion': Engine.getSVG('comment-discussion'),
-//'SendFeedback': Engine.getSVG('megaphone'),
-'ReportError': Engine.getSVG('bug')
-});
-}
-return feedbackButtons;
-}
-function sendFeedback(elm, action) {
-switch (action) {
-case 'SendQuestion':
-_showInputDialog('Задать вопрос', 'Задайте вопрос, оставьте предложение, пожелание...', function (msg) {
-_SendQuestion(msg);
-});
-break;
-case 'SendFeedback':
-_showInputDialog('Оставить отзыв', 'Оставьте отзыв о данном плагине, опишите что Вам понравилось, а что нет...', function (msg) {
-_SendFeedback(msg);
-});
-break;
-case 'ReportError':
-_showInputDialog('Сообщить о проблеме', 'Опишите проблему возникшую с данным плагином...', function (msg) {
-_ReportError(msg);
-});
-}
-}
-function _showInputDialog(title, hint, callback) {
-var dlg = document.createElement('div');
-dlg.className = "SBIS-UI-Customizer-SocNet-InputDialog";
-dlg.innerHTML = Engine.getHTML('SocNet-InputDialog', {
-'title': title,
-'hint': hint
-});
-dlg.children[3].onkeydown = function (event) {
-if (event.ctrlKey && event.keyCode === 13) {
-if (dlg.children[3].value) {
-callback(dlg.children[3].value);
-dlg.remove();
-}
-}
-};
-dlg.children[1].onclick = function () {
-if (dlg.children[3].value) {
-callback(dlg.children[3].value);
-dlg.remove();
-}
-};
-document.body.appendChild(dlg);
-dlg.children[3].focus();
-}
-function _SendQuestion(msg) {
-_JoinToGroup(function () {
-Engine.rpc.sbis({
-method: 'Персона.СОтправить',
-params: {
-"Получатели": [],
-"Текст": msg,
-"Диалог": ChatUUID,
-"Документ": null,
-"Сообщение": null,
-"Файлы": [],
-"Опции": {
-"d": [
-false,
-false
-],
-"s": [
-{ "t": "Логическое", "n": "МассовоеСообщение" },
-{ "t": "Логическое", "n": "СлитьСПредыдущим" }
-],
-"_type": "record"
-}
-},
-callback: function () {
-UICustomizerEvent('SettingsDialog', 'close');
-Engine.openInformationPopup('Ваше сообщение успешно отправлено в чат "SBIS UI-Customizer"');
-}
-});
-});
-}
-function _SendFeedback(msg) {
-_JoinToGroup(function () {
-Engine.rpc.sbis({
-method: 'Event.CreateNews',
-params: {
-"Object": {
-"d": [
-GroupUUID,
-null,
-1,
-1,
-false,
-msg
-],
-"s": [
-{ "n": "Channel", "t": "UUID" },
-{ "n": "News", "t": "UUID" },
-{ "n": "Visibility", "t": "Число целое" },
-{ "n": "EventType", "t": "Число целое" },
-{ "n": "FromGroup", "t": "Логическое" },
-{ "n": "Text", "t": "Строка" }
-],
-"_type": "record"
-}
-},
-callback: function () {
-UICustomizerEvent('SettingsDialog', 'close');
-Engine.openInformationPopup('Ваш отзыв успешно отправлен в группу "SBIS UI-Customizer"');
-}
-});
-});
-}
-function _ReportError(msg) {
-Engine.waitRequire(function (require) {
-require(['Core/helpers/generate-helpers'], function (gh) {
-var guid = gh.createGUID();
-var ver = Engine.getVerInfo();
-msg = 'Ошибка: SBIS UI-Customizer ' + ver.version + '\\nСборка от: ' +
-ver.date + '\\n\\nСообщение:\\n' + msg + '\\n\\n--- Настройки плагина ---\\n' +
-JSON.stringify(Engine.getSettings(true)) +
-'\\n------------------------';
-Engine.rpc.sbis({
-method: 'Персона.СОтправить',
-params: {
-"Получатели": [AuthorUUID],
-"Текст": msg,
-"Диалог": guid,
-"Документ": null,
-"Сообщение": null,
-"Файлы": [],
-"Опции": {
-"d": [
-false,
-false,
-false
-],
-"s": [
-{ "t": "Логическое", "n": "МассовоеСообщение" },
-{ "t": "Логическое", "n": "СлитьСПредыдущим" },
-{ "t": "Логическое", "n": "ВсемУчастникамТемы" }
-],
-"_type": "record"
-}
-},
-callback: function () {
-UICustomizerEvent('SettingsDialog', 'close');
-Engine.openInformationPopup('Ваше сообщение успешно отправлено автору плагина');
-}
-});
-});
-});
-}
-function _JoinToGroup(callback) {
-Engine.rpc.sbis({
-method: 'Subscription.Create',
-params: {
-'Filter': {
-'d': [
-false,
-GroupUUID,
-false
-],
-'s': [
-{ 'n': 'Admin', 't': 'Логическое' },
-{ 'n': 'Channel', 't': 'Строка' },
-{ 'n': 'Obligatory', 't': 'Логическое' }
-]
-}
-},
-callback: callback
-});
-}
+  'use strict';
+
+  var GroupUUID = '2d110a8e-7edb-469a-a3cb-5eb6d8095c10';
+  var ChatUUID = '3af31f44-c91a-4bbf-8470-3dd423f0b6eb';
+  var AuthorUUID = 'd7dde799-21cb-49ea-89cf-de56e4f7f78b';
+
+  if (location.host === 'test-online.sbis.ru') {
+    GroupUUID = 'ceeeedd4-8d0e-4dd0-9635-88f1758c3ef3';
+    ChatUUID = '83adaca3-d02b-490b-bbbf-95ce9953797d';
+    AuthorUUID = '8cab8a51-da51-40fd-bef3-6f090edbdeaa';
+  }
+
+  var feedbackButtons = '';
+
+  Engine.appendCSS('SocNet');
+
+  return {
+    getFeedbackButtons: getFeedbackButtons,
+    sendFeedback: sendFeedback
+  };
+
+  function getFeedbackButtons() {
+    if (!feedbackButtons) {
+      feedbackButtons = Engine.getHTML('SocNet-FeedbackButtons', {
+        //'LikeIt': Engine.getSVG('thumbsup'),
+        'SendQuestion': Engine.getSVG('comment-discussion'),
+        //'SendFeedback': Engine.getSVG('megaphone'),
+        'ReportError': Engine.getSVG('bug')
+      });
+    }
+    return feedbackButtons;
+  }
+
+  function sendFeedback(elm, action) {
+    switch (action) {
+      case 'SendQuestion':
+        _showInputDialog('Задать вопрос', 'Задайте вопрос, оставьте предложение, пожелание...', function (msg) {
+          _SendQuestion(msg);
+        });
+        break;
+      case 'SendFeedback':
+        _showInputDialog('Оставить отзыв', 'Оставьте отзыв о данном плагине, опишите что Вам понравилось, а что нет...', function (msg) {
+          _SendFeedback(msg);
+        });
+        break;
+      case 'ReportError':
+        _showInputDialog('Сообщить о проблеме', 'Опишите проблему возникшую с данным плагином...', function (msg) {
+          _ReportError(msg);
+        });
+    }
+  }
+
+  function _showInputDialog(title, hint, callback) {
+    var dlg = document.createElement('div');
+    dlg.className = "SBIS-UI-Customizer-SocNet-InputDialog";
+    dlg.innerHTML = Engine.getHTML('SocNet-InputDialog', {
+      'title': title,
+      'hint': hint
+    });
+    dlg.children[3].onkeydown = function (event) {
+      if (event.ctrlKey && event.keyCode === 13) {
+        if (dlg.children[3].value) {
+          callback(dlg.children[3].value);
+          dlg.remove();
+        }
+      }
+    };
+    dlg.children[1].onclick = function () {
+      if (dlg.children[3].value) {
+        callback(dlg.children[3].value);
+        dlg.remove();
+      }
+    };
+    document.body.appendChild(dlg);
+    dlg.children[3].focus();
+  }
+
+  function _SendQuestion(msg) {
+    _JoinToGroup(function () {
+      Engine.rpc.sbis({
+        method: 'Персона.СОтправить',
+        params: {
+          "Получатели": [],
+          "Текст": msg,
+          "Диалог": ChatUUID,
+          "Документ": null,
+          "Сообщение": null,
+          "Файлы": [],
+          "Опции": {
+            "d": [
+              false,
+              false
+            ],
+            "s": [
+              { "t": "Логическое", "n": "МассовоеСообщение" },
+              { "t": "Логическое", "n": "СлитьСПредыдущим" }
+            ],
+            "_type": "record"
+          }
+        },
+        callback: function () {
+          UICustomizerEvent('SettingsDialog', 'close');
+          Engine.openInformationPopup('Ваше сообщение успешно отправлено в чат "SBIS UI-Customizer"');
+        }
+      });
+    });
+  }
+
+  function _SendFeedback(msg) {
+    _JoinToGroup(function () {
+      Engine.rpc.sbis({
+        method: 'Event.CreateNews',
+        params: {
+          "Object": {
+            "d": [
+              GroupUUID,
+              null,
+              1,
+              1,
+              false,
+              msg
+            ],
+            "s": [
+              { "n": "Channel", "t": "UUID" },
+              { "n": "News", "t": "UUID" },
+              { "n": "Visibility", "t": "Число целое" },
+              { "n": "EventType", "t": "Число целое" },
+              { "n": "FromGroup", "t": "Логическое" },
+              { "n": "Text", "t": "Строка" }
+            ],
+            "_type": "record"
+          }
+        },
+        callback: function () {
+          UICustomizerEvent('SettingsDialog', 'close');
+          Engine.openInformationPopup('Ваш отзыв успешно отправлен в группу "SBIS UI-Customizer"');
+        }
+      });
+    });
+  }
+
+  function _ReportError(msg) {
+    Engine.waitRequire(function (require) {
+      require(['Core/helpers/generate-helpers'], function (gh) {
+        var guid = gh.createGUID();
+        var ver = Engine.getVerInfo();
+        msg = 'Ошибка: SBIS UI-Customizer ' + ver.version + '\\nСборка от: ' +
+          ver.date + '\\n\\nСообщение:\\n' + msg + '\\n\\n--- Настройки плагина ---\\n' +
+          JSON.stringify(Engine.getSettings(true)) +
+          '\\n------------------------';
+        Engine.rpc.sbis({
+          method: 'Персона.СОтправить',
+          params: {
+            "Получатели": [AuthorUUID],
+            "Текст": msg,
+            "Диалог": guid,
+            "Документ": null,
+            "Сообщение": null,
+            "Файлы": [],
+            "Опции": {
+              "d": [
+                false,
+                false,
+                false
+              ],
+              "s": [
+                { "t": "Логическое", "n": "МассовоеСообщение" },
+                { "t": "Логическое", "n": "СлитьСПредыдущим" },
+                { "t": "Логическое", "n": "ВсемУчастникамТемы" }
+              ],
+              "_type": "record"
+            }
+          },
+          callback: function () {
+            UICustomizerEvent('SettingsDialog', 'close');
+            Engine.openInformationPopup('Ваше сообщение успешно отправлено автору плагина');
+          }
+        });
+      });
+    });
+  }
+
+  function _JoinToGroup(callback) {
+    Engine.rpc.sbis({
+      method: 'Subscription.Create',
+      params: {
+        'Filter': {
+          'd': [
+            false,
+            GroupUUID,
+            false
+          ],
+          's': [
+            { 'n': 'Admin', 't': 'Логическое' },
+            { 'n': 'Channel', 't': 'Строка' },
+            { 'n': 'Obligatory', 't': 'Логическое' }
+          ]
+        }
+      },
+      callback: callback
+    });
+  }
 });
 `,'TaskToolbarBtns.js':`
 UICustomizerDefine('TaskToolbarBtns', ['Engine'], function (Engine) {
-"use strict";
-const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
-const ReplaceDocTypeName = {
-'Ошибка в разработку': 'Ошибка',
-'Задача в разработку': 'Задача'
-};
-var property = {
-btns: {
-TaskURL: {
-icon: 'link'
-},
-BranchName: {
-icon: 'git-branch'
-},
-СommitMsg: {
-icon: 'git-commit'
-}
-},
-ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
-selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoDeleteDocument"]'
-}
-};
-var BranchNameUserLogin = '';
-var idReadedUserLogin = false;
-return {
-applySettings: applySettings,
-copyToClipboard: copyToClipboard
-};
-function applySettings(settings, moduleName, moduleProperty) {
-var group, css = '';
-moduleName = moduleName ? moduleName : 'TaskToolbarBtns';
-moduleProperty = moduleProperty ? moduleProperty : property;
-group = settings.options.Show;
-for (let name in group.options) {
-if (group.options[name].value) {
-css += Engine.generateCSS.inlineBlock(moduleProperty.selectors[name]);
-}
-}
-group = settings.options.Hide;
-for (let name in group.options) {
-if (group.options[name].value) {
-css += Engine.generateCSS.displayNone(moduleProperty.selectors[name]);
-}
-}
-group = settings.options.Add;
-let addExtraButtons = false;
-moduleProperty.ExtraButtonsHTML = '';
-for (let name in group.options) {
-if (group.options[name].value) {
-addExtraButtons = true;
-let btn = Engine.getHTML(moduleName + '-' + name);
-btn = btn.replace(/\\{\\{icon\\}\\}/, Engine.getSVG(moduleProperty.btns[name].icon));
-moduleProperty.ExtraButtonsHTML += btn;
-} else {
-Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons .' + name);
-}
-}
-if (addExtraButtons) {
-let extbtn = Engine.getCSS('TaskToolbarBtns-ExtraButtons');
-if (moduleName !== 'TaskToolbarBtns') {
-extbtn = extbtn.replace(/TaskToolbarBtns/g, moduleName);
-}
-css += extbtn;
-if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
-}
-moduleProperty.WaitHandler = _appendExtraButtons(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
-} else {
-if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
-delete moduleProperty.WaitHandler;
-}
-if (css) {
-moduleProperty.WaitHandler = _appendButtonsClass(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
-}
-Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons');
-}
-if (css) {
-Engine.appendCSS(moduleName, css);
-} else {
-Engine.removeCSS(moduleName);
-}
-}
-function copyToClipboard(elm, action) {
-var docName, msg = '';
-var text = '';
-var opener = elm.parentElement.parentElement.wsControl;
-var record = opener.getLinkedContext().getValue('record');
-switch (action) {
-case 'СommitMsg':
-msg = 'Описание скопировано в буфер обмена';
-docName = record.get('РП.Документ').get('Регламент').get('Название');
-docName = ReplaceDocTypeName[docName] || docName;
-text =
-docName + ' № ' +
-record.get('Номер') +
-' v' + _extractVersionName(record.get('РП.ВехаДокумента')) + ' от ' +
-Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) + ' ' +
-record.get('ЛицоСоздал.Название') + '\\n' +
-location.protocol + '//' +
-location.host + '/opendoc.html?guid=' +
-record.get('ИдентификаторДокумента') + '\\n\\n' +
-Engine.cutOverflow(Engine.cutTags(record.get('РазличныеДокументы.Информация')), 98, 1024);
-break;
-case 'TaskURL':
-msg = 'Ссылка скопирована в буфер обмена';
-text =
-location.protocol + '//' +
-location.host + '/opendoc.html?guid=' +
-record.get('ИдентификаторДокумента');
-break;
-case 'BranchName':
-if (!idReadedUserLogin) {
-return _readUserLogin(function () {
-copyToClipboard(elm, action);
-});
-}
-msg = 'Имя ветки скопировано в буфер обмена';
-text =
-_extractVersionName(record.get('РП.ВехаДокумента')) + '/' +
-(record.get('РП.Документ').get('Регламент').get('Название') === 'Ошибка в разработку' ? 'bugfix' : 'feature') + '/' +
-(BranchNameUserLogin ? BranchNameUserLogin + '/' : '') +
-record.get('Номер');
-break;
-}
-Engine.copyToClipboard(text);
-Engine.openInformationPopup(msg);
-}
-function _readUserLogin(callback) {
-if (!idReadedUserLogin) {
-idReadedUserLogin = true;
-Engine.rpc.sbis({
-service: 'auth',
-method: 'САП.ТекущийПользователь',
-callback: function (data) {
-BranchNameUserLogin = data.getRow().get('ЛогинПользователя');
-callback();
-}
-});
-} else {
-callback();
-}
-}
-function _extractVersionName(milestones) {
-let versionName = 'dev';
-let version = Infinity;
-milestones.each(function (record) {
-let curNames = record.get('ДокументРасширение.Название').replace(/[ \\(\\)]/g, '\\n').split('\\n');
-for (let i = 0; i < curNames.length; i++) {
-let curName = curNames[i].replace(/[^\\d\\.]/g, '').replace(/^[\\.]+/, '').replace(/[\\.]+$/, '');
-if (curName) {
-let n = Number(curName.replace(/\\./g, ''));
-if (!isNaN(n)) {
-if (n < version) {
-version = n;
-versionName = curName;
-}
-break;
-}
-}
-}
-});
-return versionName;
-}
-function _appendExtraButtons(moduleName, moduleProperty) {
-return function _appendExtraButtonsEH(elms) {
-for (let i = 0; i < elms.length; i++) {
-let elm = elms[i];
-_isTask(elm, moduleProperty, _appendExtraButtonsH(elm, moduleName, moduleProperty));
-}
-};
-}
-function _appendExtraButtonsH(elm, moduleName, moduleProperty) {
-return function () {
-let btns = document.createElement('div');
-btns.className = 'SBIS-UI-Customizer ' + moduleName + '-ExtraButtons';
-btns.innerHTML = moduleProperty.ExtraButtonsHTML;
-elm.insertBefore(btns, elm.children[0]);
-elm.classList.add('SBIS-UI-Customizer');
-elm.classList.add(moduleName);
-};
-}
-function _appendButtonsClass(moduleName, moduleProperty) {
-return function _appendButtonsClassEH(elms) {
-for (let i = 0; i < elms.length; i++) {
-let elm = elms[i];
-_isTask(elm, moduleProperty, _appendButtonsClassH(elm, moduleName));
-}
-};
-}
-function _appendButtonsClassH(elm, moduleName) {
-return function () {
-elm.classList.add('SBIS-UI-Customizer');
-elm.classList.add(moduleName);
-};
-}
-function _isTask(elm, moduleProperty, callback) {
-function checkControl() {
-var ctx;
-if (elm.wsControl && (ctx = elm.wsControl.getLinkedContext())) {
-record = ctx.getValue('record');
-if (record && record.getIdProperty && ~['@СвязьПапок', '@Документ'].indexOf(record.getIdProperty())) {
-check(record);
-} else {
-ctx.subscribe('onFieldChange', checkEvent);
-}
-} else {
-console.error(PARSE_ERROR);
-}
-}
-function checkEvent(e, fieldName, val) {
-/*jshint -W040 */
-if (fieldName === 'record' && val.getIdProperty() === '@Документ') {
-this.unsubscribe('onFieldChange', checkEvent);
-check(val);
-}
-}
-function check(record) {
-let docName = record.get('РП.Документ').get('Регламент').get('Название');
-if (moduleProperty.ApplyDocTypeName && ~moduleProperty.ApplyDocTypeName.indexOf(docName)) {
-return callback();
-}
-if (moduleProperty.ExcludeDocTypeName && !~moduleProperty.ExcludeDocTypeName.indexOf(docName)) {
-return callback();
-}
-}
-var record;
-if (location.pathname === '/opendoc.html' && !elm.wsControl) {
-return Engine.waitRequire(function (require) {
-require(['Lib/Control/Control'], function (CControl) {
-CControl.ControlStorage.waitChildByName('ServiceButtons').addCallback(function () {
-checkControl();
-});
-});
-});
-}
-var card = elm.parentElement;
-while (card && card.getAttribute('data-component') !== 'SBIS3.EDO2.Dialog' && card.parentElement) {
-card = card.parentElement;
-}
-if (card && card.getAttribute('data-component') === 'SBIS3.EDO2.Dialog') {
-try {
-record = card.wsControl.getTopParent()._options.componentOptions.record;
-if (record) {
-return check(record);
-}
-} catch (e) {
-return setTimeout(() => {
-_isTask(elm, moduleProperty, callback);
-}, 100);
-}
-}
-checkControl();
-}
+  "use strict";
+
+  const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
+  const ReplaceDocTypeName = {
+    'Ошибка в разработку': 'Ошибка',
+    'Задача в разработку': 'Задача'
+  };
+  var property = {
+    btns: {
+      TaskURL: {
+        icon: 'link'
+      },
+      BranchName: {
+        icon: 'git-branch'
+      },
+      СommitMsg: {
+        icon: 'git-commit'
+      }
+    },
+    ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
+    selectors: {
+      'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowDocTime"]',
+      'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowMonitoringDialog"]',
+      'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSendToAgreement"]',
+      'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoPrintDocument"]',
+      'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
+      'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoGetLink"]',
+      'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoDeleteDocument"]'
+    }
+  };
+  var BranchNameUserLogin = '';
+  var idReadedUserLogin = false;
+
+  return {
+    applySettings: applySettings,
+    copyToClipboard: copyToClipboard
+  };
+
+  function applySettings(settings, moduleName, moduleProperty) {
+    var group, css = '';
+    moduleName = moduleName ? moduleName : 'TaskToolbarBtns';
+    moduleProperty = moduleProperty ? moduleProperty : property;
+    group = settings.options.Show;
+    for (let name in group.options) {
+      if (group.options[name].value) {
+        css += Engine.generateCSS.inlineBlock(moduleProperty.selectors[name]);
+      }
+    }
+    group = settings.options.Hide;
+    for (let name in group.options) {
+      if (group.options[name].value) {
+        css += Engine.generateCSS.displayNone(moduleProperty.selectors[name]);
+      }
+    }
+    group = settings.options.Add;
+    let addExtraButtons = false;
+    moduleProperty.ExtraButtonsHTML = '';
+    for (let name in group.options) {
+      if (group.options[name].value) {
+        addExtraButtons = true;
+        let btn = Engine.getHTML(moduleName + '-' + name);
+        btn = btn.replace(/\\{\\{icon\\}\\}/, Engine.getSVG(moduleProperty.btns[name].icon));
+        moduleProperty.ExtraButtonsHTML += btn;
+      } else {
+        Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons .' + name);
+      }
+    }
+    if (addExtraButtons) {
+      let extbtn = Engine.getCSS('TaskToolbarBtns-ExtraButtons');
+      if (moduleName !== 'TaskToolbarBtns') {
+        extbtn = extbtn.replace(/TaskToolbarBtns/g, moduleName);
+      }
+      css += extbtn;
+      if (moduleProperty.WaitHandler) {
+        Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+      }
+      moduleProperty.WaitHandler = _appendExtraButtons(moduleName, moduleProperty);
+      Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+    } else {
+      if (moduleProperty.WaitHandler) {
+        Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+        delete moduleProperty.WaitHandler;
+      }
+      if (css) {
+        moduleProperty.WaitHandler = _appendButtonsClass(moduleName, moduleProperty);
+        Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+      }
+      Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons');
+    }
+    if (css) {
+      Engine.appendCSS(moduleName, css);
+    } else {
+      Engine.removeCSS(moduleName);
+    }
+  }
+
+  function copyToClipboard(elm, action) {
+    var docName, msg = '';
+    var text = '';
+    var opener = elm.parentElement.parentElement.wsControl;
+    var record = opener.getLinkedContext().getValue('record');
+    switch (action) {
+      case 'СommitMsg':
+        msg = 'Описание скопировано в буфер обмена';
+        docName = record.get('РП.Документ').get('Регламент').get('Название');
+        docName = ReplaceDocTypeName[docName] || docName;
+        text =
+          docName + ' № ' +
+          record.get('Номер') +
+          ' v' + _extractVersionName(record.get('РП.ВехаДокумента')) + ' от ' +
+          Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) + ' ' +
+          record.get('ЛицоСоздал.Название') + '\\n' +
+          location.protocol + '//' +
+          location.host + '/opendoc.html?guid=' +
+          record.get('ИдентификаторДокумента') + '\\n\\n' +
+          Engine.cutOverflow(Engine.cutTags(record.get('РазличныеДокументы.Информация')), 98, 1024);
+        break;
+      case 'TaskURL':
+        msg = 'Ссылка скопирована в буфер обмена';
+        text =
+          location.protocol + '//' +
+          location.host + '/opendoc.html?guid=' +
+          record.get('ИдентификаторДокумента');
+        break;
+      case 'BranchName':
+        if (!idReadedUserLogin) {
+          return _readUserLogin(function () {
+            copyToClipboard(elm, action);
+          });
+        }
+        msg = 'Имя ветки скопировано в буфер обмена';
+        text =
+          _extractVersionName(record.get('РП.ВехаДокумента')) + '/' +
+          (record.get('РП.Документ').get('Регламент').get('Название') === 'Ошибка в разработку' ? 'bugfix' : 'feature') + '/' +
+          (BranchNameUserLogin ? BranchNameUserLogin + '/' : '') +
+          record.get('Номер');
+        break;
+    }
+    Engine.copyToClipboard(text);
+    Engine.openInformationPopup(msg);
+  }
+
+  function _readUserLogin(callback) {
+    if (!idReadedUserLogin) {
+      idReadedUserLogin = true;
+      Engine.rpc.sbis({
+        service: 'auth',
+        method: 'САП.ТекущийПользователь',
+        callback: function (data) {
+          BranchNameUserLogin = data.getRow().get('ЛогинПользователя');
+          callback();
+        }
+      });
+    } else {
+      callback();
+    }
+  }
+
+  function _extractVersionName(milestones) {
+    let versionName = 'dev';
+    let version = Infinity;
+    milestones.each(function (record) {
+      let curNames = record.get('ДокументРасширение.Название').replace(/[ \\(\\)]/g, '\\n').split('\\n');
+      for (let i = 0; i < curNames.length; i++) {
+        let curName = curNames[i].replace(/[^\\d\\.]/g, '').replace(/^[\\.]+/, '').replace(/[\\.]+$/, '');
+        if (curName) {
+          let n = Number(curName.replace(/\\./g, ''));
+          if (!isNaN(n)) {
+            if (n < version) {
+              version = n;
+              versionName = curName;
+            }
+            break;
+          }
+        }
+      }
+    });
+    return versionName;
+  }
+
+  function _appendExtraButtons(moduleName, moduleProperty) {
+    return function _appendExtraButtonsEH(elms) {
+      for (let i = 0; i < elms.length; i++) {
+        let elm = elms[i];
+        _isTask(elm, moduleProperty, _appendExtraButtonsH(elm, moduleName, moduleProperty));
+      }
+    };
+  }
+
+  function _appendExtraButtonsH(elm, moduleName, moduleProperty) {
+    return function () {
+      let btns = document.createElement('div');
+      btns.className = 'SBIS-UI-Customizer ' + moduleName + '-ExtraButtons';
+      btns.innerHTML = moduleProperty.ExtraButtonsHTML;
+      elm.insertBefore(btns, elm.children[0]);
+      elm.classList.add('SBIS-UI-Customizer');
+      elm.classList.add(moduleName);
+    };
+  }
+
+  function _appendButtonsClass(moduleName, moduleProperty) {
+    return function _appendButtonsClassEH(elms) {
+      for (let i = 0; i < elms.length; i++) {
+        let elm = elms[i];
+        _isTask(elm, moduleProperty, _appendButtonsClassH(elm, moduleName));
+      }
+    };
+  }
+
+  function _appendButtonsClassH(elm, moduleName) {
+    return function () {
+      elm.classList.add('SBIS-UI-Customizer');
+      elm.classList.add(moduleName);
+    };
+  }
+
+  function _isTask(elm, moduleProperty, callback) {
+    function checkControl() {
+      var ctx;
+      if (elm.wsControl && (ctx = elm.wsControl.getLinkedContext())) {
+        record = ctx.getValue('record');
+        if (record && record.getIdProperty && ~['@СвязьПапок', '@Документ'].indexOf(record.getIdProperty())) {
+          check(record);
+        } else {
+          ctx.subscribe('onFieldChange', checkEvent);
+        }
+      } else {
+        console.error(PARSE_ERROR);
+      }
+    }
+
+    function checkEvent(e, fieldName, val) {
+      /*jshint -W040 */
+      if (fieldName === 'record' && val.getIdProperty() === '@Документ') {
+        this.unsubscribe('onFieldChange', checkEvent);
+        check(val);
+      }
+    }
+
+    function check(record) {
+      let docName = record.get('РП.Документ').get('Регламент').get('Название');
+      if (moduleProperty.ApplyDocTypeName && ~moduleProperty.ApplyDocTypeName.indexOf(docName)) {
+        return callback();
+      }
+      if (moduleProperty.ExcludeDocTypeName && !~moduleProperty.ExcludeDocTypeName.indexOf(docName)) {
+        return callback();
+      }
+    }
+    var record;
+    if (location.pathname === '/opendoc.html' && !elm.wsControl) {
+      return Engine.waitRequire(function (require) {
+        require(['Lib/Control/Control'], function (CControl) {
+          CControl.ControlStorage.waitChildByName('ServiceButtons').addCallback(function () {
+            checkControl();
+          });
+        });
+      });
+    }
+    var card = elm.parentElement;
+    while (card && card.getAttribute('data-component') !== 'EDO2/Document/Dialog' && card.parentElement) {
+      card = card.parentElement;
+    }
+    if (card && card.getAttribute('data-component') === 'EDO2/Document/Dialog') {
+      try {
+        record = card.wsControl.getTopParent()._options.componentOptions.record;
+        if (record) {
+          return check(record);
+        }
+      } catch (e) {
+        return setTimeout(() => {
+          _isTask(elm, moduleProperty, callback);
+        }, 100);
+      }
+    }
+    checkControl();
+  }
+
 });
 `,'VersionInformer.js':`
 UICustomizerDefine('VersionInformer', ['Engine'], function (Engine) {
-"use strict";
-var _dialog = '';
-return {
-open: open,
-close: close
-};
-function open() {
-var verinfo = Engine.getVerInfo();
-var notes = verinfo.notes;
-var content = '';
-if (notes.added.length) {
-content += '<div class="group"><span class="title">Новые возможности</span><ul>';
-for (let i = 0; i < notes.added.length; i++) {
-content += '<li>' + notes.added[i] + '</li>';
-}
-content += '</ul></div>';
-}
-if (notes.changed.length) {
-content += '<div class="group"><span class="title">Небольшие изменения</span><ul>';
-for (let i = 0; i < notes.changed.length; i++) {
-content += '<li>' + notes.changed[i] + '</li>';
-}
-content += '</ul></div>';
-}
-if (notes.fixed.length) {
-content += '<div class="group"><span class="title">Исправленные ошибки</span><ul>';
-for (let i = 0; i < notes.fixed.length; i++) {
-content += '<li>' + notes.fixed[i] + '</li>';
-}
-content += '</ul></div>';
-}
-if (notes.issues.length) {
-content += '<div class="group"><span class="title">Выполненные задачи</span><ul>';
-for (let i = 0; i < notes.issues.length; i++) {
-let note = notes.issues[i];
-if (note instanceof Array) {
-let id = note[0].replace(/.*\\/(\\d+).*/g, '$1');
-content += '<li>[<a target="_blank" href="' + note[0] +
-'">issue#' + id + '</a>] ' + note[1] + '</li>';
-} else {
-content += '<li>' + note + '</li>';
-}
-}
-content += '</ul></div>';
-}
-if (!content) {
-localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
-return true;
-}
-Engine.appendCSS('VersionInformer');
-_dialog = Engine.createElement('VersionInformer', {
-title: verinfo.version,
-date: verinfo.date,
-content: content
-});
-Engine.waitOnce('body', function (body) {
-body.appendChild(_dialog);
-_resize();
-window.addEventListener('resize', _resize);
-window.addEventListener('keydown', _esc);
-});
-}
-function close() {
-var verinfo = Engine.getVerInfo();
-_dialog.remove();
-_dialog = null;
-Engine.removeCSS('VersionInformer');
-window.removeEventListener('resize', _resize);
-window.removeEventListener('keydown', _esc);
-localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
-}
-function _resize() {
-var area = _dialog.children[0].children[1];
-var dlg = area.children[0];
-dlg.style.marginTop = Math.round((area.clientHeight / 2 - dlg.clientHeight / 2)) + 'px';
-dlg.style.marginLeft = Math.round((area.clientWidth / 2 - dlg.clientWidth / 2)) + 'px';
-}
-function _esc(event) {
-if (event.key === 'Escape') {
-close();
-}
-}
+   "use strict";
+
+   var _dialog = '';
+
+   return {
+      open: open,
+      close: close
+   };
+
+   function open() {
+      var verinfo = Engine.getVerInfo();
+      var notes = verinfo.notes;
+      var content = '';
+      if (notes.added.length) {
+         content += '<div class="group"><span class="title">Новые возможности</span><ul>';
+         for (let i = 0; i < notes.added.length; i++) {
+            content += '<li>' + notes.added[i] + '</li>';
+         }
+         content += '</ul></div>';
+      }
+      if (notes.changed.length) {
+         content += '<div class="group"><span class="title">Небольшие изменения</span><ul>';
+         for (let i = 0; i < notes.changed.length; i++) {
+            content += '<li>' + notes.changed[i] + '</li>';
+         }
+         content += '</ul></div>';
+      }
+      if (notes.fixed.length) {
+         content += '<div class="group"><span class="title">Исправленные ошибки</span><ul>';
+         for (let i = 0; i < notes.fixed.length; i++) {
+            content += '<li>' + notes.fixed[i] + '</li>';
+         }
+         content += '</ul></div>';
+      }
+      if (notes.issues.length) {
+         content += '<div class="group"><span class="title">Выполненные задачи</span><ul>';
+         for (let i = 0; i < notes.issues.length; i++) {
+            let note = notes.issues[i];
+            if (note instanceof Array) {
+               let id = note[0].replace(/.*\\/(\\d+).*/g, '$1');
+               content += '<li>[<a target="_blank" href="' + note[0] +
+                  '">issue#' + id + '</a>] ' + note[1] + '</li>';
+            } else {
+               content += '<li>' + note + '</li>';
+            }
+         }
+         content += '</ul></div>';
+      }
+      if (!content) {
+         localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
+         return true;
+      }
+      Engine.appendCSS('VersionInformer');
+      _dialog = Engine.createElement('VersionInformer', {
+         title: verinfo.version,
+         date: verinfo.date,
+         content: content
+      });
+      Engine.waitOnce('body', function (body) {
+         body.appendChild(_dialog);
+         _resize();
+         window.addEventListener('resize', _resize);
+         window.addEventListener('keydown', _esc);
+      });
+   }
+
+   function close() {
+      var verinfo = Engine.getVerInfo();
+      _dialog.remove();
+      _dialog = null;
+      Engine.removeCSS('VersionInformer');
+      window.removeEventListener('resize', _resize);
+      window.removeEventListener('keydown', _esc);
+      localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
+   }
+
+   function _resize() {
+      var area = _dialog.children[0].children[1];
+      var dlg = area.children[0];
+      dlg.style.marginTop = Math.round((area.clientHeight / 2 - dlg.clientHeight / 2)) + 'px';
+      dlg.style.marginLeft = Math.round((area.clientWidth / 2 - dlg.clientWidth / 2)) + 'px';
+   }
+
+   function _esc(event) {
+      if (event.key === 'Escape') {
+         close();
+      }
+   }
+
 });
 `},'svg':{'bug.svg':`
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M11 10h3V9h-3V8l3.17-1.03-.34-.94L11 7V6c0-.55-.45-1-1-1V4c0-.48-.36-.88-.83-.97L10.2 2H12V1H9.8l-2 2h-.59L5.2 1H3v1h1.8l1.03 1.03C5.36 3.12 5 3.51 5 4v1c-.55 0-1 .45-1 1v1l-2.83-.97-.34.94L4 8v1H1v1h3v1L.83 12.03l.34.94L4 12v1c0 .55.45 1 1 1h1l1-1V6h1v7l1 1h1c.55 0 1-.45 1-1v-1l2.83.97.34-.94L11 11v-1zM9 5H6V4h3v1z"/></svg>
@@ -2709,32 +2930,32 @@ close();
 <i class="TaskURL" onclick="UICustomizerEvent('TaskToolbarBtns','copyToClipboard',this,'TaskURL')" title="Скопировать ссылку на MR">{{icon}}</i>
 `,'SettingsButton-Header.xhtml':`
 <div class="icon" title="Персонализация" onclick="UICustomizerEvent('SettingsDialog','open')">
-{{icon}}
+   {{icon}}
 </div>
 `,'SettingsButton.xhtml':`
 <div class="row" onclick="UICustomizerEvent('SettingsDialog','open')">
-<div class="icon">{{icon}}</div>
-<div class="title">Персонализация</div>
+   <div class="icon">{{icon}}</div>
+   <div class="title">Персонализация</div>
 </div>
 `,'SettingsDialog-block.xhtml':`
 <span class="title">{{title}}</span>
 `,'SettingsDialog-group.xhtml':`
 <div class='header'>
-<span class="title">{{title}}</span>
+   <span class="title">{{title}}</span>
 </div>
 `,'SettingsDialog-option-boolean.xhtml':`
 <label>
-<input type="checkbox" {{value}} optname="{{optname}}" onchange="UICustomizerEvent('SettingsDialog','onchangeOptionBoolean',this)">
-<span>{{title}}</span>
+   <input type="checkbox" {{value}} optname="{{optname}}" onchange="UICustomizerEvent('SettingsDialog','onchangeOptionBoolean',this)">
+   <span>{{title}}</span>
 </label>
 `,'SettingsDialog-section.xhtml':`
 <div class='header' onclick="UICustomizerEvent('SettingsDialog','toggleSection',this)">
-<span class="title">{{title}}</span>
+   <span class="title">{{title}}</span>
 </div>
 `,'SettingsDialog.xhtml':`
 <div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="UICustomizerEvent('SettingsDialog','close')"></div>
 <div class="header">
-<span class="title">Персонализация</span>
+   <span class="title">Персонализация</span>
 </div>
 `,'SocNet-FeedbackButtons.xhtml':`
 <!--i class="LikeIt" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'LikeIt')" title="Мне нравится!">{{LikeIt}}</i-->
@@ -2747,7 +2968,7 @@ close();
 <div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="this.parentElement.remove()"></div>
 <div class="send">Отправить</div>
 <div class="header">
-<span class="title">{{title}}</span>
+   <span class="title">{{title}}</span>
 </div>
 <textarea autofocus rows="5" placeholder="{{hint}}"></textarea>
 `,'TaskToolbarBtns-BranchName.xhtml':`
@@ -2758,25 +2979,25 @@ close();
 <i class="СommitMsg" onclick="UICustomizerEvent('TaskToolbarBtns','copyToClipboard',this,'СommitMsg')" title="Скопировать описание для коммита">{{icon}}</i>
 `,'VersionInformer.xhtml':`
 <div class="VersionInformer">
-<div class="background"></div>
-<div class="area">
-<div class="dialog" onclick="event.stopPropagation();">
-<div class="header">
-<span class="title">Обновление SBIS UI-Customizer {{title}}</span>
-<div class="info">от {{date}}</div>
-</div>
-<div class="content">{{content}}</div>
-<div class="footer">
-<div class="links">
-<a target="_blank" href="https://github.com/sbis-team/ui-customizer/blob/release/CHANGELOG.md">История изменений</a>
-<a target="_blank" href="https://github.com/sbis-team/ui-customizer/issues">Список задач</a>
-</div>
-<div class="links right">
-<a target="_blank" href="https://github.com/sbis-team/ui-customizer/blob/release/README.md">Документация</a>
-</div>
-<div class="button" onclick="UICustomizerEvent( 'VersionInformer', 'close') ">ОК</div>
-</div>
-</div>
-</div>
+	<div class="background"></div>
+	<div class="area">
+		<div class="dialog" onclick="event.stopPropagation();">
+			<div class="header">
+				<span class="title">Обновление SBIS UI-Customizer {{title}}</span>
+				<div class="info">от {{date}}</div>
+			</div>
+			<div class="content">{{content}}</div>
+			<div class="footer">
+				<div class="links">
+					<a target="_blank" href="https://github.com/sbis-team/ui-customizer/blob/release/CHANGELOG.md">История изменений</a>
+					<a target="_blank" href="https://github.com/sbis-team/ui-customizer/issues">Список задач</a>
+				</div>
+				<div class="links right">
+					<a target="_blank" href="https://github.com/sbis-team/ui-customizer/blob/release/README.md">Документация</a>
+				</div>
+				<div class="button" onclick="UICustomizerEvent( 'VersionInformer', 'close') ">ОК</div>
+			</div>
+		</div>
+	</div>
 </div>
 `}});
