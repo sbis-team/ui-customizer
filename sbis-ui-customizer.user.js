@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.12.rc4
+// @name          SBIS UI-Customizer v1.3.12.rc5
 // @namespace     SBIS
-// @version       1.3.12.rc4
-// @date          10.04.2018 13:00:20
+// @version       1.3.12.rc5
+// @date          10.04.2018 13:03:58
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,8 +88,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.12.rc4",
-"date": "10.04.2018 13:00:20",
+"version": "1.3.12.rc5",
+"date": "10.04.2018 13:03:58",
 "notes": {
 "added": [],
 "changed": [
@@ -98,6 +98,7 @@ console.error(moduleName + '.' + eventName, '-', err);
 "fixed": [
 "Исправлены ошибки в консоли об использовании несуществующих компонентов",
 "Вернул кнопку кастомизации в меню пользователя",
+"Исправил 'горячее' переключение ленты на главной в одну колонку",
 "Прочие мелкие некрасивости"
 ],
 "issues": []
