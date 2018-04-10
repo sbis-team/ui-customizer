@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.12.rc2
+// @name          SBIS UI-Customizer v1.3.12.rc3
 // @namespace     SBIS
-// @version       1.3.12.rc2
-// @date          10.04.2018 12:22:17
+// @version       1.3.12.rc3
+// @date          10.04.2018 12:33:04
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,8 +88,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.12.rc2",
-"date": "10.04.2018 12:22:17",
+"version": "1.3.12.rc3",
+"date": "10.04.2018 12:33:04",
 "notes": {
 "added": [],
 "changed": [
@@ -97,7 +97,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 ],
 "fixed": [
 "Исправлены ошибки в консоли об использовании несуществующих компонентов",
-"Вернул кнопку кастомизации в меню пользователя"
+"Вернул кнопку кастомизации в меню пользователя",
+"Прочие мелкие некрасивости"
 ],
 "issues": []
 }
@@ -2154,7 +2155,7 @@ return option;
 }
 function _resize() {
 var panel = dialog.children[0].children[3];
-panel.style['max-height'] = (document.body.clientHeight - 49) + 'px';
+panel.style['max-height'] = (document.body.clientHeight - 86) + 'px';
 }
 });
 `,'SocNet.js':`
