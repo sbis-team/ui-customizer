@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.10
+// @name          SBIS UI-Customizer v1.3.11
 // @namespace     SBIS
-// @version       1.3.10
-// @date          19.02.2018 13:31:19
+// @version       1.3.11
+// @date          10.04.2018 08:49:12
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,17 +88,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.10",
-"date": "19.02.2018 13:31:19",
+"version": "1.3.11",
+"date": "10.04.2018 08:49:12",
 "notes": {
 "added": [],
-"changed": [
-"Открытие диалога настроек через HotKeys: ctrl+shift+U и ctrl+alt+U",
-"Опция скрытия переключателя Мини/Макси в шапке сайта"
-],
+"changed": [],
 "fixed": [
-"Правки стилей после обновления rc-3.18.10",
-"Убрана иконка настроек в шапке сайта (глючит шапка)"
+"Опция скрытия совы",
+"Опции дополнительных кнопок в карточках задач, ошибок, поручение и т.д."
 ],
 "issues": []
 }
@@ -1948,7 +1945,7 @@ Task.applySettings(settings, 'MRToolbarBtns', property);
 UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
 'use strict';
 const selectors = {
-'Owl': 'div[data-component="SBIS3.Engine.HowEasy"]',
+'Owl': 'div[sbisname="howEasy"]',
 'AsJust': \`
 .ExpandOurOrg__div,
 .middle__OurOrgHowEasy
@@ -2574,10 +2571,10 @@ checkControl();
 });
 }
 var card = elm.parentElement;
-while (card && card.getAttribute('data-component') !== 'SBIS3.EDO2.Dialog' && card.parentElement) {
+while (card && card.getAttribute('data-component') !== 'EDO2/Document/Dialog' && card.parentElement) {
 card = card.parentElement;
 }
-if (card && card.getAttribute('data-component') === 'SBIS3.EDO2.Dialog') {
+if (card && card.getAttribute('data-component') === 'EDO2/Document/Dialog') {
 try {
 record = card.wsControl.getTopParent()._options.componentOptions.record;
 if (record) {
