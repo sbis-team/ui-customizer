@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.11
+// @name          SBIS UI-Customizer v1.3.12
 // @namespace     SBIS
-// @version       1.3.11
-// @date          10.04.2018 08:49:12
+// @version       1.3.12
+// @date          10.04.2018 17:30:04
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -88,14 +88,18 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow, {
-"version": "1.3.11",
-"date": "10.04.2018 08:49:12",
+"version": "1.3.12",
+"date": "10.04.2018 17:30:04",
 "notes": {
 "added": [],
-"changed": [],
+"changed": [
+"Ссылка на группу и версия скрипта в диалоге настроек"
+],
 "fixed": [
-"Опция скрытия совы",
-"Опции дополнительных кнопок в карточках задач, ошибок, поручение и т.д."
+"Исправлены ошибки в консоли об использовании несуществующих компонентов",
+"Вернул кнопку кастомизации в меню пользователя",
+"Исправил 'горячее' переключение ленты на главной в одну колонку",
+"Прочие мелкие некрасивости"
 ],
 "issues": []
 }
@@ -772,7 +776,7 @@ height: 42px !important;
 `,'SettingsButton.css':`
 #SBIS-UI-Customizer-SettingsButton {
 margin-bottom: 4px;
-padding-bottom: 8px;
+padding-bottom: 4px;
 padding-top: 4px;
 height: 100%;
 font-size: 15px;
@@ -841,6 +845,15 @@ z-index: 1000000;
 #SBIS-UI-Customizer-SettingsDialog {
 width: 520px;
 }
+#SBIS-UI-Customizer-SettingsDialog .link {
+color: #05b;
+outline: 0;
+text-decoration: none;
+cursor: pointer;
+}
+#SBIS-UI-Customizer-SettingsDialog .right {
+float: right;
+}
 #SBIS-UI-Customizer-SettingsDialog>.header {
 height: 24px;
 padding: 9px;
@@ -850,6 +863,7 @@ border-bottom: 1px solid #EAEAEA;
 font-weight: bold;
 font-size: 20px;
 color: #313e78;
+margin-right: 12px;
 }
 #SBIS-UI-Customizer-SettingsDialog>.feedback {
 position: absolute;
@@ -983,6 +997,12 @@ padding-left: 4px;
 .SBIS-UI-Customizer .SettingsDialog-option-boolean label:hover span {
 text-decoration: underline;
 color: #FF7033;
+}
+.SBIS-UI-Customizer .SettingsDialog-footer {
+background-color: #F8F8F8;
+border-top: 1px solid #DDDDDD;
+color: #8991A9;
+padding: 12px;
 }
 `,'SocNet.css':`
 .SBIS-UI-Customizer-SocNet-InputDialog {
@@ -1144,6 +1164,12 @@ background-color: #fdecd9;
 }
 .SBIS-UI-Customizer .VersionInformer .dialog > .footer .button:active {
 background-color: #fdd2c0 !important;
+}
+.SBIS-UI-Customizer .VersionInformer .link {
+color: #05b;
+outline: 0;
+text-decoration: none;
+cursor: pointer;
 }
 `},'js':{'AccordionHideItems.js':`
 UICustomizerDefine('AccordionHideItems', ['Engine'], function (Engine) {
@@ -1639,7 +1665,7 @@ bl.addErrback(errback);
 function openInformationPopup(text, status) {
 if (!InformationPopupManager) {
 return waitRequire(function (require) {
-require(['js!SBIS3.CONTROLS.Utils.InformationPopupManager'], function (ipm) {
+require(['SBIS3.CONTROLS/Utils/InformationPopupManager'], function (ipm) {
 InformationPopupManager = ipm;
 return openInformationPopup(text, status);
 });
@@ -1864,21 +1890,9 @@ toggleColumn(false);
 });
 }
 function toggleColumn(isOne) {
-if (isOne && document.querySelector('.mp-NewsColumnView .icon-Column2') && document.querySelector('.sn-NewsLeftColumn')) {
-if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
-document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
-Engine.waitOnce('.mp-NewsColumnView .controls-IconButton', function (elm) {
-elm.click();
-});
-} else {
-setTimeout(function () { toggleColumn(isOne); }, 300);
-}
-} else if (document.querySelector('.mp-NewsColumnView')) {
-if (document.querySelector('.mp-NewsColumnView .controls-IconButton').wsControl) {
-document.querySelector('.mp-NewsColumnView .controls-IconButton').click();
-} else {
-setTimeout(function () { toggleColumn(isOne); }, 300);
-}
+var news = document.querySelector('.n-NewsPageList');
+if (news && news.wsControl) {
+news.wsControl._setOneColumnMode(isOne, false);
 }
 }
 });
@@ -1984,7 +1998,7 @@ init: init
 };
 function init() {
 Engine.appendCSS('SettingsButton');
-Engine.waitOnce('div.account_management__user-panel .account_management__user-panel-buttons-list .controls-ListView__itemsContainer', function (elm) {
+Engine.waitOnce('div.am-User__panel-lists .controls-ListView__itemsContainer', function (elm) {
 var container = Engine.createComponent('SettingsButton', {
 icon: Engine.getSVG('settings')
 });
@@ -2004,7 +2018,7 @@ toggleSection: toggleSection,
 onchangeOptionBoolean: onchangeOptionBoolean
 };
 function open() {
-var up = document.querySelector('div[templatename="js!SBIS3.AccountsManagement.UserPanel"]');
+var up = document.querySelector('div[templatename="AccountsManagement/User/Panel"]');
 if (up) {
 up.wsControl.hide();
 }
@@ -2041,6 +2055,7 @@ var value = element.checked;
 Engine.setSetting(optname, value);
 }
 function _createDialog() {
+var verinfo = Engine.getVerInfo();
 Engine.appendCSS('SettingsDialog');
 dialog = document.createElement('div');
 dialog.id = 'SBIS-UI-Customizer-SettingsDialog-Area';
@@ -2050,6 +2065,9 @@ feedback.className = 'feedback';
 feedback.innerHTML = SocNet.getFeedbackButtons();
 template.appendChild(feedback);
 _buildSettings(template);
+template.appendChild(Engine.createElement('SettingsDialog-footer', {
+version: verinfo.version
+}));
 dialog.appendChild(template);
 document.body.appendChild(dialog);
 open();
@@ -2126,7 +2144,7 @@ return option;
 }
 function _resize() {
 var panel = dialog.children[0].children[3];
-panel.style['max-height'] = (document.body.clientHeight - 49) + 'px';
+panel.style['max-height'] = (document.body.clientHeight - 86) + 'px';
 }
 });
 `,'SocNet.js':`
@@ -2590,12 +2608,13 @@ checkControl();
 }
 });
 `,'VersionInformer.js':`
-UICustomizerDefine('VersionInformer', ['Engine'], function (Engine) {
-"use strict";
+UICustomizerDefine('VersionInformer', ['Engine', 'SettingsDialog'], function (Engine, SettingsDialog) {
+'use strict';
 var _dialog = '';
 return {
 open: open,
-close: close
+close: close,
+settings: settings
 };
 function open() {
 var verinfo = Engine.getVerInfo();
@@ -2662,6 +2681,10 @@ window.removeEventListener('resize', _resize);
 window.removeEventListener('keydown', _esc);
 localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
 }
+function settings() {
+close();
+SettingsDialog.open();
+}
 function _resize() {
 var area = _dialog.children[0].children[1];
 var dlg = area.children[0];
@@ -2715,6 +2738,13 @@ close();
 </div>
 `,'SettingsDialog-block.xhtml':`
 <span class="title">{{title}}</span>
+`,'SettingsDialog-footer.xhtml':`
+<span>
+Скрыть/показать настройки: Ctrl+Shift+U или Ctrl+Alt+U
+</span>
+<span class="link right" onclick="UICustomizerEvent('VersionInformer','open')">
+v.{{version}}
+</span>
 `,'SettingsDialog-group.xhtml':`
 <div class='header'>
 <span class="title">{{title}}</span>
@@ -2732,6 +2762,7 @@ close();
 <div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="UICustomizerEvent('SettingsDialog','close')"></div>
 <div class="header">
 <span class="title">Персонализация</span>
+<a href="https://online.sbis.ru/groups/2d110a8e-7edb-469a-a3cb-5eb6d8095c10" target="_blank">Наша группа</a>
 </div>
 `,'SocNet-FeedbackButtons.xhtml':`
 <!--i class="LikeIt" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'LikeIt')" title="Мне нравится!">{{LikeIt}}</i-->
@@ -2769,9 +2800,10 @@ close();
 <a target="_blank" href="https://github.com/sbis-team/ui-customizer/issues">Список задач</a>
 </div>
 <div class="links right">
-<a target="_blank" href="https://github.com/sbis-team/ui-customizer/blob/release/README.md">Документация</a>
+<a href="https://online.sbis.ru/groups/2d110a8e-7edb-469a-a3cb-5eb6d8095c10" target="_blank" onclick="UICustomizerEvent( 'VersionInformer', 'close')">Наша группа</a>
+<span class="link" onclick="UICustomizerEvent( 'VersionInformer', 'settings')">Настройки</span>
 </div>
-<div class="button" onclick="UICustomizerEvent( 'VersionInformer', 'close') ">ОК</div>
+<div class="button" onclick="UICustomizerEvent( 'VersionInformer', 'close')">ОК</div>
 </div>
 </div>
 </div>
