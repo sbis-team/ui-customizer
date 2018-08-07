@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.13.rc1
+// @name          SBIS UI-Customizer v1.3.13.rc2
 // @namespace     SBIS
-// @version       1.3.13.rc1
-// @date          07.08.2018 15:29:26
+// @version       1.3.13.rc2
+// @date          07.08.2018 15:32:18
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,8 +92,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.3.13.rc1",
-"date": "07.08.2018 15:29:26",
+"version": "1.3.13.rc2",
+"date": "07.08.2018 15:32:18",
 "notes": {
 "added": [],
 "changed": [
@@ -102,8 +102,7 @@ console.error(moduleName + '.' + eventName, '-', err);
 "fixed": [
 "Адаптация под главную страницу на VDOM",
 "Возрождение опции 'Лента в одну колонку', мы не сдадимся! (:",
-"Прячем сову на главной, опять.",
-"Скрываем переключатель аккордеона, сколько е можно менять названия стилей =Ъ"
+"Прячем сову на главной, опять. Больше не будет мозолить глаза."
 ],
 "issues": []
 }
