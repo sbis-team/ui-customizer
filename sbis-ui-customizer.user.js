@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.12
+// @name          SBIS UI-Customizer v1.3.13
 // @namespace     SBIS
-// @version       1.3.12
-// @date          10.04.2018 17:30:04
+// @version       1.3.13
+// @date          07.08.2018 15:38:48
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -23,9 +23,8 @@
 // @grant         GM_setClipboard
 // @noframes
 // ==/UserScript==
-/* jshint esnext:true */
 (function (window, verinfo, settings, sources) {
-"use strict";
+'use strict';
 var JSModules = {};
 window.UICustomizerDefine = UICustomizerDefine;
 window.UICustomizerRequire = UICustomizerRequire;
@@ -33,6 +32,11 @@ window.UICustomizerEvent = UICustomizerEvent;
 var globalContainer = document.createElement('userscript');
 globalContainer.id = 'SBIS-UI-Customizer';
 document.getElementsByTagName('html')[0].appendChild(globalContainer);
+document.addEventListener('DOMNodeInserted', function () {
+if (!document.querySelector('#' + globalContainer.id)) {
+document.getElementsByTagName('html')[0].appendChild(globalContainer);
+}
+}, false);
 UICustomizerRequire(['Engine'], function (Engine) {
 Engine.init(verinfo, settings, sources, {
 GM_info: GM_info,
@@ -87,28 +91,28 @@ console.error(moduleName + '.' + eventName, '-', err);
 }
 });
 }
-})(unsafeWindow, {
-"version": "1.3.12",
-"date": "10.04.2018 17:30:04",
+})(unsafeWindow , {
+"version": "1.3.13",
+"date": "07.08.2018 15:38:48",
 "notes": {
 "added": [],
 "changed": [
-"Ссылка на группу и версия скрипта в диалоге настроек"
+"Удалил ряд устаревших и нерабочих опций"
 ],
 "fixed": [
-"Исправлены ошибки в консоли об использовании несуществующих компонентов",
-"Вернул кнопку кастомизации в меню пользователя",
-"Исправил 'горячее' переключение ленты на главной в одну колонку",
-"Прочие мелкие некрасивости"
+"Адаптация под главную страницу на VDOM",
+"Возрождение опции 'Лента в одну колонку', мы не сдадимся! (:",
+"Прячем сову на главной, опять. Больше не будет мозолить глаза."
 ],
 "issues": []
 }
-}, (() => {
+} , (() => {
 return {
 'HomePage': {
 'title': 'Главная страница',
 'view': 'section',
 'options': {
+/*
 'HideAccordion': {
 'title': 'Скрыть пункты аккордеона',
 'view': 'group',
@@ -218,6 +222,7 @@ return {
 }
 }
 },
+*/
 'HideOther': {
 'title': 'Скрыть прочие блоки',
 'view': 'group',
@@ -229,18 +234,6 @@ return {
 'options': {
 'Owl': {
 'title': 'Сова > Как просто',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'AsJust': {
-'title': '\'Как просто\' над лентой',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'SideRight': {
-'title': 'Правый баннер',
 'view': 'option',
 'type': 'boolean',
 'value': false
@@ -303,26 +296,6 @@ return {
 'title': 'Прочее',
 'view': 'block',
 'options': {
-'StretchPage': {
-'title': 'Растянуть сайт на всю страницу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'TapeEventsMinFoto': {
-'title': 'Уменьшить фото в ленте событий',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-/*
-'HideTapeEvents': {
-'title': 'Скрыть ленту событий',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-*/
 'HideHeaderText': {
 'title': 'Скрыть текст кнопок в шапке',
 'view': 'option',
@@ -700,18 +673,9 @@ padding: 3px 12px 3px 12px !important;
 `,'HomePageModify-HideHeaderText.css':`
 .engine-OnlineBaseInnerMinCoreView__headerCell .header-ConfigurationButton .controls-Button__text,
 #header [sbisname="ConfigurationLink"] .controls-Link__field,
-#header div.user-button-component .controls-Link__field {
+#header div.user-button-component .controls-Link__field,
+.online-OnlinePageTemplate__header .controls-BaseButton__text {
 display: none !important;
-}
-`,'HomePageModify-HideTapeEvents.css':`
-.online-OnlineBaseInnerView__notificationCenter {
-display: none !important;
-}
-.online-OnlineBaseInnerView__notificationButton {
-display: none !important;
-}
-#headerLeft {
-display: block !important;
 }
 `,'HomePageModify-SlimBorder.css':`
 .sn-NewsPage__oneNews-itemAll {
@@ -749,29 +713,6 @@ max-height: 64px !important;
 .sn-NewsPage__oneNews-itemAll,
 .sn-NewsPage__oneNews {
 min-height: 120px !important;
-}
-`,'HomePageModify-StretchPage.css':`
-div.news-SpecialNews {
-display: none !important;
-}
-#min-width,
-.engine-OnlineBaseInnerMinCoreView__content {
-max-width: none;
-}
-@media screen and (min-width: 1600px) {
-.online-OnlineBaseInnerView__notificationCenter {
-left: inherit !important;
-right: 0 !important;
-}
-}
-`,'HomePageModify-TapeEventsMinFoto.css':`
-div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt {
-text-align: center;
-}
-div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto,
-div.Staff-EventRibbon-ShortList-ItemTemplate__photoCnt .Person-PersonPhoto__with-miniCard {
-width: 42px !important;
-height: 42px !important;
 }
 `,'SettingsButton.css':`
 #SBIS-UI-Customizer-SettingsButton {
@@ -845,6 +786,18 @@ z-index: 1000000;
 #SBIS-UI-Customizer-SettingsDialog {
 width: 520px;
 }
+.SBIS-UI-Customizer-close-btn {
+float: right;
+font-size: 18px;
+padding: 0px 4px;
+margin: 10px 7px;
+color: #999;
+font-weight: bold;
+cursor: pointer;
+}
+.SBIS-UI-Customizer-close-btn:hover {
+color: #313e78;
+}
 #SBIS-UI-Customizer-SettingsDialog .link {
 color: #05b;
 outline: 0;
@@ -867,7 +820,7 @@ margin-right: 12px;
 }
 #SBIS-UI-Customizer-SettingsDialog>.feedback {
 position: absolute;
-right: 48px;
+right: 32px;
 height: 16px;
 top: 14px;
 display: inline-block;
@@ -1093,64 +1046,67 @@ display: inline-block;
 background: #FFFFFF;
 border: 2px solid #DDDDDD;
 border-top-width: 0px;
+font-family: TensorFont, sans-serif;
+font-size: 14px;
+text-decoration-skip-ink: none;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .header {
+.SBIS-UI-Customizer .VersionInformer .dialog>.header {
 height: 24px;
 padding: 12px;
 border-bottom: 1px solid #EAEAEA;
 border-top: 3px solid #135091;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .header .title {
+.SBIS-UI-Customizer .VersionInformer .dialog>.header .title {
 font-weight: bold;
 font-size: 20px;
 color: #313e78;
 padding-right: 16px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .header .info {
+.SBIS-UI-Customizer .VersionInformer .dialog>.header .info {
 float: right;
 color: #999;
 font-size: 12px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .content {
+.SBIS-UI-Customizer .VersionInformer .dialog>.content {
 padding: 12px 16px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .content > .group {
+.SBIS-UI-Customizer .VersionInformer .dialog>.content>.group {
 padding-bottom: 8px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .content > .group > .title {
+.SBIS-UI-Customizer .VersionInformer .dialog>.content>.group>.title {
 color: #313E78;
 font-weight: bold;
 font-size: 15px;
 line-height: 24px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .content > .group > ul {
+.SBIS-UI-Customizer .VersionInformer .dialog>.content>.group>ul {
 padding-left: 26px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .content > .group > ul > li {
+.SBIS-UI-Customizer .VersionInformer .dialog>.content>.group>ul>li {
 padding-bottom: 8px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer {
 padding: 16px 0;
 border-top: 1px solid #EAEAEA;
 background: #F5F5F5;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer>.links {
 float: left;
 padding: 0 12px;
 line-height: 25px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links.right {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer>.links.right {
 float: right;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links > a {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer>.links>a {
 border-right: 1px solid #EAEAEA;
 padding-right: 6px;
 padding-left: 2px;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer > .links > a:last-child {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer>.links>a:last-child {
 border-right: none;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer .button {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer .button {
 border: 1px solid #ff7033;
 margin: auto;
 border-radius: 16px;
@@ -1159,10 +1115,10 @@ width: 100px;
 text-align: center;
 cursor: pointer;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer .button:hover {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer .button:hover {
 background-color: #fdecd9;
 }
-.SBIS-UI-Customizer .VersionInformer .dialog > .footer .button:active {
+.SBIS-UI-Customizer .VersionInformer .dialog>.footer .button:active {
 background-color: #fdd2c0 !important;
 }
 .SBIS-UI-Customizer .VersionInformer .link {
@@ -1838,17 +1794,14 @@ Engine.openInformationPopup(rk(msg));
 `,'HomePageModify.js':`
 UICustomizerDefine('HomePageModify', ['Engine'], function (Engine) {
 'use strict';
+let __oneColumnMode = false;
+let _changeColumnsOrigon;
 return {
 applySettings: applySettings
 };
 function applySettings(settings) {
 var css = '';
 let news = settings.options.News.options;
-/*
-if (news.HideAuthor.value && news.HideFooterBtn.value) {
-css += Engine.getCSS('HomePageModify-FixHeight');
-}
-*/
 for (let groupName in settings.options) {
 let group = settings.options[groupName];
 for (let name in group.options) {
@@ -1858,41 +1811,39 @@ css += Engine.getCSS(cssname);
 }
 }
 }
-/*
-if (news.HideAuthor.value && news.SlimBorder.value) {
-css += Engine.generateCSS.custom(
-'.sn-NewsPage .sn-DraftIcon, .sn-NewsPage .sn-FavoriteIcon, .sn-NewsPage .sn-PinIcon',
-'top',
-'0px !important'
-);
-}
-*/
 if (css) {
 Engine.appendCSS('HomePageModify', css);
 } else {
 Engine.removeCSS('HomePageModify');
 }
-Engine.waitRequire(function (require) {
-require(['WS.Data/Source/SbisService', 'Core/UserConfig'], function (SbisService, UserConfig) {
-let ifColumn2 = document.querySelector('.sn-NewsLeftColumn');
-if (news.InOneColumn.value) {
-if (ifColumn2) {
-UserConfig.setParam('OnlyOneColumn', 'true');
-toggleColumn(true);
+Engine.unsubscribeWait('.feed-LeftItems', oneColumnMode);
+__oneColumnMode = news.InOneColumn.value;
+if (__oneColumnMode) {
+if (document.querySelector('.feed-LeftItems')) {
+oneColumnMode();
+}
+Engine.wait('.feed-LeftItems', oneColumnMode);
+} else {
+oneColumnMode();
+}
+}
+function oneColumnMode() {
+let news = document.querySelector('.feed-All .ws-ListView');
+if (news && news.controlNodes && news.controlNodes[0] && news.controlNodes[0].control) {
+news = news.controlNodes[0].control;
+if (!_changeColumnsOrigon) {
+_changeColumnsOrigon = news._changeColumns;
+news._changeColumns = (clientWidth) => {
+if (!__oneColumnMode) {
+_changeColumnsOrigon.call(news, clientWidth);
+}
+};
+}
+if (news.oneColumnMode !== __oneColumnMode) {
+news.changeColumnMode(__oneColumnMode);
 }
 } else {
-if (!ifColumn2) {
-UserConfig.removeParam('OnlyOneColumn');
-toggleColumn(false);
-}
-}
-});
-});
-}
-function toggleColumn(isOne) {
-var news = document.querySelector('.n-NewsPageList');
-if (news && news.wsControl) {
-news.wsControl._setOneColumnMode(isOne, false);
+setTimeout(oneColumnMode, 10);
 }
 }
 });
@@ -1959,13 +1910,8 @@ Task.applySettings(settings, 'MRToolbarBtns', property);
 UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
 'use strict';
 const selectors = {
-'Owl': 'div[sbisname="howEasy"]',
-'AsJust': \`
-.ExpandOurOrg__div,
-.middle__OurOrgHowEasy
-\`,
-'SideRight': 'div.news-SpecialNews',
-'HideMaximumButton': '.NavSchemeLink.navSidebar__navSchemeLink'
+'Owl': 'div[sbisname="howEasy"], .online-howEasy',
+'HideMaximumButton': '.NavSchemeLink.navSidebar__navSchemeLink, .NavSchemeLink.engine-Sidebar__navSchemeLink'
 };
 return {
 applySettings: applySettings
@@ -2665,7 +2611,7 @@ title: verinfo.version,
 date: verinfo.date,
 content: content
 });
-Engine.waitOnce('body', function (body) {
+Engine.waitOnce('#SBIS-UI-Customizer', function (body) {
 body.appendChild(_dialog);
 _resize();
 window.addEventListener('resize', _resize);
@@ -2759,7 +2705,7 @@ v.{{version}}
 <span class="title">{{title}}</span>
 </div>
 `,'SettingsDialog.xhtml':`
-<div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="UICustomizerEvent('SettingsDialog','close')"></div>
+<div class="SBIS-UI-Customizer-close-btn" onclick="UICustomizerEvent('SettingsDialog','close')">X</div>
 <div class="header">
 <span class="title">Персонализация</span>
 <a href="https://online.sbis.ru/groups/2d110a8e-7edb-469a-a3cb-5eb6d8095c10" target="_blank">Наша группа</a>
@@ -2772,7 +2718,7 @@ v.{{version}}
 <!--i class="separator"></i-->
 <i class="ReportError" onclick="UICustomizerEvent('SocNet','sendFeedback',this,'ReportError')" title="Сообщить об ошибке">{{ReportError}}</i>
 `,'SocNet-InputDialog.xhtml':`
-<div class="controls-PopupMixin__closeButton controls-PopupMixin__closeButton_standart" onclick="this.parentElement.remove()"></div>
+<div class="SBIS-UI-Customizer-close-btn" onclick="this.parentElement.remove()">X</div>
 <div class="send">Отправить</div>
 <div class="header">
 <span class="title">{{title}}</span>
@@ -2808,4 +2754,4 @@ v.{{version}}
 </div>
 </div>
 </div>
-`}});
+`}} );
