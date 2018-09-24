@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.13
+// @name          SBIS UI-Customizer v1.3.14
 // @namespace     SBIS
-// @version       1.3.13
-// @date          07.08.2018 15:38:48
+// @version       1.3.14
+// @date          24.09.2018 16:55:52
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,18 +92,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.3.13",
-"date": "07.08.2018 15:38:48",
+"version": "1.3.14",
+"date": "24.09.2018 16:55:52",
 "notes": {
 "added": [],
 "changed": [
-"Удалил ряд устаревших и нерабочих опций"
+"Убрал опцию: 'Лента в одну колонку'. Не актуально, опция доступна в диалоге 'Настройка вида' для онлайна."
 ],
-"fixed": [
-"Адаптация под главную страницу на VDOM",
-"Возрождение опции 'Лента в одну колонку', мы не сдадимся! (:",
-"Прячем сову на главной, опять. Больше не будет мозолить глаза."
-],
+"fixed": [],
 "issues": []
 }
 } , (() => {
@@ -253,6 +249,7 @@ return {
 'view': 'group',
 'module': 'HomePageModify',
 'options': {
+/*
 'News': {
 'title': 'Новости',
 'view': 'block',
@@ -263,8 +260,7 @@ return {
 'type': 'boolean',
 'value': false
 }
-}
-/*,
+},
 'SmallImg': {
 'title': 'Уменьшить фото новости',
 'view': 'option',
@@ -290,8 +286,7 @@ return {
 'value': false
 }
 }
-*/
-},
+},*/
 'Other': {
 'title': 'Прочее',
 'view': 'block',
@@ -1794,14 +1789,16 @@ Engine.openInformationPopup(rk(msg));
 `,'HomePageModify.js':`
 UICustomizerDefine('HomePageModify', ['Engine'], function (Engine) {
 'use strict';
+/*
 let __oneColumnMode = false;
 let _changeColumnsOrigon;
+*/
 return {
 applySettings: applySettings
 };
 function applySettings(settings) {
 var css = '';
-let news = settings.options.News.options;
+/*let news = settings.options.News.options;*/
 for (let groupName in settings.options) {
 let group = settings.options[groupName];
 for (let name in group.options) {
@@ -1816,6 +1813,7 @@ Engine.appendCSS('HomePageModify', css);
 } else {
 Engine.removeCSS('HomePageModify');
 }
+/*
 Engine.unsubscribeWait('.feed-LeftItems', oneColumnMode);
 __oneColumnMode = news.InOneColumn.value;
 if (__oneColumnMode) {
@@ -1826,7 +1824,9 @@ Engine.wait('.feed-LeftItems', oneColumnMode);
 } else {
 oneColumnMode();
 }
+*/
 }
+/*
 function oneColumnMode() {
 let news = document.querySelector('.feed-All .ws-ListView');
 if (news && news.controlNodes && news.controlNodes[0] && news.controlNodes[0].control) {
@@ -1846,6 +1846,7 @@ news.changeColumnMode(__oneColumnMode);
 setTimeout(oneColumnMode, 10);
 }
 }
+*/
 });
 `,'HotKeys.js':`
 UICustomizerDefine('HotKeys', ['SettingsDialog'], function (SettingsDialog) {
