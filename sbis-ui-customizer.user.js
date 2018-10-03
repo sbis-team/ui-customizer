@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.15.rc1
+// @name          SBIS UI-Customizer v1.3.16.rc1
 // @namespace     SBIS
-// @version       1.3.15.rc1
-// @date          03.10.2018 11:54:44
+// @version       1.3.16.rc1
+// @date          03.10.2018 12:28:22
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,8 +92,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.3.15.rc1",
-"date": "03.10.2018 11:54:44",
+"version": "1.3.16.rc1",
+"date": "03.10.2018 12:28:22",
 "notes": {
 "added": [],
 "changed": [],
@@ -2385,8 +2385,15 @@ Engine.removeCSS(moduleName);
 function copyToClipboard(elm, action) {
 var docName, msg = '';
 var text = '';
-var opener = elm.parentElement.parentElement.wsControl;
-var record = opener.getLinkedContext().getValue('record');
+var card = elm;
+while (!card.wsControl && card.parentElement) {
+card = card.parentElement;
+}
+if (!card || !card.wsControl) {
+throw new Error('Не удалось распознать карточку задачи');
+}
+card = card.wsControl;
+var record = card.getLinkedContext().getValue('record');
 switch (action) {
 case 'СommitMsg':
 msg = 'Описание скопировано в буфер обмена';
