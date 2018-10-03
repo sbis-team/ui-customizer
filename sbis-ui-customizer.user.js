@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.15
+// @name          SBIS UI-Customizer v1.3.16
 // @namespace     SBIS
-// @version       1.3.15
-// @date          03.10.2018 11:57:13
+// @version       1.3.16
+// @date          03.10.2018 12:47:24
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,13 +92,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.3.15",
-"date": "03.10.2018 11:57:13",
+"version": "1.3.16",
+"date": "03.10.2018 12:47:24",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Поправил доп. кнопки (копирование имени ветки описания задачи для коммита и т.д.) в шапке задач под выпуск 3.18.521"
+"Поправил доп. кнопки в шапке задач по выпуск 3.18.521"
 ],
 "issues": []
 }
@@ -999,7 +999,7 @@ background: #FDD2C0
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons {
 display: inline-block;
 border-right: 1px solid #E4E4E4;
-margin-right: 5px;
+padding-right: 8px;
 }
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i {
 vertical-align: middle;
@@ -1712,7 +1712,7 @@ return min;
 });
 `,'ErrandToolbarBtns.js':`
 UICustomizerDefine('ErrandToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
-"use strict";
+'use strict';
 var property = {
 btns: {
 TaskURL: {
@@ -1741,18 +1741,25 @@ function applySettings(settings) {
 Task.applySettings(settings, 'ErrandToolbarBtns', property);
 }
 function copyToClipboard(elm, action) {
-var msg = '';
+var docName, number, face, info_text, url, msg = '';
 var text = '';
-var opener = elm.parentElement.parentElement.wsControl;
-var record = opener.getLinkedContext().getValue('record');
+var card = elm;
+while (!card.wsControl && card.parentElement) {
+card = card.parentElement;
+}
+if (!card || !card.wsControl) {
+throw new Error('Не удалось распознать карточку задачи');
+}
+card = card.wsControl;
+var record = card.getLinkedContext().getValue('record');
 switch (action) {
 case 'CopyInfo':
 msg = 'Описание скопировано в буфер обмена';
-let docName = record.get('РП.Документ').get('Регламент').get('Название');
-let number =
+docName = record.get('РП.Документ').get('Регламент').get('Название');
+number =
 (record.has('Номер') ? record.get('Номер') : '') ||
 '';
-let face =
+face =
 (record.has('ЛицоСоздал.Название') ? record.get('ЛицоСоздал.Название') : '') ||
 (record.has('Лицо1.Название') ? record.get('Лицо1.Название') : '') ||
 (record.has('Автор.Название') ? record.get('Автор.Название') : '') ||
@@ -1761,13 +1768,13 @@ if (docName === 'Обращение') {
 let clt = record.get('Лицо.Название') || '';
 face = clt ? (face + ' (' + clt + ')') : face;
 }
-let info_text =
+info_text =
 (record.has('РазличныеДокументы.Информация') ? record.get('РазличныеДокументы.Информация') : '') ||
 (record.has('Примечание') ? record.get('Примечание') : '') ||
 (record.has('Описание') ? record.get('Описание') : '') ||
 (record.has('ДокументРасширение.Название') ? record.get('ДокументРасширение.Название') : '') ||
 '';
-let url = record.get('ИдентификаторДокумента');
+url = record.get('ИдентификаторДокумента');
 number = number ? (' № ' + number) : '';
 face = face ? (' ' + face) : '';
 info_text = Engine.cutOverflow(Engine.cutTags(info_text), 98, 1024);
@@ -1783,7 +1790,7 @@ face + '\\n' + url + '\\n\\n' + info_text;
 break;
 }
 Engine.copyToClipboard(text);
-Engine.openInformationPopup(rk(msg));
+Engine.openInformationPopup(msg);
 }
 });
 `,'HomePageModify.js':`
@@ -2290,7 +2297,7 @@ callback: callback
 });
 `,'TaskToolbarBtns.js':`
 UICustomizerDefine('TaskToolbarBtns', ['Engine'], function (Engine) {
-"use strict";
+'use strict';
 const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
 const ReplaceDocTypeName = {
 'Ошибка в разработку': 'Ошибка',
@@ -2385,8 +2392,15 @@ Engine.removeCSS(moduleName);
 function copyToClipboard(elm, action) {
 var docName, msg = '';
 var text = '';
-var opener = elm.parentElement.parentElement.wsControl;
-var record = opener.getLinkedContext().getValue('record');
+var card = elm;
+while (!card.wsControl && card.parentElement) {
+card = card.parentElement;
+}
+if (!card || !card.wsControl) {
+throw new Error('Не удалось распознать карточку задачи');
+}
+card = card.wsControl;
+var record = card.getLinkedContext().getValue('record');
 switch (action) {
 case 'СommitMsg':
 msg = 'Описание скопировано в буфер обмена';
@@ -2446,9 +2460,9 @@ function _extractVersionName(milestones) {
 let versionName = 'dev';
 let version = Infinity;
 milestones.each(function (record) {
-let curNames = record.get('ДокументРасширение.Название').replace(/[ \\(\\)]/g, '\\n').split('\\n');
+let curNames = record.get('ДокументРасширение.Название').replace(/[ ()]/g, '\\n').split('\\n');
 for (let i = 0; i < curNames.length; i++) {
-let curName = curNames[i].replace(/[^\\d\\.]/g, '').replace(/^[\\.]+/, '').replace(/[\\.]+$/, '');
+let curName = curNames[i].replace(/[^\\d.]/g, '').replace(/^[.]+/, '').replace(/[.]+$/, '');
 if (curName) {
 let n = Number(curName.replace(/\\./g, ''));
 if (!isNaN(n)) {
