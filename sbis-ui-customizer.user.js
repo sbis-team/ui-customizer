@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.3.14
+// @name          SBIS UI-Customizer v1.3.15
 // @namespace     SBIS
-// @version       1.3.14
-// @date          24.09.2018 16:55:52
+// @version       1.3.15
+// @date          03.10.2018 11:57:13
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,14 +92,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.3.14",
-"date": "24.09.2018 16:55:52",
+"version": "1.3.15",
+"date": "03.10.2018 11:57:13",
 "notes": {
 "added": [],
-"changed": [
-"Убрал опцию: 'Лента в одну колонку'. Не актуально, опция доступна в диалоге 'Настройка вида' для онлайна."
+"changed": [],
+"fixed": [
+"Поправил доп. кнопки (копирование имени ветки описания задачи для коммита и т.д.) в шапке задач под выпуск 3.18.521"
 ],
-"fixed": [],
 "issues": []
 }
 } , (() => {
@@ -2361,18 +2361,18 @@ extbtn = extbtn.replace(/TaskToolbarBtns/g, moduleName);
 }
 css += extbtn;
 if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+Engine.unsubscribeWait('.edo-Dialog__commands', moduleProperty.WaitHandler);
 }
 moduleProperty.WaitHandler = _appendExtraButtons(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+Engine.wait('.edo-Dialog__commands', moduleProperty.WaitHandler);
 } else {
 if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+Engine.unsubscribeWait('.edo-Dialog__commands', moduleProperty.WaitHandler);
 delete moduleProperty.WaitHandler;
 }
 if (css) {
 moduleProperty.WaitHandler = _appendButtonsClass(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog__toolbar', moduleProperty.WaitHandler);
+Engine.wait('.edo-Dialog__commands', moduleProperty.WaitHandler);
 }
 Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons');
 }
