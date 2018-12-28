@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.2
+// @name          SBIS UI-Customizer v1.4.3
 // @namespace     SBIS
-// @version       1.4.2
-// @date          28.12.2018 02:30:02
+// @version       1.4.3
+// @date          28.12.2018 09:03:33
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,19 +92,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.2",
-"date": "28.12.2018 02:30:02",
+"version": "1.4.3",
+"date": "28.12.2018 09:03:33",
 "notes": {
 "added": [],
-"changed": [
-"Новая опция 'Новогодний Онлайн / Аккордеон / Ёлочки вместо стрелок'",
-"Новая опция 'Новогодний Онлайн / Аккордеон / Ёлка под меню'",
-"Новая опция 'Новогодний Онлайн / Логотип / Новогодняя шапка'",
-"Новая опция 'Новогодний Онлайн / Логотип / Птица'",
-"Новая опция 'Новогодний Онлайн / Логотип / Сова > Как просто'"
-],
+"changed": [],
 "fixed": [
-"Исправлена опция 'Главная страница / Скрыть прочие блоки / Переключатель аккордеона'"
+"Аккордеон больше не перекрывает елочку если в нем много пунктов"
 ],
 "issues": []
 }
@@ -638,6 +632,12 @@ return {
 background-image: url("{{christmas-tree-big}}") !important;
 background-repeat: no-repeat;
 background-position-y: calc(100% - 24px);
+}
+.acc-menu-container {
+margin-bottom: 200px;
+}
+.online-howEasy {
+max-height: 58px;
 }
 `,'ChristmasStyle-Accordion-MenuIcons.css':`
 .acc-menu-icon.contacts:before,
