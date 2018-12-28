@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.3.rc1
+// @name          SBIS UI-Customizer v1.4.4.rc1
 // @namespace     SBIS
-// @version       1.4.3.rc1
-// @date          28.12.2018 09:02:47
+// @version       1.4.4.rc1
+// @date          28.12.2018 15:40:49
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -92,13 +92,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.3.rc1",
-"date": "28.12.2018 09:02:47",
+"version": "1.4.4.rc1",
+"date": "28.12.2018 15:40:49",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Аккордеон больше не перекрывает елочку если в нем много пунктов"
+"В свернутом аккордеоне ёлочка отображается по центру"
 ],
 "issues": []
 }
@@ -632,6 +632,7 @@ return {
 background-image: url("{{christmas-tree-big}}") !important;
 background-repeat: no-repeat;
 background-position-y: calc(100% - 24px);
+background-position-x: center;
 }
 .acc-menu-container {
 margin-bottom: 200px;
