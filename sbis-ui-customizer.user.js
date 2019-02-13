@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.4.rc1
+// @name          SBIS UI-Customizer v1.4.4.rc2
 // @namespace     SBIS
-// @version       1.4.4.rc1
-// @date          28.12.2018 15:40:49
+// @version       1.4.4.rc2
+// @date          13.02.2019 19:00:42
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -31,6 +31,7 @@ window.UICustomizerRequire = UICustomizerRequire;
 window.UICustomizerEvent = UICustomizerEvent;
 var globalContainer = document.createElement('userscript');
 globalContainer.id = 'SBIS-UI-Customizer';
+globalContainer.setAttribute('data-vdomignore', 'true');
 document.getElementsByTagName('html')[0].appendChild(globalContainer);
 document.addEventListener('DOMNodeInserted', function () {
 if (!document.querySelector('#' + globalContainer.id)) {
@@ -92,13 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.4.rc1",
-"date": "28.12.2018 15:40:49",
+"version": "1.4.4.rc2",
+"date": "13.02.2019 19:00:42",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"В свернутом аккордеоне ёлочка отображается по центру"
+"Исправлено отображение доп. кнопок в карточке задачи/ошибки/поручения на vasaby"
 ],
 "issues": []
 }
@@ -312,42 +313,12 @@ return {
 'view': 'group',
 'module': 'TaskToolbarBtns',
 'options': {
-'Show': {
-'title': 'Показать',
-'view': 'block',
-'options': {
-'Schedule': {
-'title': 'Время по документу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Monitoring': {
-'title': 'Поставить на контроль',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Agreement': {
-'title': 'Отправить на согласование',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
 'Hide': {
-'title': 'Скрыть',
+'title': 'Скрыть базовые',
 'view': 'block',
 'options': {
 'Print': {
 'title': 'Распечатать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Save': {
-'title': 'Скачать',
 'view': 'option',
 'type': 'boolean',
 'value': false
@@ -367,7 +338,7 @@ return {
 }
 },
 'Add': {
-'title': 'Добавить',
+'title': 'Добавить новые',
 'view': 'block',
 'options': {
 'BranchName': {
@@ -403,42 +374,12 @@ return {
 'view': 'group',
 'module': 'MRToolbarBtns',
 'options': {
-'Show': {
-'title': 'Показать',
-'view': 'block',
-'options': {
-'Schedule': {
-'title': 'Время по документу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Monitoring': {
-'title': 'Поставить на контроль',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Agreement': {
-'title': 'Отправить на согласование',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
 'Hide': {
-'title': 'Скрыть',
+'title': 'Скрыть базовые',
 'view': 'block',
 'options': {
 'Print': {
 'title': 'Распечатать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Save': {
-'title': 'Скачать',
 'view': 'option',
 'type': 'boolean',
 'value': false
@@ -458,7 +399,7 @@ return {
 }
 },
 'Add': {
-'title': 'Добавить',
+'title': 'Добавить новые',
 'view': 'block',
 'options': {
 'TaskURL': {
@@ -482,42 +423,12 @@ return {
 'view': 'group',
 'module': 'ErrandToolbarBtns',
 'options': {
-'Show': {
-'title': 'Показать',
-'view': 'block',
-'options': {
-'Schedule': {
-'title': 'Время по документу',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Monitoring': {
-'title': 'Поставить на контроль',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Agreement': {
-'title': 'Отправить на согласование',
-'view': 'option',
-'type': 'boolean',
-'value': false
-}
-}
-},
 'Hide': {
-'title': 'Скрыть',
+'title': 'Скрыть базовые',
 'view': 'block',
 'options': {
 'Print': {
 'title': 'Распечатать',
-'view': 'option',
-'type': 'boolean',
-'value': false
-},
-'Save': {
-'title': 'Скачать',
 'view': 'option',
 'type': 'boolean',
 'value': false
@@ -537,7 +448,7 @@ return {
 }
 },
 'Add': {
-'title': 'Добавить',
+'title': 'Добавить новые',
 'view': 'block',
 'options': {
 'TaskURL': {
@@ -1247,7 +1158,8 @@ background: #FDD2C0
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons {
 display: inline-block;
 border-right: 1px solid #E4E4E4;
-padding-right: 8px;
+padding-right: 4px;
+margin-right: 8px;
 }
 .SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i {
 vertical-align: middle;
@@ -1531,24 +1443,7 @@ _waitRequireEvents = null;
 var _waitRequireID = setInterval(function () {
 onload(function () {
 if (typeof window.require !== 'undefined') {
-window.require(['Core/core-ready'], function (ready) {
-ready.addCallback(_waitRequireFN);
-return ready;
-}, function (error) {
-console.warn('UICustomizer', error);
-window.require(['Core/core-init-min'],
-function (ready) {
-ready.addCallback(_waitRequireFN);
-return ready;
-},
-function (error) {
-console.warn('UICustomizer', error);
-console.warn('UICustomizer: Не удалось получить деферред готовности страницы');
-return error;
-}
-);
-return error;
-});
+_waitRequireFN();
 clearInterval(_waitRequireID);
 }
 });
@@ -2071,6 +1966,7 @@ return min;
 `,'ErrandToolbarBtns.js':`
 UICustomizerDefine('ErrandToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
 'use strict';
+const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
 var property = {
 btns: {
 TaskURL: {
@@ -2082,13 +1978,9 @@ icon: 'info'
 },
 ExcludeDocTypeName: ['Merge request', 'Ошибка в разработку', 'Задача в разработку'],
 selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns span[data-id="edoDeleteDocument"]'
+'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
+'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
+'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Удалить"]'
 }
 };
 return {
@@ -2101,15 +1993,21 @@ Task.applySettings(settings, 'ErrandToolbarBtns', property);
 function copyToClipboard(elm, action) {
 var docName, number, face, info_text, url, msg = '';
 var text = '';
-var card = elm;
-while (!card.wsControl && card.parentElement) {
-card = card.parentElement;
+var edo3Dialog = elm;
+while (edo3Dialog && !edo3Dialog.classList.contains('edo3-Dialog')) {
+edo3Dialog = edo3Dialog.parentElement;
 }
-if (!card || !card.wsControl) {
-throw new Error('Не удалось распознать карточку задачи');
+if (edo3Dialog && edo3Dialog.controlNodes && edo3Dialog.controlNodes[0]) {
+edo3Dialog = edo3Dialog.controlNodes[0];
+} else {
+console.error(PARSE_ERROR);
+return false;
 }
-card = card.wsControl;
-var record = card.getLinkedContext().getValue('record');
+var record = (edo3Dialog.options || {}).record;
+if (!record) {
+console.error(PARSE_ERROR);
+return false;
+}
 switch (action) {
 case 'CopyInfo':
 msg = 'Описание скопировано в буфер обмена';
@@ -2256,13 +2154,9 @@ icon: 'link'
 },
 ApplyDocTypeName: ['Merge request'],
 selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns span[data-id="edoDeleteDocument"]'
+'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
+'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
+'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Удалить"]'
 }
 };
 return {
@@ -2667,10 +2561,12 @@ callback: callback
 UICustomizerDefine('TaskToolbarBtns', ['Engine'], function (Engine) {
 'use strict';
 const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
+const WAITING_COMPONENT = 'TaskToolbarBtns: Ожидание загрузки карточки задачи';
 const ReplaceDocTypeName = {
 'Ошибка в разработку': 'Ошибка',
 'Задача в разработку': 'Задача'
 };
+const toolbarClass = '.edo3-Dialog__head-first-line-buttons .controls-Toolbar';
 var property = {
 btns: {
 TaskURL: {
@@ -2685,13 +2581,9 @@ icon: 'git-commit'
 },
 ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
 selectors: {
-'Schedule': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowDocTime"]',
-'Monitoring': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoShowMonitoringDialog"]',
-'Agreement': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSendToAgreement"]',
-'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoPrintDocument"]',
-'Save': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoSaveDocumentOnDisk"]',
-'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoGetLink"]',
-'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns span[data-id="edoDeleteDocument"]'
+'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
+'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
+'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Удалить"]'
 }
 };
 var BranchNameUserLogin = '';
@@ -2704,12 +2596,6 @@ function applySettings(settings, moduleName, moduleProperty) {
 var group, css = '';
 moduleName = moduleName ? moduleName : 'TaskToolbarBtns';
 moduleProperty = moduleProperty ? moduleProperty : property;
-group = settings.options.Show;
-for (let name in group.options) {
-if (group.options[name].value) {
-css += Engine.generateCSS.inlineBlock(moduleProperty.selectors[name]);
-}
-}
 group = settings.options.Hide;
 for (let name in group.options) {
 if (group.options[name].value) {
@@ -2736,18 +2622,18 @@ extbtn = extbtn.replace(/TaskToolbarBtns/g, moduleName);
 }
 css += extbtn;
 if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog__commands', moduleProperty.WaitHandler);
+Engine.unsubscribeWait(toolbarClass, moduleProperty.WaitHandler);
 }
 moduleProperty.WaitHandler = _appendExtraButtons(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog__commands', moduleProperty.WaitHandler);
+Engine.wait(toolbarClass, moduleProperty.WaitHandler);
 } else {
 if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait('.edo-Dialog__commands', moduleProperty.WaitHandler);
+Engine.unsubscribeWait(toolbarClass, moduleProperty.WaitHandler);
 delete moduleProperty.WaitHandler;
 }
 if (css) {
 moduleProperty.WaitHandler = _appendButtonsClass(moduleName, moduleProperty);
-Engine.wait('.edo-Dialog__commands', moduleProperty.WaitHandler);
+Engine.wait(toolbarClass, moduleProperty.WaitHandler);
 }
 Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons');
 }
@@ -2757,40 +2643,86 @@ Engine.appendCSS(moduleName, css);
 Engine.removeCSS(moduleName);
 }
 }
+function _get_doc_url(record) {
+var uuid = record.get('РП.Документ').get('ИдентификаторПереписки');
+return location.protocol + '//' + location.host + '/doc/' + uuid;
+}
+function _get_doc_name(record) {
+var docName = record.get('РП.Документ').get('Регламент').get('Название');
+return docName;
+}
+function _get_doc_number(record) {
+var numb = record.get('Документ.Номер') || record.get('Номер');
+return numb;
+}
+function _get_doc_version(record) {
+var flds = record.get('РП.ПоляДляРендера');
+var milestone = ((flds || {})['ВехаДокумента'] || {}).name || '';
+if (!milestone && record.has('РП.ВехаДокумента')) {
+milestone = record.get('РП.ВехаДокумента').at(0).get('ДокументРасширение.Название');
+}
+var version = milestone.split(' ')[0] || '';
+if (!/^[\\d.]+$/.test(version)) {
+version = 'dev';
+}
+return version;
+}
+function _get_doc_description(record) {
+var flds = record.get('РП.ПоляДляРендера');
+var description = (flds || {}).Description;
+if (!description) {
+description = Engine.cutOverflow(Engine.cutTags(record.get('РазличныеДокументы.Информация')), 98, 1024);
+}
+return description;
+}
+function _get_doc_commit_description(record) {
+var docName = _get_doc_name(record);
+docName = ReplaceDocTypeName[docName] || docName;
+var docNumber = ' № ' + _get_doc_number(record);
+var version = ' веха ' + _get_doc_version(record);
+var date = ' от ' + Engine.getDate(record.get('Документ.Дата'));
+var author = ' ' + record.get('Сотрудник.Название');
+var utl = _get_doc_url(record);
+var description = _get_doc_description(record);
+return docName + docNumber + version + date + author + '\\n' + utl + '\\n\\n' + description;
+}
+function _get_doc_branch_name(record) {
+var version = _get_doc_version(record);
+var prefix = _get_doc_name(record) === 'Ошибка в разработку' ? 'bugfix' : 'feature';
+var docNumber = _get_doc_number(record);
+if (!/^[\\d.]+$/.test(version)) {
+var msg = 'Не удалось определить ветку по вехе!';
+Engine.openInformationPopup(msg, 'error');
+throw Error(msg);
+}
+return version + '/' + prefix + '/' + (BranchNameUserLogin ? BranchNameUserLogin + '/' : '') + docNumber;
+}
 function copyToClipboard(elm, action) {
-var docName, msg = '';
+var msg = '';
 var text = '';
-var card = elm;
-while (!card.wsControl && card.parentElement) {
-card = card.parentElement;
+var edo3Dialog = elm;
+while (edo3Dialog && !edo3Dialog.classList.contains('edo3-Dialog')) {
+edo3Dialog = edo3Dialog.parentElement;
 }
-if (!card || !card.wsControl) {
-throw new Error('Не удалось распознать карточку задачи');
+if (edo3Dialog && edo3Dialog.controlNodes && edo3Dialog.controlNodes[0]) {
+edo3Dialog = edo3Dialog.controlNodes[0];
+} else {
+console.error(PARSE_ERROR);
+return false;
 }
-card = card.wsControl;
-var record = card.getLinkedContext().getValue('record');
+var record = (edo3Dialog.options || {}).record;
+if (!record) {
+console.error(PARSE_ERROR);
+return false;
+}
 switch (action) {
 case 'СommitMsg':
 msg = 'Описание скопировано в буфер обмена';
-docName = record.get('РП.Документ').get('Регламент').get('Название');
-docName = ReplaceDocTypeName[docName] || docName;
-text =
-docName + ' № ' +
-record.get('Номер') +
-' v' + _extractVersionName(record.get('РП.ВехаДокумента')) + ' от ' +
-Engine.getDate(record.get('ДокументРасширение.ДатаВремяСоздания')) + ' ' +
-record.get('ЛицоСоздал.Название') + '\\n' +
-location.protocol + '//' +
-location.host + '/opendoc.html?guid=' +
-record.get('ИдентификаторДокумента') + '\\n\\n' +
-Engine.cutOverflow(Engine.cutTags(record.get('РазличныеДокументы.Информация')), 98, 1024);
+text = _get_doc_commit_description(record);
 break;
 case 'TaskURL':
 msg = 'Ссылка скопирована в буфер обмена';
-text =
-location.protocol + '//' +
-location.host + '/opendoc.html?guid=' +
-record.get('ИдентификаторДокумента');
+text = _get_doc_url(record);
 break;
 case 'BranchName':
 if (!idReadedUserLogin) {
@@ -2799,11 +2731,7 @@ copyToClipboard(elm, action);
 });
 }
 msg = 'Имя ветки скопировано в буфер обмена';
-text =
-_extractVersionName(record.get('РП.ВехаДокумента')) + '/' +
-(record.get('РП.Документ').get('Регламент').get('Название') === 'Ошибка в разработку' ? 'bugfix' : 'feature') + '/' +
-(BranchNameUserLogin ? BranchNameUserLogin + '/' : '') +
-record.get('Номер');
+text = _get_doc_branch_name(record);
 break;
 }
 Engine.copyToClipboard(text);
@@ -2824,27 +2752,6 @@ callback();
 callback();
 }
 }
-function _extractVersionName(milestones) {
-let versionName = 'dev';
-let version = Infinity;
-milestones.each(function (record) {
-let curNames = record.get('ДокументРасширение.Название').replace(/[ ()]/g, '\\n').split('\\n');
-for (let i = 0; i < curNames.length; i++) {
-let curName = curNames[i].replace(/[^\\d.]/g, '').replace(/^[.]+/, '').replace(/[.]+$/, '');
-if (curName) {
-let n = Number(curName.replace(/\\./g, ''));
-if (!isNaN(n)) {
-if (n < version) {
-version = n;
-versionName = curName;
-}
-break;
-}
-}
-}
-});
-return versionName;
-}
 function _appendExtraButtons(moduleName, moduleProperty) {
 return function _appendExtraButtonsEH(elms) {
 for (let i = 0; i < elms.length; i++) {
@@ -2858,6 +2765,7 @@ return function () {
 let btns = document.createElement('div');
 btns.className = 'SBIS-UI-Customizer ' + moduleName + '-ExtraButtons';
 btns.innerHTML = moduleProperty.ExtraButtonsHTML;
+btns.setAttribute('data-vdomignore', 'true');
 elm.insertBefore(btns, elm.children[0]);
 elm.classList.add('SBIS-UI-Customizer');
 elm.classList.add(moduleName);
@@ -2878,62 +2786,33 @@ elm.classList.add(moduleName);
 };
 }
 function _isTask(elm, moduleProperty, callback) {
-function checkControl() {
-var ctx;
-if (elm.wsControl && (ctx = elm.wsControl.getLinkedContext())) {
-record = ctx.getValue('record');
-if (record && record.getIdProperty && ~['@СвязьПапок', '@Документ'].indexOf(record.getIdProperty())) {
-check(record);
-} else {
-ctx.subscribe('onFieldChange', checkEvent);
+var edo3Dialog = elm;
+while (edo3Dialog && !edo3Dialog.classList.contains('edo3-Dialog')) {
+edo3Dialog = edo3Dialog.parentElement;
 }
-} else {
+if (!edo3Dialog) {
 console.error(PARSE_ERROR);
+return false;
+} else if (edo3Dialog.controlNodes && edo3Dialog.controlNodes[0]) {
+edo3Dialog = edo3Dialog.controlNodes[0];
+} else {
+return setTimeout(() => {
+_isTask(elm, moduleProperty, callback);
+console.log(WAITING_COMPONENT);
+}, 500);
 }
+var record = (edo3Dialog.options || {}).record;
+if (!record) {
+console.error(PARSE_ERROR);
+return false;
 }
-function checkEvent(e, fieldName, val) {
-/*jshint -W040 */
-if (fieldName === 'record' && val.getIdProperty() === '@Документ') {
-this.unsubscribe('onFieldChange', checkEvent);
-check(val);
-}
-}
-function check(record) {
-let docName = record.get('РП.Документ').get('Регламент').get('Название');
+let docName = _get_doc_name(record);
 if (moduleProperty.ApplyDocTypeName && ~moduleProperty.ApplyDocTypeName.indexOf(docName)) {
 return callback();
 }
 if (moduleProperty.ExcludeDocTypeName && !~moduleProperty.ExcludeDocTypeName.indexOf(docName)) {
 return callback();
 }
-}
-var record;
-if (location.pathname === '/opendoc.html' && !elm.wsControl) {
-return Engine.waitRequire(function (require) {
-require(['Lib/Control/Control'], function (CControl) {
-CControl.ControlStorage.waitChildByName('ServiceButtons').addCallback(function () {
-checkControl();
-});
-});
-});
-}
-var card = elm.parentElement;
-while (card && card.getAttribute('data-component') !== 'EDO2/Document/Dialog' && card.parentElement) {
-card = card.parentElement;
-}
-if (card && card.getAttribute('data-component') === 'EDO2/Document/Dialog') {
-try {
-record = card.wsControl.getTopParent()._options.componentOptions.record;
-if (record) {
-return check(record);
-}
-} catch (e) {
-return setTimeout(() => {
-_isTask(elm, moduleProperty, callback);
-}, 100);
-}
-}
-checkControl();
 }
 });
 `,'VersionInformer.js':`
