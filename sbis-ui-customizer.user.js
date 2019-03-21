@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.5.rc1
+// @name          SBIS UI-Customizer v1.4.6.rc1
 // @namespace     SBIS
-// @version       1.4.5.rc1
-// @date          15.02.2019 13:43:46
+// @version       1.4.6.rc1
+// @date          21.03.2019 14:16:23
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,15 +93,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.5.rc1",
-"date": "15.02.2019 13:43:46",
+"version": "1.4.6.rc1",
+"date": "21.03.2019 14:16:23",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Исправлено переключение кнопок в шапке при открытии новой карточки задачи без закрытия кнопок",
-"Исправлена кнопка копирования описания для поручений",
-"Кнопки в шапке задачи съехали на 2px - исправлено =)"
+"Исправлено отображение кнопок в задаче открытой из реестра статистики по отделу",
+"Исправлено копирование имени ветки: получение логина, копирование из задач с вехой блокеров",
+"Исправлена утечка памяти и падение вкладки браузера при использовании плагина при использовании доп. кнопок в задачах"
 ],
 "issues": []
 }
@@ -539,6 +539,7 @@ return {
 }
 }
 };
+/* eslint-disable-next-line semi */
 })()
 , {'css':{'ChristmasStyle-Accordion-ChristmasTree.css':`
 .online-Sidebar__scrollContainerContent {
@@ -1157,13 +1158,13 @@ background: #FDECD9;
 background: #FDD2C0
 }
 `,'TaskToolbarBtns-ExtraButtons.css':`
-.SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons {
+.SBIS-UI-Customizer-TaskToolbarBtns-ExtraButtons {
 display: inline-block;
 border-right: 1px solid #E4E4E4;
 padding-right: 4px;
 margin-right: 8px;
 }
-.SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i {
+.SBIS-UI-Customizer-TaskToolbarBtns-ExtraButtons i {
 vertical-align: middle;
 cursor: pointer;
 margin-right: 4px;
@@ -1172,10 +1173,10 @@ width: 24px;
 display: inline-block;
 margin-top: -2px;
 }
-.SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i svg {
+.SBIS-UI-Customizer-TaskToolbarBtns-ExtraButtons i svg {
 fill: #587AB0;
 }
-.SBIS-UI-Customizer.TaskToolbarBtns-ExtraButtons i:hover svg {
+.SBIS-UI-Customizer-TaskToolbarBtns-ExtraButtons i:hover svg {
 fill: #FF7033;
 }
 `,'VersionInformer.css':`
@@ -1473,7 +1474,6 @@ unsubscribeWaitOnce: unsubscribeWaitOnce,
 getHTML: getHTML,
 createElement: createElement,
 createComponent: createComponent,
-removeByQuery: removeByQuery,
 generateCSS: {
 custom: generateCSS_custom,
 displayNone: generateCSS_displayNone,
@@ -1687,12 +1687,6 @@ cnt.className = 'SBIS-UI-Customizer';
 cnt.innerHTML = html;
 return cnt;
 }
-function removeByQuery(query) {
-var elms = document.querySelectorAll(query);
-for (let i = 0; i < elms.length; i++) {
-elms[i].remove();
-}
-}
 function generateCSS_custom(selector, rule, value) {
 return \`\${selector} { \${rule}: \${value}; }\`;
 }
@@ -1845,8 +1839,8 @@ return d + '.' + m + '.' + y;
 function rpc_sbis(obj) {
 if (!SbisService) {
 return waitRequire(function (require) {
-require(['WS.Data/Source/SbisService'], function (svr) {
-SbisService = svr;
+require(['Types/source'], function (svr) {
+SbisService = svr.SbisService;
 rpc_sbis(obj);
 });
 });
@@ -1969,7 +1963,6 @@ return min;
 `,'ErrandToolbarBtns.js':`
 UICustomizerDefine('ErrandToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
 'use strict';
-const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
 var property = {
 btns: {
 TaskURL: {
@@ -1981,9 +1974,9 @@ icon: 'info'
 },
 ExcludeDocTypeName: ['Merge request', 'Ошибка в разработку', 'Задача в разработку'],
 selectors: {
-'Print': 'div.SBIS-UI-Customizer.ErrandToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
-'LinkOld': 'div.SBIS-UI-Customizer.ErrandToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
-'Delete': 'div.SBIS-UI-Customizer.ErrandToolbarBtns .controls-Toolbar_item[title="Удалить"]'
+'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
+'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
+'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar_item[title="Удалить"]'
 }
 };
 return {
@@ -2127,7 +2120,7 @@ capture: true
 });
 `,'MRToolbarBtns.js':`
 UICustomizerDefine('MRToolbarBtns', ['Engine', 'TaskToolbarBtns'], function (Engine, Task) {
-"use strict";
+'use strict';
 var property = {
 btns: {
 TaskURL: {
@@ -2136,9 +2129,9 @@ icon: 'link'
 },
 ApplyDocTypeName: ['Merge request'],
 selectors: {
-'Print': 'div.SBIS-UI-Customizer.MRToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
-'LinkOld': 'div.SBIS-UI-Customizer.MRToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
-'Delete': 'div.SBIS-UI-Customizer.MRToolbarBtns .controls-Toolbar_item[title="Удалить"]'
+'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
+'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
+'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar_item[title="Удалить"]'
 }
 };
 return {
@@ -2206,7 +2199,7 @@ elm.parentElement.insertBefore(container, elm);
 });
 `,'SettingsDialog.js':`
 UICustomizerDefine('SettingsDialog', ['Engine', 'SocNet'], function (Engine, SocNet) {
-"use strict";
+'use strict';
 var dialog;
 return {
 open: open,
@@ -2394,7 +2387,7 @@ _ReportError(msg);
 }
 function _showInputDialog(title, hint, callback) {
 var dlg = document.createElement('div');
-dlg.className = "SBIS-UI-Customizer-SocNet-InputDialog";
+dlg.className = 'SBIS-UI-Customizer-SocNet-InputDialog';
 dlg.innerHTML = Engine.getHTML('SocNet-InputDialog', {
 'title': title,
 'hint': hint
@@ -2421,22 +2414,22 @@ _JoinToGroup(function () {
 Engine.rpc.sbis({
 method: 'Персона.СОтправить',
 params: {
-"Получатели": [],
-"Текст": msg,
-"Диалог": ChatUUID,
-"Документ": null,
-"Сообщение": null,
-"Файлы": [],
-"Опции": {
-"d": [
+'Получатели': [],
+'Текст': msg,
+'Диалог': ChatUUID,
+'Документ': null,
+'Сообщение': null,
+'Файлы': [],
+'Опции': {
+'d': [
 false,
 false
 ],
-"s": [
-{ "t": "Логическое", "n": "МассовоеСообщение" },
-{ "t": "Логическое", "n": "СлитьСПредыдущим" }
+'s': [
+{ 't': 'Логическое', 'n': 'МассовоеСообщение' },
+{ 't': 'Логическое', 'n': 'СлитьСПредыдущим' }
 ],
-"_type": "record"
+'_type': 'record'
 }
 },
 callback: function () {
@@ -2451,8 +2444,8 @@ _JoinToGroup(function () {
 Engine.rpc.sbis({
 method: 'Event.CreateNews',
 params: {
-"Object": {
-"d": [
+'Object': {
+'d': [
 GroupUUID,
 null,
 1,
@@ -2460,15 +2453,15 @@ null,
 false,
 msg
 ],
-"s": [
-{ "n": "Channel", "t": "UUID" },
-{ "n": "News", "t": "UUID" },
-{ "n": "Visibility", "t": "Число целое" },
-{ "n": "EventType", "t": "Число целое" },
-{ "n": "FromGroup", "t": "Логическое" },
-{ "n": "Text", "t": "Строка" }
+'s': [
+{ 'n': 'Channel', 't': 'UUID' },
+{ 'n': 'News', 't': 'UUID' },
+{ 'n': 'Visibility', 't': 'Число целое' },
+{ 'n': 'EventType', 't': 'Число целое' },
+{ 'n': 'FromGroup', 't': 'Логическое' },
+{ 'n': 'Text', 't': 'Строка' }
 ],
-"_type": "record"
+'_type': 'record'
 }
 },
 callback: function () {
@@ -2490,24 +2483,24 @@ JSON.stringify(Engine.getSettings(true)) +
 Engine.rpc.sbis({
 method: 'Персона.СОтправить',
 params: {
-"Получатели": [AuthorUUID],
-"Текст": msg,
-"Диалог": guid,
-"Документ": null,
-"Сообщение": null,
-"Файлы": [],
-"Опции": {
-"d": [
+'Получатели': [AuthorUUID],
+'Текст': msg,
+'Диалог': guid,
+'Документ': null,
+'Сообщение': null,
+'Файлы': [],
+'Опции': {
+'d': [
 false,
 false,
 false
 ],
-"s": [
-{ "t": "Логическое", "n": "МассовоеСообщение" },
-{ "t": "Логическое", "n": "СлитьСПредыдущим" },
-{ "t": "Логическое", "n": "ВсемУчастникамТемы" }
+'s': [
+{ 't': 'Логическое', 'n': 'МассовоеСообщение' },
+{ 't': 'Логическое', 'n': 'СлитьСПредыдущим' },
+{ 't': 'Логическое', 'n': 'ВсемУчастникамТемы' }
 ],
-"_type": "record"
+'_type': 'record'
 }
 },
 callback: function () {
@@ -2543,11 +2536,11 @@ callback: callback
 UICustomizerDefine('TaskToolbarBtns', ['Engine'], function (Engine) {
 'use strict';
 const PARSE_ERROR = 'TaskToolbarBtns: Ошибка разбора карточки задачи';
-const WAITING_COMPONENT = 'TaskToolbarBtns: Ожидание загрузки карточки задачи';
 const ReplaceDocTypeName = {
 'Ошибка в разработку': 'Ошибка',
 'Задача в разработку': 'Задача'
 };
+const taskDialogClass = 'edo3-Dialog';
 const toolbarClass = '.edo3-Dialog__head-first-line-buttons .controls-Toolbar';
 var property = {
 btns: {
@@ -2563,14 +2556,16 @@ icon: 'git-commit'
 },
 ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
 selectors: {
-'Print': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
-'LinkOld': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
-'Delete': 'div.SBIS-UI-Customizer.TaskToolbarBtns .controls-Toolbar_item[title="Удалить"]'
+'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
+'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
+'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar_item[title="Удалить"]'
 }
 };
 var BranchNameUserLogin = '';
 var idReadedUserLogin = false;
-var allWaitHandlers = {};
+var modulesProperties = {};
+var isListener = false;
+var taskChangeCache = new WeakMap();
 return {
 applySettings: applySettings,
 copyToClipboard: copyToClipboard,
@@ -2601,8 +2596,6 @@ addExtraButtons = true;
 let btn = Engine.getHTML(moduleName + '-' + name);
 btn = btn.replace(/\\{\\{icon\\}\\}/, Engine.getSVG(moduleProperty.btns[name].icon));
 moduleProperty.ExtraButtonsHTML += btn;
-} else {
-Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons .' + name);
 }
 }
 if (addExtraButtons) {
@@ -2611,29 +2604,94 @@ if (moduleName !== 'TaskToolbarBtns') {
 extbtn = extbtn.replace(/TaskToolbarBtns/g, moduleName);
 }
 css += extbtn;
-if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait(toolbarClass, moduleProperty.WaitHandler);
-}
-moduleProperty.WaitHandler = _appendExtraButtons(moduleName, moduleProperty);
-allWaitHandlers[moduleName] = moduleProperty.WaitHandler;
-Engine.wait(toolbarClass, moduleProperty.WaitHandler);
-} else {
-if (moduleProperty.WaitHandler) {
-Engine.unsubscribeWait(toolbarClass, moduleProperty.WaitHandler);
-delete moduleProperty.WaitHandler;
-delete allWaitHandlers[moduleName];
-}
-if (css) {
-moduleProperty.WaitHandler = _appendButtonsClass(moduleName, moduleProperty);
-allWaitHandlers[moduleName] = moduleProperty.WaitHandler;
-Engine.wait(toolbarClass, moduleProperty.WaitHandler);
-}
-Engine.removeByQuery('.SBIS-UI-Customizer.' + moduleName + '-ExtraButtons');
 }
 if (css) {
 Engine.appendCSS(moduleName, css);
 } else {
 Engine.removeCSS(moduleName);
+}
+if (addExtraButtons || !!css) {
+modulesProperties[moduleName] = { moduleProperty, addExtraButtons, css: !!css };
+} else {
+delete modulesProperties[moduleName];
+}
+if (Object.keys(modulesProperties).length > 0) {
+if (!isListener) {
+const edo3Dialog = document.querySelector('.' + taskDialogClass);
+if (edo3Dialog) {
+taskFinderHandler({ srcElement: edo3Dialog });
+}
+document.addEventListener('DOMNodeInserted', taskFinderHandler);
+isListener = true;
+}
+} else {
+if (isListener) {
+document.removeEventListener('DOMNodeInserted', taskFinderHandler);
+isListener = false;
+}
+}
+}
+function taskFinderHandler(event) {
+const srcElement = event.srcElement;
+if (srcElement && srcElement.classList && srcElement.classList.contains(taskDialogClass)) {
+srcElement.addEventListener('DOMNodeRemovedFromDocument', taskRemoverHandler);
+srcElement.addEventListener('DOMSubtreeModified', taskModifierHandler);
+}
+}
+function taskRemoverHandler(event) {
+const srcElement = event.srcElement;
+if (srcElement && srcElement.classList && srcElement.classList.contains(taskDialogClass)) {
+srcElement.removeEventListener('DOMNodeRemovedFromDocument', taskRemoverHandler);
+srcElement.removeEventListener('DOMSubtreeModified', taskModifierHandler);
+}
+}
+function taskModifierHandler(event) {
+const edo3Dialog = event.currentTarget;
+if (edo3Dialog.controlNodes && edo3Dialog.controlNodes[0] && edo3Dialog.controlNodes[0].control) {
+const control = edo3Dialog.controlNodes[0].control;
+const controlRecord = control.record;
+if (controlRecord !== taskChangeCache.get(control)) {
+taskChangeCache.set(control, controlRecord);
+prepareTask(edo3Dialog, control);
+}
+}
+}
+function prepareTask(edo3Dialog, control) {
+const record = control.record;
+const docName = _get_doc_name(record);
+let moduleName = null;
+let moduleProps = null;
+for (const _moduleName in modulesProperties) {
+const props = modulesProperties[_moduleName];
+const moduleProperty = props.moduleProperty;
+if (moduleProperty.ApplyDocTypeName && ~moduleProperty.ApplyDocTypeName.indexOf(docName) ||
+moduleProperty.ExcludeDocTypeName && !~moduleProperty.ExcludeDocTypeName.indexOf(docName)) {
+moduleName = _moduleName;
+moduleProps = props;
+break;
+}
+}
+const toolbar = edo3Dialog.querySelector(toolbarClass);
+const oldBtns = toolbar.querySelector('.SBIS-UI-Customizer-TaskToolbarBtns-ExtraButtons');
+if (oldBtns) {
+oldBtns.remove();
+}
+toolbar.classList.forEach(clsName => {
+if (clsName.startsWith('SBIS-UI-Customizer-TaskToolbarBtns-')) {
+toolbar.classList.remove(clsName);
+}
+});
+if (moduleProps) {
+if (moduleProps.addExtraButtons) {
+let btns = document.createElement('div');
+btns.className = 'SBIS-UI-Customizer-TaskToolbarBtns-ExtraButtons ';
+btns.innerHTML = moduleProps.moduleProperty.ExtraButtonsHTML;
+btns.setAttribute('data-vdomignore', 'true');
+toolbar.insertBefore(btns, toolbar.children[0]);
+}
+if (moduleProps.css) {
+toolbar.classList.add('SBIS-UI-Customizer-TaskToolbarBtns-' + moduleName);
+}
 }
 }
 function _get_doc_url(record) {
@@ -2659,17 +2717,22 @@ return author;
 function _get_doc_version(record) {
 var flds = record.get('РП.ПоляДляРендера');
 var milestone = ((flds || {})['ВехаДокумента'] || {}).name || '';
-if (!milestone && record.get('РП.ВехаДокумента')) {
-milestone = record.get('РП.ВехаДокумента').at(0) || '';
-if (milestone) {
-milestone = milestone.get('ДокументРасширение.Название');
-}
-}
 var version = milestone.split(' ')[0] || '';
 if (!/^[\\d.]+$/.test(version)) {
-version = 'dev';
+if (!milestone && record.get('РП.ВехаДокумента')) {
+const enumerator = record.get('РП.ВехаДокумента').getEnumerator();
+while (enumerator.moveNext()) {
+milestone = enumerator.getCurrent();
+milestone = milestone.get('ДокументРасширение.Название');
+const __version = milestone.split(' ')[0] || '';
+if (/^[\\d.]+$/.test(__version)) {
+version = __version;
+break;
 }
-return version;
+}
+}
+}
+return version || 'dev';
 }
 function _get_doc_description(record) {
 var flds = record.get('РП.ПоляДляРендера');
@@ -2712,7 +2775,7 @@ edo3Dialog = edo3Dialog.controlNodes[0];
 console.error(PARSE_ERROR);
 return false;
 }
-var record = (edo3Dialog.options || {}).record;
+var record = (edo3Dialog.control || {}).record || (edo3Dialog.options || {}).record;
 if (!record) {
 console.error(PARSE_ERROR);
 return false;
@@ -2738,8 +2801,8 @@ return _readUserLogin(function () {
 copyToClipboard(elm, action);
 });
 }
-msg = 'Имя ветки скопировано в буфер обмена';
 text = _get_doc_branch_name(record);
+msg = 'Имя ветки скопировано в буфер обмена:\\n' + text;
 break;
 }
 Engine.copyToClipboard(text);
@@ -2758,100 +2821,6 @@ callback();
 });
 } else {
 callback();
-}
-}
-function _appendExtraButtons(moduleName, moduleProperty) {
-return function _appendExtraButtonsEH(elms) {
-for (let i = 0; i < elms.length; i++) {
-let elm = elms[i];
-_isTask(elm, moduleProperty, _appendExtraButtonsH(elm, moduleName, moduleProperty));
-}
-};
-}
-function _appendExtraButtonsH(elm, moduleName, moduleProperty) {
-return function (options = {}) {
-if (options.remove) {
-let btns = elm.querySelector('.SBIS-UI-Customizer .' + moduleName + '-ExtraButtons');
-if (btns) {
-btns.remove(moduleName);
-}
-elm.classList.remove(moduleName);
-} else {
-let btns = document.createElement('div');
-btns.className = 'SBIS-UI-Customizer ' + moduleName + '-ExtraButtons';
-btns.innerHTML = moduleProperty.ExtraButtonsHTML;
-btns.setAttribute('data-vdomignore', 'true');
-elm.insertBefore(btns, elm.children[0]);
-elm.classList.add('SBIS-UI-Customizer');
-elm.classList.add(moduleName);
-}
-};
-}
-function _appendButtonsClass(moduleName, moduleProperty) {
-return function _appendButtonsClassEH(elms) {
-for (let i = 0; i < elms.length; i++) {
-let elm = elms[i];
-_isTask(elm, moduleProperty, _appendButtonsClassH(elm, moduleName));
-}
-};
-}
-function _appendButtonsClassH(elm, moduleName) {
-return function (options = {}) {
-if (options.remove) {
-elm.classList.remove(moduleName);
-} else {
-elm.classList.add('SBIS-UI-Customizer');
-elm.classList.add(moduleName);
-}
-};
-}
-function _isTask(elm, moduleProperty, callback) {
-var edo3Dialog = elm;
-while (edo3Dialog && !edo3Dialog.classList.contains('edo3-Dialog')) {
-edo3Dialog = edo3Dialog.parentElement;
-}
-if (!edo3Dialog) {
-console.error(PARSE_ERROR);
-return false;
-} else if (edo3Dialog.controlNodes && edo3Dialog.controlNodes[0]) {
-edo3Dialog = edo3Dialog.controlNodes[0];
-} else {
-return setTimeout(() => {
-_isTask(elm, moduleProperty, callback);
-console.log(WAITING_COMPONENT);
-}, 500);
-}
-var record = (edo3Dialog.options || {}).record;
-if (!record) {
-console.error(PARSE_ERROR);
-return false;
-}
-let docName = _get_doc_name(record);
-if (moduleProperty.ApplyDocTypeName && ~moduleProperty.ApplyDocTypeName.indexOf(docName) ||
-moduleProperty.ExcludeDocTypeName && !~moduleProperty.ExcludeDocTypeName.indexOf(docName)) {
-var _beforeUpdate__Origin = edo3Dialog.control._beforeUpdate;
-var _beforeUnmount__Origin = edo3Dialog.control._beforeUnmount;
-var _beforeUpdate = edo3Dialog.control._beforeUpdate.bind(edo3Dialog.control);
-var task_key = edo3Dialog.control.key;
-edo3Dialog.control._beforeUpdate = function (...args) {
-var new_task_key = args[0].key;
-if (task_key !== new_task_key) {
-task_key = new_task_key;
-callback({ remove: true });
-edo3Dialog.control._beforeUpdate = _beforeUpdate__Origin;
-edo3Dialog.control._beforeUnmount = _beforeUnmount__Origin;
-for (var moduleName in allWaitHandlers) {
-allWaitHandlers[moduleName]([elm]);
-}
-}
-_beforeUpdate(...args);
-};
-edo3Dialog.control._beforeUnmount = function (...args) {
-edo3Dialog.control._beforeUpdate = _beforeUpdate__Origin;
-edo3Dialog.control._beforeUnmount = _beforeUnmount__Origin;
-edo3Dialog.control._beforeUnmount(...args);
-};
-return callback();
 }
 }
 });
