@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.6.rc1
+// @name          SBIS UI-Customizer v1.4.6.rc2
 // @namespace     SBIS
-// @version       1.4.6.rc1
-// @date          21.03.2019 14:16:23
+// @version       1.4.6.rc2
+// @date          21.03.2019 17:24:20
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,11 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.6.rc1",
-"date": "21.03.2019 14:16:23",
+"version": "1.4.6.rc2",
+"date": "21.03.2019 17:24:20",
 "notes": {
 "added": [],
-"changed": [],
+"changed": [
+"Добавлена доп. кнопка в шапке задачи/ошибки: Создать МР (Beta)"
+],
 "fixed": [
 "Исправлено отображение кнопок в задаче открытой из реестра статистики по отделу",
 "Исправлено копирование имени ветки: получение логина, копирование из задач с вехой блокеров",
@@ -351,6 +353,12 @@ return {
 },
 'СommitMsg': {
 'title': 'Комментарий для коммита',
+'view': 'option',
+'type': 'boolean',
+'value': false
+},
+'PullRequest': {
+'title': 'Создать MR (Beta)',
 'view': 'option',
 'type': 'boolean',
 'value': false
@@ -2552,6 +2560,9 @@ icon: 'git-branch'
 },
 СommitMsg: {
 icon: 'git-commit'
+},
+PullRequest: {
+icon: 'git-pull-request'
 }
 },
 ApplyDocTypeName: ['Ошибка в разработку', 'Задача в разработку'],
@@ -2566,9 +2577,11 @@ var idReadedUserLogin = false;
 var modulesProperties = {};
 var isListener = false;
 var taskChangeCache = new WeakMap();
+var toolbarSources = new WeakMap();
 return {
 applySettings: applySettings,
 copyToClipboard: copyToClipboard,
+createPullRequest: createPullRequest,
 _resolve_edo_dialog_record: _resolve_edo_dialog_record,
 _get_doc_number: _get_doc_number,
 _get_doc_author: _get_doc_author,
@@ -2764,7 +2777,7 @@ throw Error(msg);
 }
 return version + '/' + prefix + '/' + (BranchNameUserLogin ? BranchNameUserLogin + '/' : '') + docNumber;
 }
-function _resolve_edo_dialog_record(elm) {
+function _resolve_edo_dialog(elm) {
 var edo3Dialog = elm;
 while (edo3Dialog && !edo3Dialog.classList.contains('edo3-Dialog')) {
 edo3Dialog = edo3Dialog.parentElement;
@@ -2775,6 +2788,10 @@ edo3Dialog = edo3Dialog.controlNodes[0];
 console.error(PARSE_ERROR);
 return false;
 }
+return edo3Dialog;
+}
+function _resolve_edo_dialog_record(elm) {
+var edo3Dialog = _resolve_edo_dialog(elm);
 var record = (edo3Dialog.control || {}).record || (edo3Dialog.options || {}).record;
 if (!record) {
 console.error(PARSE_ERROR);
@@ -2807,6 +2824,41 @@ break;
 }
 Engine.copyToClipboard(text);
 Engine.openInformationPopup(msg);
+}
+function createPullRequest(elm) {
+var edo3Dialog = _resolve_edo_dialog(elm);
+var self = edo3Dialog.control;
+var record = self.record;
+var id = 'linkedDocuments';
+//copyToClipboard(elm, 'BranchName'); // Сделать авто-заполнение вехи в МР
+Engine.waitRequire(require => {
+require(['EDO3/Document/Toolbar/Source'], ToolbarSource => {
+let toolbarSource = toolbarSources.get(self);
+if (!toolbarSource) {
+toolbarSource = new ToolbarSource({
+options: {
+linkedDocs: self.linkedDocs,
+objectName: record && record.getModelField('РП.Документ/ИмяОбъекта'),
+ruleId: record && record.getModelField('ИдРегламента'),
+docId: record && record.getModelField('РП.Документ/ИдО'),
+isIncoming: record && record.getModelField('РП.Документ/Состояние/Подписание/Входящий'),
+id: id
+}
+});
+toolbarSources.set(self, toolbarSource);
+}
+toolbarSource.query().addCallback(data => {
+const enumerator = data.getEnumerator();
+while (enumerator.moveNext()) {
+const item = enumerator.getCurrent();
+if (item.get('title') === 'Merge request') {
+self._toolbarItemClickHandler({ target: edo3Dialog }, item);
+break;
+}
+}
+});
+});
+});
 }
 function _readUserLogin(callback) {
 if (!idReadedUserLogin) {
@@ -2997,6 +3049,8 @@ v.{{version}}
 <textarea autofocus rows="5" placeholder="{{hint}}"></textarea>
 `,'TaskToolbarBtns-BranchName.xhtml':`
 <i class="BranchName" onclick="UICustomizerEvent('TaskToolbarBtns','copyToClipboard',this,'BranchName')" title="Скопировать имя ветки">{{icon}}</i>
+`,'TaskToolbarBtns-PullRequest.xhtml':`
+<i class="PullRequest" onclick="UICustomizerEvent('TaskToolbarBtns','createPullRequest',this)" title="Создать MR (Beta)">{{icon}}</i>
 `,'TaskToolbarBtns-TaskURL.xhtml':`
 <i class="TaskURL" onclick="UICustomizerEvent('TaskToolbarBtns','copyToClipboard',this,'TaskURL')" title="Скопировать ссылку на задачу">{{icon}}</i>
 `,'TaskToolbarBtns-СommitMsg.xhtml':`
