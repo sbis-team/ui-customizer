@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.6.rc2
+// @name          SBIS UI-Customizer v1.4.7.rc1
 // @namespace     SBIS
-// @version       1.4.6.rc2
-// @date          21.03.2019 17:24:20
+// @version       1.4.7.rc1
+// @date          21.03.2019 19:11:11
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,8 +93,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.6.rc2",
-"date": "21.03.2019 17:24:20",
+"version": "1.4.7.rc1",
+"date": "21.03.2019 19:11:11",
 "notes": {
 "added": [],
 "changed": [
@@ -102,8 +102,9 @@ console.error(moduleName + '.' + eventName, '-', err);
 ],
 "fixed": [
 "Исправлено отображение кнопок в задаче открытой из реестра статистики по отделу",
-"Исправлено копирование имени ветки: получение логина, копирование из задач с вехой блокеров",
-"Исправлена утечка памяти и падение вкладки браузера при использовании плагина при использовании доп. кнопок в задачах"
+"Исправлено копирование имени ветки: получение логина; копирование из задач с вехой блокеров; префикс dev, если веха не указана",
+"Исправлена утечка памяти и падение вкладки браузера при использовании плагина при использовании доп. кнопок в задачах",
+"Вернул персонализацию в меню пользователя (ФИО в шапке сайта) и настройки внешнего вида сайта"
 ],
 "issues": []
 }
@@ -936,6 +937,12 @@ stroke: #313E78;
 .engine-OnlineBaseInnerMinCoreView__headerCell #SBIS-UI-Customizer-SettingsButton-Header {
 float: left;
 margin-top: 4px;
+}
+.engine-ViewSettingsWindow #SBIS-UI-Customizer-SettingsButton {
+border-bottom: none;
+border-top: 1px solid #e4e4e4;
+margin-bottom: 0;
+width: 100%;
 }
 `,'SettingsDialog.css':`
 #SBIS-UI-Customizer-SettingsDialog-Area {
@@ -2197,11 +2204,14 @@ init: init
 };
 function init() {
 Engine.appendCSS('SettingsButton');
-Engine.waitOnce('div.am-User__panel-lists .controls-ListView__itemsContainer', function (elm) {
 var container = Engine.createComponent('SettingsButton', {
 icon: Engine.getSVG('settings')
 });
-elm.parentElement.insertBefore(container, elm);
+Engine.wait('div.engineUser-MenuPanel__scrollContainer', function (elm) {
+elm.forEach(element => element.append(container));
+});
+Engine.wait('div.engine-ViewSettingsWindow__width', function (elm) {
+elm.forEach(element => element.append(container));
 });
 }
 });
@@ -2663,7 +2673,7 @@ const edo3Dialog = event.currentTarget;
 if (edo3Dialog.controlNodes && edo3Dialog.controlNodes[0] && edo3Dialog.controlNodes[0].control) {
 const control = edo3Dialog.controlNodes[0].control;
 const controlRecord = control.record;
-if (controlRecord !== taskChangeCache.get(control)) {
+if (controlRecord && controlRecord !== taskChangeCache.get(control)) {
 taskChangeCache.set(control, controlRecord);
 prepareTask(edo3Dialog, control);
 }
@@ -2771,9 +2781,7 @@ var version = _get_doc_version(record);
 var prefix = _get_doc_name(record) === 'Ошибка в разработку' ? 'bugfix' : 'feature';
 var docNumber = _get_doc_number(record);
 if (!/^[\\d.]+$/.test(version)) {
-var msg = 'Не удалось определить ветку по вехе!';
-Engine.openInformationPopup(msg, 'error');
-throw Error(msg);
+version = 'dev';
 }
 return version + '/' + prefix + '/' + (BranchNameUserLogin ? BranchNameUserLogin + '/' : '') + docNumber;
 }
@@ -2820,6 +2828,9 @@ copyToClipboard(elm, action);
 }
 text = _get_doc_branch_name(record);
 msg = 'Имя ветки скопировано в буфер обмена:\\n' + text;
+if (text.startsWith('dev')) {
+msg = 'Не удалось определить версию по вехе, для ветки указан \\'dev\\'.\\n' + msg;
+}
 break;
 }
 Engine.copyToClipboard(text);
@@ -3001,7 +3012,7 @@ close();
 {{icon}}
 </div>
 `,'SettingsButton.xhtml':`
-<div class="row" onclick="UICustomizerEvent('SettingsDialog','open')">
+<div data-vdomignore="true" class="row" onclick="UICustomizerEvent('SettingsDialog','open')">
 <div class="icon">{{icon}}</div>
 <div class="title">Персонализация</div>
 </div>
