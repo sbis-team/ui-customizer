@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.6
+// @name          SBIS UI-Customizer v1.4.7
 // @namespace     SBIS
-// @version       1.4.6
-// @date          21.03.2019 18:15:36
+// @version       1.4.7
+// @date          21.03.2019 19:11:44
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,8 +93,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.6",
-"date": "21.03.2019 18:15:36",
+"version": "1.4.7",
+"date": "21.03.2019 19:11:44",
 "notes": {
 "added": [],
 "changed": [
@@ -102,7 +102,7 @@ console.error(moduleName + '.' + eventName, '-', err);
 ],
 "fixed": [
 "Исправлено отображение кнопок в задаче открытой из реестра статистики по отделу",
-"Исправлено копирование имени ветки: получение логина, копирование из задач с вехой блокеров",
+"Исправлено копирование имени ветки: получение логина; копирование из задач с вехой блокеров; префикс dev, если веха не указана",
 "Исправлена утечка памяти и падение вкладки браузера при использовании плагина при использовании доп. кнопок в задачах",
 "Вернул персонализацию в меню пользователя (ФИО в шапке сайта) и настройки внешнего вида сайта"
 ],
@@ -2781,9 +2781,7 @@ var version = _get_doc_version(record);
 var prefix = _get_doc_name(record) === 'Ошибка в разработку' ? 'bugfix' : 'feature';
 var docNumber = _get_doc_number(record);
 if (!/^[\\d.]+$/.test(version)) {
-var msg = 'Не удалось определить ветку по вехе!';
-Engine.openInformationPopup(msg, 'error');
-throw Error(msg);
+version = 'dev';
 }
 return version + '/' + prefix + '/' + (BranchNameUserLogin ? BranchNameUserLogin + '/' : '') + docNumber;
 }
@@ -2830,6 +2828,9 @@ copyToClipboard(elm, action);
 }
 text = _get_doc_branch_name(record);
 msg = 'Имя ветки скопировано в буфер обмена:\\n' + text;
+if (text.startsWith('dev')) {
+msg = 'Не удалось определить версию по вехе, для ветки указан \\'dev\\'.\\n' + msg;
+}
 break;
 }
 Engine.copyToClipboard(text);
