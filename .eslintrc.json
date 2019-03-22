@@ -1,0 +1,26 @@
+{
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "amd": true
+  },
+  "rules": {
+    "strict": "off",
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "semi": ["warn", "always"],
+    "no-trailing-spaces": "warn",
+    "quotes": ["warn", "single", { "avoidEscape": true }],
+    "no-console": "off"
+  },
+  "globals": {
+    "UICustomizerDefine": true,
+    "UICustomizerRequire": true,
+    "GM_info": true,
+    "GM_setClipboard": true,
+    "unsafeWindow": true
+  }
+}

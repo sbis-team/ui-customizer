@@ -1,2 +1,2 @@
-# ui-customizer
-SBIS UI-Customizer
+# SBIS UI-Customizer
+For online.sbis.ru
