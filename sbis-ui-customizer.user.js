@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.7
+// @name          SBIS UI-Customizer v1.4.8
 // @namespace     SBIS
-// @version       1.4.7
-// @date          21.03.2019 19:11:44
+// @version       1.4.8
+// @date          21.06.2019 10:08:13
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,18 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.7",
-"date": "21.03.2019 19:11:44",
+"version": "1.4.8",
+"date": "21.06.2019 10:08:13",
 "notes": {
 "added": [],
-"changed": [
-"Добавлена доп. кнопка в шапке задачи/ошибки: Создать МР (Beta)"
-],
+"changed": [],
 "fixed": [
-"Исправлено отображение кнопок в задаче открытой из реестра статистики по отделу",
-"Исправлено копирование имени ветки: получение логина; копирование из задач с вехой блокеров; префикс dev, если веха не указана",
-"Исправлена утечка памяти и падение вкладки браузера при использовании плагина при использовании доп. кнопок в задачах",
-"Вернул персонализацию в меню пользователя (ФИО в шапке сайта) и настройки внешнего вида сайта"
+"Исправлено копирование описания задачи для коммита"
 ],
 "issues": []
 }
@@ -1504,6 +1499,7 @@ getPNG: getPNG,
 getSettings: getSettings,
 setSetting: setSetting,
 cutTags: cutTags,
+textFromJSON: textFromJSON,
 cutOverflow: cutOverflow,
 copyToClipboard: copyToClipboard,
 getDate: getDate,
@@ -1803,6 +1799,46 @@ return (text + '')
 .replace(/\\n\\s+\\n/g, '\\n\\n')
 .replace(/\\n\\n+/g, '\\n\\n')
 .replace(/\\n\\n+$/g, '\\n');
+}
+function _parseJSON(json) {
+var text = '';
+for (let item of json) {
+let tag = item[0];
+let data = item.slice(1);
+switch (tag) {
+case 'p':
+for (let itemData of data) {
+let type = typeof itemData;
+if (type === 'string') {
+text += itemData;
+} else if (itemData instanceof Array) {
+text += _parseJSON(itemData[0] instanceof Array ? itemData : [itemData]);
+}
+}
+text += '\\n';
+break;
+case 'a':
+text += data[0].href;
+break;
+default:
+for (let itemData of data) {
+let type = typeof itemData;
+if (type === 'string') {
+text += itemData;
+}
+}
+}
+}
+return text;
+}
+function textFromJSON(originText) {
+let json = [];
+try {
+json = JSON.parse(originText);
+} catch (error) {
+console.error(error.stack);
+}
+return _parseJSON(json);
 }
 function cutOverflow(text, maxLine, maxLength) {
 text = (text + '').split('\\n');
@@ -2762,6 +2798,9 @@ var flds = record.get('РП.ПоляДляРендера');
 var description = (flds || {}).Description;
 if (!description) {
 description = Engine.cutOverflow(Engine.cutTags(record.get('РазличныеДокументы.Информация') || ''), 98, 1024);
+}
+if (!description) {
+description = Engine.cutOverflow(Engine.textFromJSON(record.get('РазличныеДокументы.ИнформацияJSON') || '[]'), 98, 1024);
 }
 return description;
 }
