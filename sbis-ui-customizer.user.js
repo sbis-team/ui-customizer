@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.8.rc1
+// @name          SBIS UI-Customizer v1.4.9.rc1
 // @namespace     SBIS
-// @version       1.4.8.rc1
-// @date          21.06.2019 10:06:42
+// @version       1.4.9.rc1
+// @date          20.08.2019 12:33:03
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,13 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.8.rc1",
-"date": "21.06.2019 10:06:42",
+"version": "1.4.9.rc1",
+"date": "20.08.2019 12:33:03",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Исправлено копирование описания задачи для коммита"
+"Отображение доп. кнопок в шапке задач"
 ],
 "issues": []
 }
@@ -2595,7 +2595,7 @@ const ReplaceDocTypeName = {
 'Задача в разработку': 'Задача'
 };
 const taskDialogClass = 'edo3-Dialog';
-const toolbarClass = '.edo3-Dialog__head-first-line-buttons .controls-Toolbar';
+const toolbarClass = '.edo3-Dialog__head-firstLine-buttons .controls-Toolbar';
 var property = {
 btns: {
 TaskURL: {
