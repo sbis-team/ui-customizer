@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.9.rc1
+// @name          SBIS UI-Customizer v1.4.10.rc1
 // @namespace     SBIS
-// @version       1.4.9.rc1
-// @date          20.08.2019 12:33:03
+// @version       1.4.10.rc1
+// @date          27.09.2019 10:25:53
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,13 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.9.rc1",
-"date": "20.08.2019 12:33:03",
+"version": "1.4.10.rc1",
+"date": "27.09.2019 10:25:53",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Отображение доп. кнопок в шапке задач"
+"Скрыватель кнопки помощи"
 ],
 "issues": []
 }
@@ -716,10 +716,13 @@ background-position: 119px 7px;
 width: 75px !important;
 }
 `,'ChristmasStyle-Logo-Owl.css':`
-.online-howEasy__bird {
+.hint-helpButton__button {
 background-image: url("{{owl}}") !important;
 background-repeat: no-repeat;
 background-size: 38px;
+}
+.hint-helpButton__icon {
+background: none;
 }
 `,'ChristmasStyle-Logo-SantaHat.css':`
 .online-Sidebar_logoWrapper {
@@ -2197,7 +2200,7 @@ UICustomizerDefine('OtherBlocksHide', ['Engine'], function (Engine) {
 'use strict';
 const selectors = {
 'Owl': {
-cls: 'div[sbisname="howEasy"], .online-howEasy'
+cls: 'div.online-Sidebar__helpButton'
 },
 'HideMaximumButton': {
 cls: '.online-Sidebar__navSchemeLink',
