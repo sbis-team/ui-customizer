@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.13.rc1
+// @name          SBIS UI-Customizer v1.4.14.rc1
 // @namespace     SBIS
-// @version       1.4.13.rc1
-// @date          16.12.2019 09:31:05
+// @version       1.4.14.rc1
+// @date          23.11.2020 17:30:26
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,14 +93,14 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.13.rc1",
-"date": "16.12.2019 09:31:05",
+"version": "1.4.14.rc1",
+"date": "23.11.2020 17:30:26",
 "notes": {
 "added": [],
-"changed": [
-"Новогоднее обновление"
+"changed": [],
+"fixed": [
+"Исправлено отображение доп. кнопок в шапке задачи"
 ],
-"fixed": [],
 "issues": []
 }
 } , (() => {
@@ -2071,9 +2071,9 @@ icon: 'info'
 },
 ExcludeDocTypeName: ['Merge request', 'Ошибка', 'Задача'],
 selectors: {
-'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
-'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
-'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar_item[title="Удалить"]'
+'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar__item[title="Распечатать"]',
+'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar__item[title="Скопировать в буфер"]',
+'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-ErrandToolbarBtns .controls-Toolbar__item[title="Удалить"]'
 }
 };
 return {
@@ -2226,9 +2226,9 @@ icon: 'link'
 },
 ApplyDocTypeName: ['Merge request'],
 selectors: {
-'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
-'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
-'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar_item[title="Удалить"]'
+'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar__item[title="Распечатать"]',
+'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar__item[title="Скопировать в буфер"]',
+'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-MRToolbarBtns .controls-Toolbar__item[title="Удалить"]'
 }
 };
 return {
@@ -2659,9 +2659,9 @@ icon: 'git-pull-request'
 },
 ApplyDocTypeName: ['Ошибка', 'Задача'],
 selectors: {
-'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar_item[title="Распечатать"]',
-'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar_item[title="Скопировать в буфер"]',
-'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar_item[title="Удалить"]'
+'Print': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar__item[title="Распечатать"]',
+'LinkOld': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar__item[title="Скопировать в буфер"]',
+'Delete': '.SBIS-UI-Customizer-TaskToolbarBtns-TaskToolbarBtns .controls-Toolbar__item[title="Удалить"]'
 }
 };
 var BranchNameUserLogin = '';
@@ -2754,16 +2754,15 @@ function taskModifierHandler(event) {
 const edo3Dialog = event.currentTarget;
 if (edo3Dialog.controlNodes && edo3Dialog.controlNodes[0] && edo3Dialog.controlNodes[0].control) {
 const control = edo3Dialog.controlNodes[0].control;
-const controlRecord = control.record;
+const controlRecord = control.getRecordField ? control.getRecordField() : null;
 if (controlRecord && controlRecord !== taskChangeCache.get(control)) {
 taskChangeCache.set(control, controlRecord);
-prepareTask(edo3Dialog, control);
+prepareTask(edo3Dialog, control, controlRecord);
 }
 }
 }
-function prepareTask(edo3Dialog, control) {
-const record = control.record;
-const docName = _get_doc_name(record);
+function prepareTask(edo3Dialog, control, controlRecord) {
+const docName = _get_doc_name(controlRecord);
 let moduleName = null;
 let moduleProps = null;
 for (const _moduleName in modulesProperties) {
