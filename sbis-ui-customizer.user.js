@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.15.rc3
+// @name          SBIS UI-Customizer v1.4.15.rc4
 // @namespace     SBIS
-// @version       1.4.15.rc3
-// @date          25.11.2020 08:32:44
+// @version       1.4.15.rc4
+// @date          25.11.2020 09:22:17
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,8 +93,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.15.rc3",
-"date": "25.11.2020 08:32:44",
+"version": "1.4.15.rc4",
+"date": "25.11.2020 09:22:17",
 "notes": {
 "added": [],
 "changed": [],
@@ -2247,11 +2247,8 @@ Engine.appendCSS('SettingsButton');
 var container = Engine.createComponent('SettingsButton', {
 icon: Engine.getSVG('settings')
 });
-Engine.wait('div.engineUser-MenuPanel__scrollContainer', function (elm) {
-elm.forEach(element => element.append(container));
-});
-Engine.wait('div.engine-ViewSettingsWindow__width', function (elm) {
-elm.forEach(element => element.append(container));
+Engine.wait('div.engineUser-MenuPanel__footer', function (elm) {
+elm.forEach(element => element.prepend(container));
 });
 }
 });
