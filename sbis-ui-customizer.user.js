@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.15.rc1
+// @name          SBIS UI-Customizer v1.4.15.rc2
 // @namespace     SBIS
-// @version       1.4.15.rc1
-// @date          24.11.2020 19:04:07
+// @version       1.4.15.rc2
+// @date          25.11.2020 08:25:34
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,8 +93,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.15.rc1",
-"date": "24.11.2020 19:04:07",
+"version": "1.4.15.rc2",
+"date": "25.11.2020 08:25:34",
 "notes": {
 "added": [],
 "changed": [],
@@ -551,44 +551,11 @@ background-repeat: no-repeat;
 background-position-y: calc(100% - 24px);
 background-position-x: center;
 }
-.acc-menu-container {
-margin-bottom: 200px;
-}
-.online-howEasy {
-max-height: 58px;
-}
-.online-Sidebar {
-background: #2c3e50c8 !important;
-}
 .NavigationPanels-Accordion__item {
 background: none !important;
 }
 .NavigationPanels-Accordion__item:hover {
 background-color: #465e7399 !important;
-}
-.NavigationPanels-Accordion__item_activeMenu .nav-menu-counter__shadow::after,
-.NavigationPanels-Accordion__item_level-2 .nav-menu-counter__shadow::after,
-.NavigationPanels-Accordion__item_level-3 .nav-menu-counter__shadow::after,
-.NavigationPanels-Accordion__item_level-4 .nav-menu-counter__shadow::after,
-.NavigationPanels-Accordion__item:hover .nav-menu-counter__shadow::after,
-.NavigationPanels-Accordion__item_activeMenu .nav-menu-counter__shadow,
-.NavigationPanels-Accordion__item_level-2 .nav-menu-counter__shadow,
-.NavigationPanels-Accordion__item_level-3 .nav-menu-counter__shadow,
-.NavigationPanels-Accordion__item_level-4 .nav-menu-counter__shadow,
-.NavigationPanels-Accordion__item:hover .nav-menu-counter__shadow,
-.NavigationPanels-Accordion__title_activeMenu::after,
-.NavigationPanels-Accordion__title_activeMenu,
-.NavigationPanels-Accordion__item_activeMenu .nav-menu-counter__shadow,
-.NavigationPanels-SubMenu__separator::after,
-.NavigationPanels-Accordion__item:hover .NavigationPanels-Accordion__title_level-1::after,
-.nav-menu-counter__separator::after,
-.nav-menu-counter__shadow,
-.nav-menu-counter__shadow::after {
-background: none !important;
-border-left: none !important;
-}
-.NavigationPanels-Accordion__title_level-1::after {
-width: 0;
 }
 .OnlineSidebar-Sidebar__header,
 .OnlineSidebar-Sidebar__accordion>.controls-Scroll__content {
