@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.15.rc2
+// @name          SBIS UI-Customizer v1.4.15.rc3
 // @namespace     SBIS
-// @version       1.4.15.rc2
-// @date          25.11.2020 08:25:34
+// @version       1.4.15.rc3
+// @date          25.11.2020 08:32:44
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,8 +93,8 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.15.rc2",
-"date": "25.11.2020 08:25:34",
+"version": "1.4.15.rc3",
+"date": "25.11.2020 08:32:44",
 "notes": {
 "added": [],
 "changed": [],
@@ -550,6 +550,10 @@ background-image: url("{{christmas-tree-big}}") !important;
 background-repeat: no-repeat;
 background-position-y: calc(100% - 24px);
 background-position-x: center;
+}
+.NavigationPanels-Accordion__title_level-1:after,
+.NavigationPanels-Accordion__title_level-2_active:after {
+background: none !important;
 }
 .NavigationPanels-Accordion__item {
 background: none !important;
