@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.15
+// @name          SBIS UI-Customizer v1.4.16
 // @namespace     SBIS
-// @version       1.4.15
-// @date          30.11.2020 09:23:51
+// @version       1.4.16
+// @date          30.11.2020 11:14:38
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,16 +93,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.15",
-"date": "30.11.2020 09:23:51",
+"version": "1.4.16",
+"date": "30.11.2020 11:14:38",
 "notes": {
 "added": [],
 "changed": [],
-"fixed": [
-"Исправлено отображение новогодней темы",
-"Исправлено отображение кнопки настроек в меню пользователя"
-],
-"issues": []
+"fixed": [],
+"issues": [
+"Исправлены мелкие баги запуска скрипта в tampermonkey"
+]
 }
 } , (() => {
 return {
@@ -2966,8 +2965,8 @@ content += '<li>' + note + '</li>';
 }
 content += '</ul></div>';
 }
-if (!content) {
 localStorage.setItem('SBIS-UI-Customizer-LastVersion', verinfo.version);
+if (!content) {
 return true;
 }
 Engine.appendCSS('VersionInformer');
