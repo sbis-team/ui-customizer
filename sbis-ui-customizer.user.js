@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.16.rc1
+// @name          SBIS UI-Customizer v1.4.18.rc1
 // @namespace     SBIS
-// @version       1.4.16.rc1
-// @date          30.11.2020 11:09:17
+// @version       1.4.18.rc1
+// @date          13.05.2021 12:27:44
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -18,7 +18,7 @@
 // @exclude       *online.sbis.ru/carry.html*
 // @exclude       *online.sbis.ru/presto.html*
 // @exclude       *online.sbis.ru/booking.html*
-// @run-at        document-start
+// @run-at        document-end
 // @grant         unsafeWindow
 // @grant         GM_setClipboard
 // @noframes
@@ -93,15 +93,15 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.16.rc1",
-"date": "30.11.2020 11:09:17",
+"version": "1.4.18.rc1",
+"date": "13.05.2021 12:27:44",
 "notes": {
 "added": [],
 "changed": [],
-"fixed": [],
-"issues": [
-"Исправлены мелкие баги запуска скрипта в tampermonkey"
-]
+"fixed": [
+"Исправлена ошибка загрузки плагина на некоторых браузерах"
+],
+"issues": []
 }
 } , (() => {
 return {
@@ -709,12 +709,12 @@ background-repeat: no-repeat;
 transform: rotate(25deg);
 }
 `,'ChristmasStyle-Logo-Bird.css':`
-.onlineSidebar-SidebarLogo__default {
-background-image: url("{{logo_penguin}}") !important;
+.onlineSidebar-SidebarLogo {
+background-image: url("{{penguin}}") !important;
 background-repeat: no-repeat;
 background-size: auto;
-margin-top: 1px;
-margin-bottom: 13px;
+background-position: 54px -4px;
+width: 90px;
 }
 `,'ChristmasStyle-Logo-Owl.css':`
 .hint-helpButton__button {
@@ -1364,7 +1364,8 @@ var images = {
 /* Прочие картинки */
 'tree': Engine.getPNG('tree-16'),
 'santa-hat': Engine.getPNG('santa-hat-24'),
-'logo_penguin': Engine.getPNG('logo_penguin'),
+'penguin': Engine.getPNG('penguin-32'),
+/* 'logo_penguin': Engine.getPNG('logo_penguin'), */
 'owl': Engine.getPNG('owl-64'),
 'christmas-tree-big': Engine.getPNG('christmas-tree-big'),
 };
