@@ -2588,7 +2588,7 @@ const ReplaceDocTypeName = {
 'Задача в разработку': 'Задача'
 };
 const taskDialogClass = 'edo3-Dialog';
-const toolbarClass = '.edo3-Dialog__head-firstLine-buttons .controls-Toolbar';
+const toolbarClass = '.edo3-Dialog__head-firstLine-buttons';
 var property = {
 btns: {
 TaskURL: {
