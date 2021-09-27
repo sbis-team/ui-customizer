@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.19
+// @name          SBIS UI-Customizer v1.4.20
 // @namespace     SBIS
-// @version       1.4.19
-// @date          24.08.2021 09:46:40
+// @version       1.4.20
+// @date          27.09.2021 13:03:21
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,13 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.19",
-"date": "24.08.2021 09:46:40",
+"version": "1.4.20",
+"date": "27.09.2021 13:03:21",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Исправлено отображение кнопок в карточке задачи"
+"Исправил отображение доп. кнопок в задаче. Опять."
 ],
 "issues": []
 }
@@ -2701,7 +2701,7 @@ function taskModifierHandler(event) {
 const edo3Dialog = event.currentTarget;
 if (edo3Dialog.controlNodes && edo3Dialog.controlNodes[0] && edo3Dialog.controlNodes[0].control) {
 const control = edo3Dialog.controlNodes[0].control;
-const controlRecord = control.getRecordField ? control.getRecordField() : null;
+const controlRecord = control._options ? control._options.record : null;
 if (controlRecord && controlRecord !== taskChangeCache.get(control)) {
 taskChangeCache.set(control, controlRecord);
 prepareTask(edo3Dialog, control, controlRecord);
