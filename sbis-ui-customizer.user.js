@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.21
+// @name          SBIS UI-Customizer v1.4.22
 // @namespace     SBIS
-// @version       1.4.21
-// @date          24.12.2021 11:11:27
+// @version       1.4.22
+// @date          24.12.2021 11:57:24
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -93,13 +93,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.21",
-"date": "24.12.2021 11:11:27",
+"version": "1.4.22",
+"date": "24.12.2021 11:57:24",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"Фикс новогодних украшений"
+"На маленьком разрешении ёлочка в аккордеоне теперь отображается за пунктами меню и не пропадает"
 ],
 "issues": []
 }
@@ -545,11 +545,16 @@ return {
 /* eslint-disable-next-line semi */
 })()
 , {'css':{'ChristmasStyle-Accordion-ChristmasTree.css':`
-.NavigationPanels-Accordion__tree {
+.NavigationPanels-Accordion__container {
 background-image: url("{{christmas-tree-big}}") !important;
 background-repeat: no-repeat;
-background-position-y: 100%;
+background-position-y: calc(100% - 6px);
 background-position-x: center;
+}
+.NavigationPanels-Accordion__treeWrapperOuter,
+.NavigationPanels-Accordion__treeWrapperInner,
+.NavigationPanels-Accordion__tree {
+display: none;
 }
 .NavigationPanels-Sidebar__header,
 .NavigationPanels-Accordion__item_substrate,
