@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.22
+// @name          SBIS UI-Customizer v1.4.23
 // @namespace     SBIS
-// @version       1.4.22
-// @date          24.12.2021 11:57:24
+// @version       1.4.23
+// @date          24.12.2021 17:08:44
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -18,6 +18,15 @@
 // @exclude       *online.sbis.ru/carry.html*
 // @exclude       *online.sbis.ru/presto.html*
 // @exclude       *online.sbis.ru/booking.html*
+// @include       *online.saby.ru/*
+// @exclude       *online.saby.ru/obj/*
+// @exclude       *online.saby.ru/shared/*
+// @exclude       *online.saby.ru/docview/*
+// @exclude       *online.saby.ru/auth/*
+// @exclude       *online.saby.ru/webrtc/*
+// @exclude       *online.saby.ru/carry.html*
+// @exclude       *online.saby.ru/presto.html*
+// @exclude       *online.saby.ru/booking.html*
 // @run-at        document-end
 // @grant         unsafeWindow
 // @grant         GM_setClipboard
@@ -93,13 +102,13 @@ console.error(moduleName + '.' + eventName, '-', err);
 });
 }
 })(unsafeWindow , {
-"version": "1.4.22",
-"date": "24.12.2021 11:57:24",
+"version": "1.4.23",
+"date": "24.12.2021 17:08:44",
 "notes": {
 "added": [],
 "changed": [],
 "fixed": [
-"На маленьком разрешении ёлочка в аккордеоне теперь отображается за пунктами меню и не пропадает"
+"Добавлена поддержка домена online.saby.ru"
 ],
 "issues": []
 }
@@ -560,6 +569,9 @@ display: none;
 .NavigationPanels-Accordion__item_substrate,
 .NavigationPanels-Accordion__title_level-1::after,
 .NavigationPanels-Accordion__title_level-2_active::after,
+.NavigationPanels-Accordion__item_substrate_accent_lvl-1,
+.NavigationPanels-Accordion__item_activeMenu>.NavigationPanels-Accordion__item_substrate,
+.NavigationPanels-Accordion__item_substrate_accent,
 .NavigationPanels-Accordion__counter,
 .NavigationPanels-Accordion__counter.NavigationPanels-Counter__arrow,
 .NavigationPanels-Sidebar__counter,
