@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name          SBIS UI-Customizer v1.4.19.rc1
+// @name          SBIS UI-Customizer v1.4.24.rc1
 // @namespace     SBIS
-// @version       1.4.19.rc1
-// @date          24.08.2021 09:46:24
+// @version       1.4.24.rc1
+// @date          26.05.2022 17:19:30
 // @author        Новожилов И. А.
 // @description   Пользовательская настройка web интерфейса сайтов SBIS
 // @homepage      https://github.com/sbis-team/ui-customizer
@@ -18,6 +18,15 @@
 // @exclude       *online.sbis.ru/carry.html*
 // @exclude       *online.sbis.ru/presto.html*
 // @exclude       *online.sbis.ru/booking.html*
+// @include       *online.saby.ru/*
+// @exclude       *online.saby.ru/obj/*
+// @exclude       *online.saby.ru/shared/*
+// @exclude       *online.saby.ru/docview/*
+// @exclude       *online.saby.ru/auth/*
+// @exclude       *online.saby.ru/webrtc/*
+// @exclude       *online.saby.ru/carry.html*
+// @exclude       *online.saby.ru/presto.html*
+// @exclude       *online.saby.ru/booking.html*
 // @run-at        document-end
 // @grant         unsafeWindow
 // @grant         GM_setClipboard
